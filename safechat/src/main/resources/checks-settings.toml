@@ -1,0 +1,20 @@
+[blacklist]
+enable-check = true
+enable-warning = true
+allow-similarity = false
+maximum-similarity = 0.75
+
+[address]
+enable-check = true
+enable-warning = true
+
+[flood]
+enable-check = true
+enable-warning = true
+required-delay = 1.50 # in seconds
+
+[repetition]
+enable-check = true
+enable-warning = true
+allow-similarity = false
+maximum-similarity = 0.70
