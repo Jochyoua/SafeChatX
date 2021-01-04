@@ -1,0 +1,8 @@
+[database]
+sql-flavor = 'mysql'
+username = 'root'
+password = 'password'
+db-name = 'my-database'
+port = 3306
+address = '127.0.0.1'
+timeout = 2000

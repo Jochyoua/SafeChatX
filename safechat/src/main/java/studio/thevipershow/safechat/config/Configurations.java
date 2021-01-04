@@ -7,6 +7,8 @@ import studio.thevipershow.safechat.config.blacklist.BlacklistConfig;
 import studio.thevipershow.safechat.config.blacklist.BlacklistSection;
 import studio.thevipershow.safechat.config.checks.CheckConfig;
 import studio.thevipershow.safechat.config.checks.CheckSections;
+import studio.thevipershow.safechat.config.database.DatabaseConfig;
+import studio.thevipershow.safechat.config.database.DatabaseSection;
 import studio.thevipershow.safechat.config.messages.MessagesConfig;
 import studio.thevipershow.safechat.config.messages.MessagesSection;
 import studio.thevipershow.vtc.ConfigurationData;
@@ -33,7 +35,11 @@ public enum Configurations implements ConfigurationData<SafeChat> {
     /**
      * The checks settings configuration.
      */
-    CHECKS_SETTINGS("checks-settings.toml", CheckConfig.class, CheckSections.class);
+    CHECKS_SETTINGS("checks-settings.toml", CheckConfig.class, CheckSections.class),
+    /**
+     * The settings for SQL databases connections.
+     */
+    DATABASE_SETTINGS("database-settings.toml", DatabaseConfig.class, DatabaseSection.class);
 
     private final String stringData;
     private final Class<? extends TomlSectionConfiguration<SafeChat, ?>> classData;

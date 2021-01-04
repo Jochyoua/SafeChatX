@@ -15,4 +15,16 @@ public abstract class TypedCheck<T> implements Check<T> {
         this.checkConfig = checkConfig;
         this.messagesConfig = messagesConfig;
     }
+
+    public CheckType getCheckType() {
+        return checkType;
+    }
+
+    public CheckConfig getCheckConfig() {
+        return checkConfig;
+    }
+
+    public MessagesConfig getMessagesConfig() {
+        return messagesConfig;
+    }
 }
