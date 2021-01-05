@@ -58,6 +58,7 @@ public final class SafeChatHibernate {
     /**
      * Setups a session factory if the hibernate mapping was valid.
      */
+    @SuppressWarnings("rawtypes")
     public void setupSessionFactory() {
         if (this.hibernateSQLMapping == null) {
             throw new RuntimeException("Tried to setup session factory with an invalid database!");

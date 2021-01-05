@@ -137,6 +137,17 @@
       <version>3.4.5</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.30</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.7.30</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -206,11 +217,6 @@
                   </shadedPattern>
                 </relocation>
                 <relocation>
-                  <pattern>com.zaxxer.hikari</pattern>
-                  <shadedPattern>studio.thevipershow.safechat.libs.hikari
-                  </shadedPattern>
-                </relocation>
-                <relocation>
                   <pattern>studio.thevipershow.vtc</pattern>
                   <shadedPattern>studio.thevipershow.safechat.libs.vtc</shadedPattern>
                 </relocation>
@@ -221,6 +227,90 @@
                 <relocation>
                   <pattern>co.aikar.commands</pattern>
                   <shadedPattern>studio.thevipershow.safechat.libs.commands</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.antlr</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.antlr</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.checkerframework</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.checkerframework</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.dom4j</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.dom4j</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.hsqldb</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.hsqldb</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.jvnet</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.jvnet</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.mariadb</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.mariadb</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.slf4j</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.sl4fj</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.tomlj</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.tomlj</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>net.bytebuddy</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.bytebuddy</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>net.jcip</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.jcip</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>mssql</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.mssql</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>microsoft.sql</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.microsoft.sql</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>javassist</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.javassist</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>info.debatty.java.stringsimilarity</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.stringsimilarity</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.fasterxml.classmate</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.fasterxml</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.microsoft.sqlserver.jdbc</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.microsoft.sqlserver.jdbc</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.sun</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.com.sun</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>antlr</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.antlr</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.h2</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.org.h2</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.postgresql</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.org.postgresql</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.jboss</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.org.jboss</shadedPattern>
                 </relocation>
               </relocations>
               <createDependencyReducedPom>false</createDependencyReducedPom>

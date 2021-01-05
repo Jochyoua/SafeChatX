@@ -24,27 +24,27 @@ public enum HibernateSQLMapping {
     /**
      * PostgreSQL Server type.
      */
-    POSTGRESQL("postgresql", org.postgresql.Driver.class.getName(), generateUrl("postgresql"), PostgreSQL95Dialect.class, false),
+    POSTGRESQL("postgresql", "studio.thevipershow.safechat.libs.org.postgresql.Driver", generateUrl("postgresql"), PostgreSQL95Dialect.class, false),
     /**
      * MariaDB Server type.
      */
-    MARIADB("mariadb", org.mariadb.jdbc.Driver.class.getName(), generateUrl("mariadb"), MariaDB53Dialect.class, false),
+    MARIADB("mariadb", "studio.thevipershow.safechat.libs.mariadb.jdbc.Driver", generateUrl("mariadb"), MariaDB53Dialect.class, false),
     /**
      * H2 Engine Type.
      */
-    H2("h2", org.h2.Driver.class.getName(), generateFileUrl("h2"), H2Dialect.class, true),
+    H2("h2", "studio.thevipershow.safechat.libs.org.h2.Driver", generateFileUrl("h2"), H2Dialect.class, true),
     /**
      * CockroachDB Server type.
      */
-    COCKROACHDB("cockroachdb", org.postgresql.Driver.class.getName(), generateUrl("postgresql"), org.hibernate.dialect.CockroachDB201Dialect.class, false),
+    COCKROACHDB("cockroachdb", "studio.thevipershow.safechat.libs.org.postgresql.Driver", generateUrl("postgresql"), org.hibernate.dialect.CockroachDB201Dialect.class, false),
     /**
      * HyperSQL Engine type.
      */
-    HYPERSQL("hsql", org.hsqldb.jdbc.JDBCDriver.class.getName(), generateFileUrl("hsqldb"), HSQLDialect.class, true),
+    HYPERSQL("hsql", "studio.thevipershow.safechat.libs.hsqldb.jdbc.JDBCDriver", generateFileUrl("hsqldb"), HSQLDialect.class, true),
     /**
      * Microsoft's SQLServer type.
      */
-    SQLSERVER("sqlserver", com.microsoft.sqlserver.jdbc.SQLServerDriver.class.getName(), generateUrl("sqlserver"), SQLServer2012Dialect.class, false);
+    SQLSERVER("sqlserver", "studio.thevipershow.safechat.libs.microsoft.sqlserver.jdbc.SQLServerDriver", generateUrl("sqlserver"), SQLServer2012Dialect.class, false);
 
     private final String sqlFlavour;
     private final String driverClassName;
