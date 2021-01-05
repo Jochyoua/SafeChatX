@@ -10,7 +10,8 @@ public enum DatabaseSection implements SectionType {
     DATABASE_NAME("database.db-name", String.class),
     PORT("database.port", Long.class),
     ADDRESS("database.address", String.class),
-    TIMEOUT("database.timeout", Long.class);
+    TIMEOUT("database.timeout", Long.class),
+    FILEPATH("database.filepath", String.class);
 
     private final String stringData;
     private final Class<?> classData;

@@ -5,4 +5,5 @@ password = 'password'
 db-name = 'my-database'
 port = 3306
 address = '127.0.0.1'
-timeout = 2000
+timeout = 1500
+filepath = "path-to-your-db-file"

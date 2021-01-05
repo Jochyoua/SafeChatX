@@ -8,6 +8,7 @@ import org.bukkit.Server;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.safechat.chat.check.ChecksContainer;
 import studio.thevipershow.safechat.chat.listeners.ChatListener;
 import studio.thevipershow.safechat.config.Configurations;
@@ -81,6 +82,7 @@ public final class SafeChat extends JavaPlugin {
     @SuppressWarnings("unchecked")
     private void setupHibernate() {
         safeChatHibernate = new SafeChatHibernate(Objects.requireNonNull(configData.getConfig(Configurations.DATABASE_SETTINGS)), this);
+        safeChatHibernate.setupHibernateSQLMapping();
         safeChatHibernate.setupSessionFactory();
         safeChatHibernate.setupPlayerDataManager();
     }
@@ -98,34 +100,47 @@ public final class SafeChat extends JavaPlugin {
         setupListeners();
     }
 
+    @Override
+    public void onDisable() {
+        safeChatHibernate.shutdown();
+    }
+
+    @NotNull
     public PluginsConfigurationsManager getConfigManager() {
         return configManager;
     }
 
+    @NotNull
     public PluginConfigurationsData<SafeChat> getConfigData() {
         return configData;
     }
 
+    @NotNull
     public ChecksContainer getChecksContainer() {
         return checksContainer;
     }
 
+    @NotNull
     public Economy getEconomy() {
         return economy;
     }
 
+    @NotNull
     public ChatListener getChatListener() {
         return chatListener;
     }
 
+    @NotNull
     public Metrics getMetrics() {
         return metrics;
     }
 
+    @NotNull
     public PaperCommandManager getPaperCommandManager() {
         return paperCommandManager;
     }
 
+    @NotNull
     public SafeChatHibernate getSafeChatHibernate() {
         return safeChatHibernate;
     }

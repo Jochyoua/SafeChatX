@@ -1,125 +1,84 @@
 package studio.thevipershow.safechat.persistence;
 
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Properties;
+import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.dialect.H2Dialect;
-import org.hibernate.dialect.MariaDBDialect;
-import org.hibernate.dialect.MySQL57Dialect;
-import org.hibernate.dialect.PostgreSQL82Dialect;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.postgresql.Driver;
 import studio.thevipershow.safechat.SafeChat;
 import studio.thevipershow.safechat.config.database.DatabaseConfig;
 import studio.thevipershow.safechat.config.database.DatabaseSection;
 import studio.thevipershow.safechat.persistence.mappers.PlayerDataManager;
-import studio.thevipershow.safechat.persistence.sqlite.SQLiteDialect;
 import studio.thevipershow.safechat.persistence.types.PlayerData;
 
 public final class SafeChatHibernate {
 
     private final DatabaseConfig dbConfig;
     private final SafeChat safeChat;
+    private StandardServiceRegistry stdServiceRegistry;
     private SessionFactory sessionFactory;
     private PlayerDataManager playerDataManager;
+    private HibernateSQLMapping hibernateSQLMapping;
 
     public SafeChatHibernate(@NotNull DatabaseConfig dbConfig, @NotNull SafeChat safeChat) {
         this.dbConfig = Objects.requireNonNull(dbConfig);
         this.safeChat = Objects.requireNonNull(safeChat);
     }
 
-    @Nullable
-    public static String translateSQLFlavourToDriverClassname(DatabaseConfig dbConfig) {
-        String sqlFlavor = Objects.requireNonNull(dbConfig.getConfigValue(DatabaseSection.SQL_FLAVOR));
-        switch (sqlFlavor.toLowerCase(Locale.ROOT)) {
-            case "mysql":
-                try {
-                    return Class.forName("com.mysql.jdbc.Driver").getName();
-                } catch (Exception ignored) {
-                }
-            case "sqlite":
-                try {
-                    return Class.forName("org.sqlite.JDBC").getName();
-                } catch (Exception ignored) {
-                }
-            case "postgresql":
-                return Driver.class.getName();
-            case "mariadb":
-                return org.mariadb.jdbc.Driver.class.getName();
-            case "h2":
-                return org.h2.Driver.class.getName();
-            default:
-                return null;
+    /**
+     * Setups and determines the hibernate sql mapping.
+     * Must be called before anything else.
+     */
+    public void setupHibernateSQLMapping() {
+        String sqlFlavour = Objects.requireNonNull(dbConfig.getConfigValue(DatabaseSection.SQL_FLAVOR));
+        sqlFlavour = sqlFlavour.toLowerCase(Locale.ROOT);
+
+        for (HibernateSQLMapping mapping : HibernateSQLMapping.values()) {
+            if (mapping.getSqlFlavour().equals(sqlFlavour)) {
+                this.hibernateSQLMapping = mapping;
+                return;
+            }
+        }
+
+        throw new RuntimeException(String.format("An unknown database type has been used (%s).", sqlFlavour));
+    }
+
+    public void shutdown() {
+        if (stdServiceRegistry != null) {
+            StandardServiceRegistryBuilder.destroy(stdServiceRegistry);
         }
     }
 
-    public static final String JDBC_FORMAT = "jdbc:%s://%s:%d/%s";
-
-    @Nullable
-    public String generateJdbcURL(DatabaseConfig dbConfig) {
-        String sqlFlavor = Objects.requireNonNull(dbConfig.getConfigValue(DatabaseSection.SQL_FLAVOR));
-        String address = Objects.requireNonNull(dbConfig.getConfigValue(DatabaseSection.ADDRESS));
-        Long port = Objects.requireNonNull(dbConfig.getConfigValue(DatabaseSection.PORT));
-        String databaseName = Objects.requireNonNull(dbConfig.getConfigValue(DatabaseSection.DATABASE_NAME));
-
-        return String.format(JDBC_FORMAT, sqlFlavor, address, port, databaseName);
-    }
-
-    @Nullable
-    public static String getHibernateDialect(@NotNull DatabaseConfig databaseConfig) {
-        String sqlFlavour = Objects.requireNonNull(databaseConfig.getConfigValue(DatabaseSection.SQL_FLAVOR));
-
-        switch (sqlFlavour.toLowerCase(Locale.ROOT)) {
-            case "mysql":
-                return MySQL57Dialect.class.getName();
-            case "postgresql":
-                return PostgreSQL82Dialect.class.getName();
-            case "mariadb":
-                return MariaDBDialect.class.getName();
-            case "sqlite":
-                return SQLiteDialect.class.getName();
-            case "h2":
-                return H2Dialect.class.getName();
-            default:
-                return null;
-        }
-    }
-
-    public enum HibernateProperty {
-        CONNECTION_DRIVER_CLASS("hibernate.connection.driver_class"),
-        CONNECTION_URL("hibernate.connection.url"),
-        CONNECTION_USERNAME("hibernate.connection.username"),
-        CONNECTION_PASSWORD("hibernate.connection.password"),
-        DIALECT("hibernate.dialect"),
-        HBM2DDL("hibernate.hbm2ddl.auto");
-
-        HibernateProperty(String property) {
-            this.property = property;
-        }
-
-        public final String property;
-    }
-
-    @NotNull
-    public Properties buildConnectionProperties() {
-        Properties properties = new Properties();
-        properties.setProperty(HibernateProperty.CONNECTION_DRIVER_CLASS.property, Objects.requireNonNull(translateSQLFlavourToDriverClassname(dbConfig)));
-        properties.setProperty(HibernateProperty.CONNECTION_URL.property, Objects.requireNonNull(generateJdbcURL(dbConfig)));
-        properties.setProperty(HibernateProperty.CONNECTION_USERNAME.property, Objects.requireNonNull(dbConfig.getConfigValue(DatabaseSection.USERNAME)));
-        properties.setProperty(HibernateProperty.CONNECTION_PASSWORD.property, Objects.requireNonNull(dbConfig.getConfigValue(DatabaseSection.PASSWORD)));
-        properties.setProperty(HibernateProperty.DIALECT.property, Objects.requireNonNull(getHibernateDialect(dbConfig)));
-        properties.setProperty(HibernateProperty.HBM2DDL.property, "update");
-        return properties;
-    }
-
+    /**
+     * Setups a session factory if the hibernate mapping was valid.
+     */
     public void setupSessionFactory() {
-        Configuration configuration = new Configuration();
-        configuration.setProperties(buildConnectionProperties());
-        configuration.addAnnotatedClass(PlayerData.class);
-        this.sessionFactory = Objects.requireNonNull(configuration.buildSessionFactory());
+        if (this.hibernateSQLMapping == null) {
+            throw new RuntimeException("Tried to setup session factory with an invalid database!");
+        } else {
+
+            try {
+                StandardServiceRegistryBuilder registryBuilder = new StandardServiceRegistryBuilder();
+
+                Map settings = hibernateSQLMapping.generateProperties(dbConfig);
+
+                registryBuilder.applySettings(settings);
+                stdServiceRegistry = registryBuilder.build();
+                MetadataSources metadataSources = new MetadataSources(stdServiceRegistry).addAnnotatedClass(PlayerData.class);
+                Metadata metadata = metadataSources.getMetadataBuilder().build();
+                sessionFactory = metadata.getSessionFactoryBuilder().build();
+
+            } catch (HibernateException e) {
+                shutdown();
+                e.printStackTrace();
+            }
+        }
     }
 
     public void setupPlayerDataManager() {
