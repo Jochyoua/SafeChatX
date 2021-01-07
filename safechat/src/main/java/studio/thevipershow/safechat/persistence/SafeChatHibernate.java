@@ -91,6 +91,11 @@ public final class SafeChatHibernate {
         return sessionFactory;
     }
 
+    @NotNull
+    public SafeChat getSafeChat() {
+        return safeChat;
+    }
+
     @Nullable
     public PlayerDataManager getPlayerDataManager() {
         return playerDataManager;

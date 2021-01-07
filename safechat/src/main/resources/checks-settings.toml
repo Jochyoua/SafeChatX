@@ -3,18 +3,26 @@ enable-check = true
 enable-warning = true
 allow-similarity = false
 maximum-similarity = 0.75
+punish-after = 5
+punish-command = 'kick {PLAYER}'
 
 [address]
 enable-check = true
 enable-warning = true
+punish-after = 5
+punish-command = 'kick {PLAYER}'
 
 [flood]
 enable-check = true
 enable-warning = true
 required-delay = 1.50 # in seconds
+punish-after = 5
+punish-command = 'kick {PLAYER}'
 
 [repetition]
 enable-check = true
 enable-warning = true
 allow-similarity = false
 maximum-similarity = 0.70
+punish-after = 5
+punish-command = 'kick {PLAYER}'

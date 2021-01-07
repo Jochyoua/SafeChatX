@@ -1,6 +1,12 @@
 package studio.thevipershow.safechat.chat.listeners;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import javax.persistence.PostUpdate;
+import org.bukkit.Server;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -8,62 +14,119 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
-import org.tomlj.TomlArray;
 import studio.thevipershow.safechat.SafeChat;
-import studio.thevipershow.safechat.chat.ChatUtil;
-import studio.thevipershow.safechat.chat.check.ChatCheck;
-import studio.thevipershow.safechat.chat.check.CheckType;
+import studio.thevipershow.safechat.api.events.PlayerFailCheckEvent;
+import studio.thevipershow.safechat.chat.SafeChatUtils;
+import studio.thevipershow.safechat.api.checks.ChatData;
+import studio.thevipershow.safechat.api.checks.Check;
 import studio.thevipershow.safechat.chat.check.ChecksContainer;
 import studio.thevipershow.safechat.persistence.SafeChatHibernate;
 import studio.thevipershow.safechat.persistence.mappers.PlayerDataManager;
+import studio.thevipershow.safechat.persistence.types.PlayerData;
 
 public final class ChatListener implements Listener {
 
+    private final SafeChat safeChat;
+    private final static String DATA_MANAGER_ABSENT = "SafeChat's Hibernate PlayerDataManager wasn't configured yet!";
+
     public ChatListener(SafeChatHibernate safeChatHibernate, ChecksContainer checksContainer) {
         this.safeChatHibernate = safeChatHibernate;
-        this.playerDataManager = Objects.requireNonNull(safeChatHibernate.getPlayerDataManager(),
-                "SafeChat's Hibernate PlayerDataManager wasn't configured yet!");
+        this.playerDataManager = Objects.requireNonNull(safeChatHibernate.getPlayerDataManager(), DATA_MANAGER_ABSENT);
         this.checksContainer = checksContainer;
+        this.safeChat = safeChatHibernate.getSafeChat();
     }
 
     private final SafeChatHibernate safeChatHibernate;
     private final PlayerDataManager playerDataManager;
     private final ChecksContainer checksContainer;
 
-    private static void sendWarning(ChatCheck check, AsyncPlayerChatEvent event) {
+    private static void sendWarning(@NotNull Check check, @NotNull ChatData data) {
         if (!check.hasWarningEnabled()) {
             return;
         }
 
-        Player player = event.getPlayer();
-        TomlArray messages = check.getWarningMessages();
+        Player player = data.getPlayer();
 
-        for (int k = 0; k < messages.size(); k++) {
-            String message = check.replacePlaceholders(Objects.requireNonNull(messages.getString(k)), event);
-            player.sendMessage(ChatUtil.color(message));
+        for (String msg : check.getWarningMessages()) {
+            String message = check.replacePlaceholders(Objects.requireNonNull(msg), data);
+            player.sendMessage(SafeChatUtils.color(message));
         }
     }
 
-    private void updateData(@NotNull CheckType checkType, @NotNull Player player) {
-        playerDataManager.addOrUpdatePlayerData(player, checkType);
+    private void checkFlagsAmount(@NotNull Check check, @NotNull ChatData chatData) {
+        String checkName = check.getName();
+        PlayerData playerData = playerDataManager.getPlayerData(chatData.getPlayer());
+        final int flagAmount;
+        if (playerData == null) {
+            flagAmount = 1;
+        } else {
+
+            Integer i = playerData.getFlagsMap().get(checkName);
+            if (i == null) {
+                flagAmount = 1;
+            } else {
+                flagAmount = i;
+            }
+        }
+
+        if (flagAmount % check.getPunishmentRequiredValue() == 0) {
+            dispatchCommands(check, chatData);
+        }
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    private void dispatchCommands(@NotNull Check check, @NotNull ChatData chatData) {
+        Server server = safeChat.getServer();
+        ConsoleCommandSender console = server.getConsoleSender();
+        String formattedCommand = check.replacePlaceholders(check.getPunishmentCommand(), chatData);
+        server.dispatchCommand(console, formattedCommand);
+    }
+
+    private void updateData(@NotNull Player player, @NotNull String checkName) {
+        playerDataManager.addOrUpdatePlayerData(player, checkName);
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     private void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
-        for (ChatCheck chatCheck : checksContainer.getActiveChecks()) {
-            if (chatCheck.check(event)) {
+        ChatData data = new ChatData(event.getPlayer(), event.getMessage(), System.currentTimeMillis());
+
+        Collection<Check> sortedPriorityChecks = checksContainer.getActiveChecks().stream()
+                .sorted(ChecksContainer.CHECK_PRIORITY_COMPARATOR)
+                .collect(Collectors.toList());
+
+        for (Check check : sortedPriorityChecks) {
+            if (check.check(data)) {
+                PlayerFailCheckEvent playerFailCheckEvent = new PlayerFailCheckEvent(check, data);
+                safeChat.getServer().getPluginManager().callEvent(playerFailCheckEvent);
+
+                if (playerFailCheckEvent.isCancelled()) {
+                    continue;
+                }
+
                 event.setCancelled(true);
-                sendWarning(chatCheck, event);
-                updateData(chatCheck.getCheckType(), event.getPlayer());
+                sendWarning(check, data);
+                updateData(data.getPlayer(), check.getName());
                 break;
             }
         }
     }
 
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+    private void onPlayerFailCheck(PlayerFailCheckEvent event) {
+        BukkitScheduler scheduler = safeChat.getServer().getScheduler();
+        scheduler.runTask(safeChat, () -> this.checkFlagsAmount(event.getCheck(), event.getChatData()));
+    }
+
+    @NotNull
     public SafeChatHibernate getSafeChatHibernate() {
         return safeChatHibernate;
     }
 
+    @NotNull
+    public SafeChat getSafeChat() {
+        return safeChat;
+    }
+
+    @NotNull
     public ChecksContainer getChecksContainer() {
         return checksContainer;
     }

@@ -1,14 +1,21 @@
 package studio.thevipershow.safechat.persistence.types;
 
+import java.util.HashMap;
+import java.util.Map;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import org.jetbrains.annotations.NotNull;
 
 @Entity
 @Table(name = "player_data")
-public final class PlayerData {
+public class PlayerData implements Cloneable {
 
     @Id
     @Column(name = "uuid")
@@ -17,17 +24,22 @@ public final class PlayerData {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "repetition_flags")
-    private int repetitionFlags = 0;
+    @ElementCollection
+    @CollectionTable(
+            name = "flag_mapping",
+            joinColumns = {@JoinColumn(name = "flag_id", referencedColumnName = "uuid")})
+    @MapKeyColumn(name = "flag_name")
+    @Column(name = "flags")
+    private Map<String, Integer> flagsMap = new HashMap<>();
 
-    @Column(name = "flood_flags")
-    private int floodFlags = 0;
+    @NotNull
+    public Map<String, Integer> getFlagsMap() {
+        return flagsMap;
+    }
 
-    @Column(name = "blacklist_flags")
-    private int blacklistFlags = 0;
-
-    @Column(name = "address_flags")
-    private int addressFlags = 0;
+    public void setFlagsMap(@NotNull Map<String, Integer> flagsMap) {
+        this.flagsMap = flagsMap;
+    }
 
     @NotNull
     public String getUuid() {
@@ -47,35 +59,8 @@ public final class PlayerData {
         this.name = name;
     }
 
-    public int getRepetitionFlags() {
-        return repetitionFlags;
-    }
-
-    public void setRepetitionFlags(int repetitionFlags) {
-        this.repetitionFlags = repetitionFlags;
-    }
-
-    public int getFloodFlags() {
-        return floodFlags;
-    }
-
-    public void setFloodFlags(int floodFlags) {
-        this.floodFlags = floodFlags;
-    }
-
-    public int getBlacklistFlags() {
-        return blacklistFlags;
-    }
-
-    public void setBlacklistFlags(int blacklistFlags) {
-        this.blacklistFlags = blacklistFlags;
-    }
-
-    public int getAddressFlags() {
-        return addressFlags;
-    }
-
-    public void setAddressFlags(int addressFlags) {
-        this.addressFlags = addressFlags;
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

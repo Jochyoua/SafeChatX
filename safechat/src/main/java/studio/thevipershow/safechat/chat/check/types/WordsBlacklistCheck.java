@@ -1,13 +1,16 @@
 package studio.thevipershow.safechat.chat.check.types;
 
 import info.debatty.java.stringsimilarity.RatcliffObershelp;
+import java.util.List;
 import java.util.Objects;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.jetbrains.annotations.NotNull;
 import org.tomlj.TomlArray;
 import studio.thevipershow.safechat.SafeChat;
-import studio.thevipershow.safechat.chat.check.CheckType;
-import studio.thevipershow.safechat.chat.check.ChatCheck;
+import studio.thevipershow.safechat.api.checks.CheckPriority;
+import studio.thevipershow.safechat.chat.SafeChatUtils;
+import studio.thevipershow.safechat.api.checks.ChatData;
+import studio.thevipershow.safechat.api.checks.CheckName;
+import studio.thevipershow.safechat.api.checks.ChatCheck;
 import studio.thevipershow.safechat.config.blacklist.BlacklistConfig;
 import studio.thevipershow.safechat.config.blacklist.BlacklistSection;
 import studio.thevipershow.safechat.config.checks.CheckConfig;
@@ -18,19 +21,24 @@ import studio.thevipershow.safechat.config.messages.MessagesSection;
 /**
  * Checks if a string is banned using a blacklist.
  */
-public final class WordsBlacklistCheckTyped extends ChatCheck {
+@CheckName(name = "Blacklist")
+@CheckPriority(priority = CheckPriority.Priority.LOW)
+public final class WordsBlacklistCheck extends ChatCheck {
 
-    private final BlacklistConfig blacklistConfig;
     private final RatcliffObershelp ratcliffObershelp = new RatcliffObershelp();
+    private final BlacklistConfig blacklistConfig;
+    private final CheckConfig checkConfig;
+    private final MessagesConfig messagesConfig;
 
-    public WordsBlacklistCheckTyped(BlacklistConfig blacklistConfig, CheckConfig checkConfig, MessagesConfig messagesConfig) {
-        super(CheckType.WORDS, checkConfig, messagesConfig);
+    public WordsBlacklistCheck(@NotNull BlacklistConfig blacklistConfig, @NotNull CheckConfig checkConfig, @NotNull MessagesConfig messagesConfig) {
+        this.checkConfig = checkConfig;
+        this.messagesConfig = messagesConfig;
         this.blacklistConfig = blacklistConfig;
     }
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    public boolean check(final AsyncPlayerChatEvent e) {
+    public boolean check(final @NotNull ChatData data) {
         boolean enabled = Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.ENABLE_BLACKLIST_CHECK));
         if (!enabled) {
             return false;
@@ -44,7 +52,7 @@ public final class WordsBlacklistCheckTyped extends ChatCheck {
             return false;
         }
 
-        String s = e.getMessage();
+        String s = data.getMessage();
 
         if (s.isEmpty()) {
             return false;
@@ -84,13 +92,37 @@ public final class WordsBlacklistCheckTyped extends ChatCheck {
     }
 
     @Override
-    public @NotNull TomlArray getWarningMessages() {
-        return Objects.requireNonNull(messagesConfig.getConfigValue(MessagesSection.BLACKLIST_WARNING));
+    public @NotNull List<String> getWarningMessages() {
+        TomlArray array = Objects.requireNonNull(messagesConfig.getConfigValue(MessagesSection.BLACKLIST_WARNING));
+        return SafeChatUtils.getStrings(array);
     }
 
     @Override
-    public @NotNull String replacePlaceholders(String message, AsyncPlayerChatEvent event) {
-        return message.replace(PLAYER_PLACEHOLDER, event.getPlayer().getName())
+    public @NotNull String replacePlaceholders(@NotNull String message, @NotNull ChatData data) {
+        return message.replace(PLAYER_PLACEHOLDER, data.getPlayer().getName())
             .replace(PREFIX_PLACEHOLDER, SafeChat.PREFIX);
+    }
+
+    /**
+     * Get after how often should a player trigger a punish.
+     * For example 2 will mean each 2 failed checks,
+     * will trigger the punishment.
+     *
+     * @return The interval value.
+     */
+    @Override
+    public long getPunishmentRequiredValue() {
+        return Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.BLACKLIST_PUNISH_AFTER));
+    }
+
+    /**
+     * Get the command to execute when a punishment is required.
+     * Placeholders may be used.
+     *
+     * @return The command to execute.
+     */
+    @Override
+    public @NotNull String getPunishmentCommand() {
+        return Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.BLACKLIST_PUNISH_COMMAND));
     }
 }

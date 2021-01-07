@@ -10,8 +10,16 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.safechat.chat.check.ChecksContainer;
+import studio.thevipershow.safechat.chat.check.types.AddressCheck;
+import studio.thevipershow.safechat.chat.check.types.FloodCheck;
+import studio.thevipershow.safechat.chat.check.types.RepetitionCheck;
+import studio.thevipershow.safechat.chat.check.types.WordsBlacklistCheck;
 import studio.thevipershow.safechat.chat.listeners.ChatListener;
 import studio.thevipershow.safechat.config.Configurations;
+import studio.thevipershow.safechat.config.address.AddressConfig;
+import studio.thevipershow.safechat.config.blacklist.BlacklistConfig;
+import studio.thevipershow.safechat.config.checks.CheckConfig;
+import studio.thevipershow.safechat.config.messages.MessagesConfig;
 import studio.thevipershow.safechat.persistence.SafeChatHibernate;
 import studio.thevipershow.safechat.persistence.mappers.PlayerDataManager;
 import studio.thevipershow.safechat.persistence.types.PlayerData;
@@ -62,15 +70,29 @@ public final class SafeChat extends JavaPlugin {
         pluginData.exportAndLoadAllLoadedConfigs(false);
     }
 
+    @SuppressWarnings("unchecked")
     private void setupChecksContainer() {
         checksContainer = ChecksContainer.getInstance(this);
-        checksContainer.registerAllDefault();
+        PluginConfigurationsData<SafeChat> configData = Objects.requireNonNull(getConfigData());
+        MessagesConfig messagesConfig = Objects.requireNonNull(configData.getConfig(Configurations.MESSAGES));
+        CheckConfig checkConfig = Objects.requireNonNull(configData.getConfig(Configurations.CHECKS_SETTINGS));
+        AddressConfig addressConfig = Objects.requireNonNull(configData.getConfig(Configurations.ADDRESS));
+        BlacklistConfig blacklistConfig = Objects.requireNonNull(configData.getConfig(Configurations.BLACKLIST));
+
+        AddressCheck addressCheck = new AddressCheck(addressConfig, checkConfig, messagesConfig);
+        FloodCheck floodCheck = new FloodCheck(checkConfig, messagesConfig);
+        RepetitionCheck repetitionCheck = new RepetitionCheck(checkConfig, messagesConfig);
+        WordsBlacklistCheck wordsBlacklistCheck = new WordsBlacklistCheck(blacklistConfig, checkConfig, messagesConfig);
+
+        checksContainer.register(addressCheck);
+        checksContainer.register(floodCheck);
+        checksContainer.register(repetitionCheck);
+        checksContainer.register(wordsBlacklistCheck);
     }
 
     private void setupListeners() {
         PluginManager pManager = getServer().getPluginManager();
         chatListener = new ChatListener(safeChatHibernate, checksContainer);
-
         pManager.registerEvents(chatListener, this);
     }
 
