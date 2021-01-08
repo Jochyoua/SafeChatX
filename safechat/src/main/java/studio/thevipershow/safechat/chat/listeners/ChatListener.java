@@ -1,10 +1,8 @@
 package studio.thevipershow.safechat.chat.listeners;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import javax.persistence.PostUpdate;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -19,7 +17,7 @@ import studio.thevipershow.safechat.api.events.PlayerFailCheckEvent;
 import studio.thevipershow.safechat.chat.SafeChatUtils;
 import studio.thevipershow.safechat.api.checks.ChatData;
 import studio.thevipershow.safechat.api.checks.Check;
-import studio.thevipershow.safechat.chat.check.ChecksContainer;
+import studio.thevipershow.safechat.api.checks.ChecksContainer;
 import studio.thevipershow.safechat.persistence.SafeChatHibernate;
 import studio.thevipershow.safechat.persistence.mappers.PlayerDataManager;
 import studio.thevipershow.safechat.persistence.types.PlayerData;

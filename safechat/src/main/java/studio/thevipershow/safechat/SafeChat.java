@@ -9,7 +9,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import studio.thevipershow.safechat.chat.check.ChecksContainer;
+import studio.thevipershow.safechat.api.checks.ChecksContainer;
 import studio.thevipershow.safechat.chat.check.types.AddressCheck;
 import studio.thevipershow.safechat.chat.check.types.FloodCheck;
 import studio.thevipershow.safechat.chat.check.types.RepetitionCheck;
@@ -21,9 +21,6 @@ import studio.thevipershow.safechat.config.blacklist.BlacklistConfig;
 import studio.thevipershow.safechat.config.checks.CheckConfig;
 import studio.thevipershow.safechat.config.messages.MessagesConfig;
 import studio.thevipershow.safechat.persistence.SafeChatHibernate;
-import studio.thevipershow.safechat.persistence.mappers.PlayerDataManager;
-import studio.thevipershow.safechat.persistence.types.PlayerData;
-import studio.thevipershow.vtc.Configuration;
 import studio.thevipershow.vtc.PluginConfigurationsData;
 import studio.thevipershow.vtc.PluginsConfigurationsManager;
 
@@ -113,8 +110,9 @@ public final class SafeChat extends JavaPlugin {
     public void onEnable() {
         setupMetrics();
         if (setupEconomy()) {
-            getLogger().info("Vault not present, cannot use economy functionalities.");
+            getLogger().warning("Vault not present, cannot use economy functionalities.");
         }
+
         setupConfigs();
         setupHibernate();
         setupChecksContainer();

@@ -54,7 +54,7 @@ public enum HibernateSQLMapping {
 
     public static final String DB_TYPE_PLACEHOLDER = "{TYPE}";
     public static final String STD_JDBC_URL = "jdbc:" + DB_TYPE_PLACEHOLDER + "://%s:%d/%s";
-    public static final String STD_JDBC_FILE_URL = "jdbc:" + DB_TYPE_PLACEHOLDER + ":file:%s";
+    public static final String STD_JDBC_FILE_URL = "jdbc:" + DB_TYPE_PLACEHOLDER + ":%s";
 
     @NotNull
     private static String generateUrl(@NotNull String dbType) {
@@ -76,7 +76,7 @@ public enum HibernateSQLMapping {
         properties.put(Environment.DRIVER, driverClassName);
         // Optimizations:
         properties.put("hibernate.hikari.dataSource.cachePrepStmts", "true");
-        properties.put("hibernate.hikari.dataSource.prepStmtCacheSize", "250");
+        properties.put("hibernate.hikari.dataSource.prepStmtCacheSize", "256");
         properties.put("hibernate.hikari.dataSource.useServerPrepStmts", "true");
         properties.put("hibernate.hikari.dataSource.useLocalSessionState", "true");
         properties.put("hibernate.hikari.dataSource.cacheResultSetMetadata", "true");
@@ -91,7 +91,7 @@ public enum HibernateSQLMapping {
     public static String generateAppropriateUrl(@NotNull HibernateSQLMapping hibernateSQLMapping, @NotNull DatabaseConfig dbConfig) {
         final String urlFormatter = hibernateSQLMapping.getUrlFormatter();
         if (hibernateSQLMapping.isFileBased()) {
-            return String.format(urlFormatter, Objects.requireNonNull(dbConfig.getConfigValue(DatabaseSection.FILEPATH)));
+            return String.format(urlFormatter, (String) Objects.requireNonNull(dbConfig.getConfigValue(DatabaseSection.FILEPATH)));
         } else {
             String address = Objects.requireNonNull(dbConfig.getConfigValue(DatabaseSection.ADDRESS));
             Long port = Objects.requireNonNull(dbConfig.getConfigValue(DatabaseSection.PORT));

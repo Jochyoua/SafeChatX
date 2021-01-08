@@ -6,4 +6,4 @@ db-name = 'my-database'
 port = 3306
 address = '127.0.0.1'
 timeout = 1500
-filepath = "path-to-your-db-file"
+filepath = '~/safechat'

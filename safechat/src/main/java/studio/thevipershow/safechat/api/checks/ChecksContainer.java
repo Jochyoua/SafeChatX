@@ -1,4 +1,4 @@
-package studio.thevipershow.safechat.chat.check;
+package studio.thevipershow.safechat.api.checks;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -6,13 +6,13 @@ import java.util.Deque;
 import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.Map;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.safechat.SafeChat;
-import studio.thevipershow.safechat.api.checks.Check;
-import studio.thevipershow.safechat.api.checks.CheckPriority;
 import studio.thevipershow.safechat.api.events.CheckRegisterEvent;
 import studio.thevipershow.safechat.api.events.CheckUnregisterEvent;
+import studio.thevipershow.safechat.chat.SafeChatUtils;
 
 public final class ChecksContainer {
 
@@ -20,7 +20,7 @@ public final class ChecksContainer {
     public static final Comparator<Check> CHECK_PRIORITY_COMPARATOR = Comparator.comparing(a -> a.getCheckPriority().v);
     private final SafeChat safeChat;
 
-    public ChecksContainer(SafeChat safeChat) {
+    public ChecksContainer(@NotNull SafeChat safeChat) {
         this.safeChat = safeChat;
         this.registeredChecks = new EnumMap<>(CheckPriority.Priority.class);
         for (CheckPriority.Priority value : CheckPriority.Priority.values()) {
@@ -54,6 +54,11 @@ public final class ChecksContainer {
 
     private final Map<CheckPriority.Priority, Deque<Check>> registeredChecks;
 
+    private void logCheckRegistration(@NotNull Check check) {
+        ConsoleCommandSender console = safeChat.getServer().getConsoleSender();
+        console.sendMessage(SafeChatUtils.color(String.format("%s &7registered new check &e%s", SafeChat.PREFIX, check.getName())));
+    }
+
     /**
      * Register a check if it wasn't.
      *
@@ -66,6 +71,7 @@ public final class ChecksContainer {
         if (added) {
             PluginManager manager = safeChat.getServer().getPluginManager();
             manager.callEvent(new CheckRegisterEvent(check));
+            logCheckRegistration(check);
         }
         return added;
     }
