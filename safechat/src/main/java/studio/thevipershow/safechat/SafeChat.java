@@ -15,11 +15,13 @@ import studio.thevipershow.safechat.chat.check.types.FloodCheck;
 import studio.thevipershow.safechat.chat.check.types.RepetitionCheck;
 import studio.thevipershow.safechat.chat.check.types.WordsBlacklistCheck;
 import studio.thevipershow.safechat.chat.listeners.ChatListener;
+import studio.thevipershow.safechat.commands.SafeChatCommand;
 import studio.thevipershow.safechat.config.Configurations;
 import studio.thevipershow.safechat.config.address.AddressConfig;
 import studio.thevipershow.safechat.config.blacklist.BlacklistConfig;
 import studio.thevipershow.safechat.config.checks.CheckConfig;
 import studio.thevipershow.safechat.config.messages.MessagesConfig;
+import studio.thevipershow.safechat.debug.Debugger;
 import studio.thevipershow.safechat.persistence.SafeChatHibernate;
 import studio.thevipershow.vtc.PluginConfigurationsData;
 import studio.thevipershow.vtc.PluginsConfigurationsManager;
@@ -40,6 +42,8 @@ public final class SafeChat extends JavaPlugin {
     private Metrics metrics;
     private PaperCommandManager paperCommandManager;
     private SafeChatHibernate safeChatHibernate;
+    private Debugger debugger;
+    private SafeChatCommand safeChatCommand;
 
     private void setupMetrics() {
         metrics = new Metrics(this, PLUGIN_ID);
@@ -95,6 +99,9 @@ public final class SafeChat extends JavaPlugin {
 
     private void setupCommands() {
         paperCommandManager = new PaperCommandManager(this);
+        paperCommandManager.enableUnstableAPI("help");
+        safeChatCommand = new SafeChatCommand(this);
+        paperCommandManager.registerCommand(safeChatCommand);
         // paperCommandManager.registerCommand(...);
     }
 
@@ -104,6 +111,10 @@ public final class SafeChat extends JavaPlugin {
         safeChatHibernate.setupHibernateSQLMapping();
         safeChatHibernate.setupSessionFactory();
         safeChatHibernate.setupPlayerDataManager();
+    }
+
+    private void setupDebugger() {
+        debugger = Debugger.getInstance(getLogger());
     }
 
     @Override
