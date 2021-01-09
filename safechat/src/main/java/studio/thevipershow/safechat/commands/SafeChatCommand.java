@@ -27,7 +27,7 @@ public class SafeChatCommand extends BaseCommand {
     }
 
     @Subcommand("reload")
-    @CommandPermission("safechat.reload")
+    @CommandPermission("safechat.commands.reload")
     public void reloadCommand(@NotNull CommandSender sender) {
         long operationStartTime = System.nanoTime();
         sender.sendMessage(SafeChatUtils.color(SafeChat.PREFIX + "&7The plugin is going to be reloaded..."));

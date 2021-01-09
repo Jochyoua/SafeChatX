@@ -3,7 +3,6 @@ package studio.thevipershow.safechat.debug;
 import org.jetbrains.annotations.NotNull;
 
 public enum DebugChannel {
-
     HIBERNATE("safechat:hibernate"),
     COMMAND("safechat:command"),
     CHAT("safechat:chat"),
