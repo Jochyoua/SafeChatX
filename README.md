@@ -1,5 +1,10 @@
-# SafeChatX
+![Discord](https://img.shields.io/discord/601548177753243656?style=social)
 
+![GitHub](https://img.shields.io/github/license/TheViperShow/SafeChatX?style=plastic)
+![Lines of code](https://img.shields.io/tokei/lines/github/TheViperShow/SafeChatX?style=plastic)
+![GitHub last commit](https://img.shields.io/github/last-commit/TheViperShow/SafeChatX?style=plastic)
+![swag](https://img.shields.io/badge/swag-yes-red)
+# SafeChatX
 A plugin to keep your chat safe.
 
 ### SafeChat Commands
