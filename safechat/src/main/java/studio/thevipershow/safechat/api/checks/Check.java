@@ -15,18 +15,11 @@ public interface Check {
      * priority checks will get called before lower
      * priority ones.
      * If no annotation of type {@link CheckPriority} is present
-     * on the Check class, NORMAL priority will be returned.
+     * on the Check class, NORMAL priority will be used.
      *
      * @return The priority of the check.
      */
-    default CheckPriority.Priority getCheckPriority() {
-        Class<? extends Check> checkClass = getClass();
-        if (checkClass.isAnnotationPresent(CheckPriority.class)) {
-            return checkClass.getAnnotation(CheckPriority.class).priority();
-        } else {
-            return CheckPriority.Priority.NORMAL;
-        }
-    }
+    CheckPriority.Priority getCheckPriority();
 
     /**
      * Get the name of this check.

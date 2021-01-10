@@ -28,6 +28,8 @@ public final class ChecksContainer {
         }
     }
 
+    private final Map<CheckPriority.Priority, LinkedList<Check>> registeredChecks;
+
     public static ChecksContainer getInstance(SafeChat safeChat) {
         if (instance == null) {
             instance = new ChecksContainer(safeChat);
@@ -52,8 +54,6 @@ public final class ChecksContainer {
         }
     }
 
-    private final Map<CheckPriority.Priority, Deque<Check>> registeredChecks;
-
     private void logCheckRegistration(@NotNull Check check) {
         ConsoleCommandSender console = safeChat.getServer().getConsoleSender();
         console.sendMessage(SafeChatUtils.color(String.format("%s &7registered new check &e%s", SafeChat.PREFIX, check.getName())));
@@ -66,8 +66,18 @@ public final class ChecksContainer {
      * @return True if the check was registered, false otherwise.
      */
     public final boolean register(@NotNull Check check) {
-        Deque<Check> checks = registeredChecks.get(check.getCheckPriority());
+        if (check == null) {
+            return false;
+        }
+
+        LinkedList<Check> checks = registeredChecks.get(check.getCheckPriority());
+
+        if (checks.contains(check)) {
+            return false;
+        }
+
         boolean added = checks.add(check);
+
         if (added) {
             PluginManager manager = safeChat.getServer().getPluginManager();
             manager.callEvent(new CheckRegisterEvent(check));
@@ -83,8 +93,14 @@ public final class ChecksContainer {
      * @return True if it has been unregistered, false otherwise.
      */
     public final boolean unregister(@NotNull Check check) {
-        Deque<Check> checks = registeredChecks.get(check.getCheckPriority());
+        if (check == null) {
+            return false;
+        }
+
+        LinkedList<Check> checks = registeredChecks.get(check.getCheckPriority());
+
         boolean removed = checks.remove(check);
+
         if (removed) {
             PluginManager manager = safeChat.getServer().getPluginManager();
             manager.callEvent(new CheckUnregisterEvent(check));

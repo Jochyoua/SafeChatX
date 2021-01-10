@@ -1,5 +1,6 @@
 package studio.thevipershow.safechat.api.checks;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,18 +13,29 @@ public abstract class ChatCheck implements Check {
     public static final String PREFIX_PLACEHOLDER = "{PREFIX}";
 
     private final String checkName;
+    private final CheckPriority.Priority priority;
 
     public ChatCheck() {
-        Class<? extends ChatCheck> namedCheckClass = getClass();
+        final Class<? extends ChatCheck> namedCheckClass = getClass();
         if (!namedCheckClass.isAnnotationPresent(CheckName.class)) {
             throw new UnsupportedOperationException("This check is not annotated with '@CheckName' annotation!");
         } else {
-            this.checkName = namedCheckClass.getAnnotation(CheckName.class).name();
+            this.checkName = Objects.requireNonNull(namedCheckClass.getAnnotation(CheckName.class).name());
+        }
+        if (namedCheckClass.isAnnotationPresent(CheckPriority.class)) {
+            priority = namedCheckClass.getAnnotation(CheckPriority.class).priority();
+        } else {
+            priority =  CheckPriority.Priority.NORMAL;
         }
     }
 
     @Override
     public final @NotNull String getName() {
         return checkName;
+    }
+
+    @Override
+    public final CheckPriority.Priority getCheckPriority() {
+        return priority;
     }
 }

@@ -80,8 +80,9 @@ public final class RepetitionCheck extends ChatCheck {
 
     @Override
     public @NotNull String replacePlaceholders(@NotNull String message, @NotNull ChatData data) {
-        return message.replace(PLAYER_PLACEHOLDER, data.getPlayer().getName())
-            .replace(PREFIX_PLACEHOLDER, SafeChat.PREFIX);
+        return message
+                .replace(PLAYER_PLACEHOLDER, data.getPlayer().getName())
+                .replace(PREFIX_PLACEHOLDER, SafeChat.PREFIX);
     }
 
     /**
