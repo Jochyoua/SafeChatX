@@ -1,17 +1,77 @@
 # SafeChatX
 A plugin to keep your chat safe.
 
+### SafeChat Commands
+SafeChat provides some commands in-game that will allow to interact with
+the configurations or the checks. The commands that are currently available are listed here:
+
+[Reload command]<br>
+**Syntax**: `/safechat reload`<br>
+**Permission**: `safechat.commands.reload` <br>
+**Description**: <br>
+This command is used to reload data from configurations and plugin.
+You can use this command to start using new values after you have modified any of the 
+configs from SafeChat.
+
+[Help Command]<br>
+**Syntax**: `/safechat help`<br>
+**Permission**: none?<br>
+**Description**: Show all available commands.
+
+### SafeChat configurations
+
+SafeChat uses TOML to make the plugin configurable. TOML is an easy-to-use syntax which
+I recently adopted over YAML, you can read more about it here https://toml.io/en/.
+SafeChat currently has **5** configurations, I have decided to split the settings
+of SafeChat into multiple configurations to not create a huge single config and
+make editing more easy for the user!
+
+#### address-whitelist.toml
+A short configuration where you will be able to define 
+the allowed addresses and domains into your plugin.
+All the other addresses and domains that are not whitelisted
+will automatically be considered as dangerous by SafeChat.
+
+#### database-settings.toml
+This configuration makes you input values for the usage of the database.
+Make sure your data is correct if you are having troubles connecting to one
+of your databases.
+
+#### check-settings.toml
+A configuration for check-specific settings.
+From this configuration you will be able to enable checks,
+customize punishments levels, and other.
+
+#### words-blacklist.toml
+A list of words that is considered forbidden on the server.
+
+#### messages.toml
+The messages that will be used by each specific check upon fail.
+
+### SafeChat Database
+A database is required for SafeChat to work!<br>
+SafeChat currently supports the following databases:
+1) **MySQL**
+2) **MariaDB**
+3) **PostgreSQL**
+4) **Microsoft SQLServer**
+5) **HyperSQL**
+6) **CockroachDB**
+7) **H2**
+8) **IBM DB2** (soon)
+
+To work properly the "database-settings.toml" config must contain correct access data.
+
 ### SafeChat API
 This plugin provides a simple API that allows users to program
 their own checks and make SafeChat register them at runtime!
 All checks define their own logic and behaviour using the passed data
 from the chat events. The required data from the chat event is wrapped into a
-"ChatData" object which contains the player, and the message objects.
-
+"ChatData" object which contains the player, and the message objects.<br>
 All checks are based on the "Check" interface. The check interface is a simple
 structure that allows you to define your own chat control structure. In this API
 you will find most of the necessary classes and abstractions inside the 
-"studio.thevipershow.safechat.api" package. 
+"studio.thevipershow.safechat.api" package.
 
 To create a proper check, you must implement the check interface and define all the following methods respecting the scope:
 #### (boolean) Check#check(ChatData)
@@ -44,8 +104,7 @@ An example of this could be the following:
 This is a long value and indicates how many times does the player needs to fail
 this specific check in order to trigger a punishment. If you do not want your check
 to cause a punishment you should simply return **-1**. An example of this would be the 
-following:
-suppose you create a check and its punishment required value is 5, then the player will require
+following: <br>suppose you create a check and its punishment required value is 5, then the player will require
 to fail this check 5 times in order for it to trigger a punishment. After the punishment has been
 executed, the counter will restart from the beginning.
 #### (String) Check#getPunishmentCommand()
