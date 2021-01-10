@@ -1,5 +1,6 @@
 package studio.thevipershow.safechat.api.events;
 
+import java.util.Objects;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.safechat.api.checks.ChatCheck;
@@ -20,7 +21,7 @@ public abstract class ChatCheckEvent extends Event {
      */
     public ChatCheckEvent(@NotNull Check check, boolean async) {
         super(async);
-        this.check = check;
+        this.check = Objects.requireNonNull(check);
     }
 
     /**

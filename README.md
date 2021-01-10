@@ -158,6 +158,26 @@ public final class MessageTooLongCheck extends ChatCheck {
     }
 }
 ```
+### SafeChat Events
+This plugin also provides different Bukkit events that allow you to easily listen and interact
+with safechat using the Bukkit API. 
+All of the checks are stored inside the `studio.thevipershow.safechat.api.events` package.
+
+The currently available checks are:
+#### CheckPunishmentEvent
+This check event is called whenever one of the registered checks is going to trigger a punishment
+If you cancel this event , the punishment will not happen anymore.
+This event is thread-safe.
+#### CheckRegisterEvent
+This check event is called whenever a new check is getting registered.
+This event is thread-safe.
+#### CheckUnregisterEvent
+This check event is called whenever a check is getting unregistered.
+This event is thread-safe.
+#### PlayerFailCheckEvent
+This check event is called whenever the player fails a check. This check can be cancelled
+and doing so will cause SafeChat to skip this check and ignore it for that one message.
+This event is non thread-safe!
 
 ---
 This guide finishes here, Thank you for reading!

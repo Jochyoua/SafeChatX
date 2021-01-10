@@ -9,7 +9,7 @@ import studio.thevipershow.safechat.api.checks.Check;
 /**
  * This check is called when a player has failed one of the loaded chat checks.
  * This check is cancellable: doing so will make the player pass correctly the check.
- * THIS EVENT IS ASYNC.
+ * This event is not synchronized with the minecraft server's main thread.
  */
 public class PlayerFailCheckEvent extends ChatCheckEvent implements Cancellable {
 

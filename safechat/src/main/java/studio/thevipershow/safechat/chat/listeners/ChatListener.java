@@ -13,6 +13,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.safechat.SafeChat;
+import studio.thevipershow.safechat.api.events.ChatPunishmentEvent;
 import studio.thevipershow.safechat.api.events.PlayerFailCheckEvent;
 import studio.thevipershow.safechat.chat.SafeChatUtils;
 import studio.thevipershow.safechat.api.checks.ChatData;
@@ -52,6 +53,10 @@ public final class ChatListener implements Listener {
     }
 
     private void checkFlagsAmount(@NotNull Check check, @NotNull ChatData chatData) {
+        if (check.getPunishmentRequiredValue() == -1L) {
+            return;
+        }
+
         String checkName = check.getName();
         PlayerData playerData = playerDataManager.getPlayerData(chatData.getPlayer());
         final int flagAmount;
@@ -67,8 +72,19 @@ public final class ChatListener implements Listener {
             }
         }
 
-        if (flagAmount % check.getPunishmentRequiredValue() == 0) {
-            dispatchCommands(check, chatData);
+        if (flagAmount % Math.abs(check.getPunishmentRequiredValue()) == 0) {
+
+            BukkitScheduler scheduler = safeChat.getServer().getScheduler();
+
+            scheduler.runTask(safeChat, () -> {
+
+                ChatPunishmentEvent punishmentEvent = new ChatPunishmentEvent(check);
+                safeChat.getServer().getPluginManager().callEvent(punishmentEvent);
+
+                if (!punishmentEvent.isCancelled()) {
+                    dispatchCommands(check, chatData);
+                }
+            });
         }
     }
 
