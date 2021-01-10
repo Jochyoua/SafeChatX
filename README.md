@@ -304,4 +304,4 @@ This check event is called whenever the player fails a check. This check can be 
 SafeChat to skip this check and ignore it for that one message. This event is non thread-safe!
 
 ---
-This guide finishes here, Thank you for reading!
+This guide finishes here, thank you for reading!
