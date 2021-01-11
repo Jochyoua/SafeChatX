@@ -3,10 +3,13 @@ package studio.thevipershow.safechatdownloader.http;
 import com.google.gson.JsonParser;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.Objects;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.safechatdownloader.ColoredLogger;
 import studio.thevipershow.safechatdownloader.SafeChatDownloader;
@@ -56,8 +59,18 @@ public final class Downloader {
                 .get()
                 .build();
 
-        httpClient.newCall(jarDownloadRequest)
-                .enqueue(new JarSaverCallback(safeChatDownloader, this, release));
+        JarSaverCallback saverCallback = null;
+        try {
+            Response response = httpClient.newCall(jarDownloadRequest).execute();
+            saverCallback = new JarSaverCallback(safeChatDownloader, this, release);
+            saverCallback.onResponse(response);
+        } catch (IOException e) {
+            if (saverCallback != null) {
+                saverCallback.onFailure(e);
+            } else {
+                e.printStackTrace();
+            }
+        }
     }
 
     private boolean isSafeChatPresentRuntime() {
@@ -79,8 +92,24 @@ public final class Downloader {
             coloredLogger.info("No SafeChat plugins were downloaded, we will start a download for latest version.");
         }
 
-        httpClient.newCall(Objects.requireNonNull(safechatReleasesGetRequest, "There was an error with the request"))
-                .enqueue(new JarDownloadedCallback(safeChatDownloader, this));
+        //httpClient.newCall(Objects.requireNonNull(safechatReleasesGetRequest, "There was an error with the request"))
+        //        .enqueue(new JarDownloadedCallback(safeChatDownloader, this));
+
+        JarDownloadedCallback jarDownloadedCallback = null;
+        try {
+            jarDownloadedCallback = new JarDownloadedCallback(safeChatDownloader, this);
+
+            final Response response = httpClient.newCall(Objects.requireNonNull(safechatReleasesGetRequest, "There was an error with the request!"))
+                    .execute();
+
+            jarDownloadedCallback.onResponse(response);
+        } catch (IOException e) {
+            if (jarDownloadedCallback != null) {
+                jarDownloadedCallback.onFailure(e);
+            } else {
+                e.printStackTrace();
+            }
+        }
     }
 
     @NotNull

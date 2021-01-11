@@ -15,7 +15,7 @@ import studio.thevipershow.safechatdownloader.ColoredLogger;
 import studio.thevipershow.safechatdownloader.SafeChatDownloader;
 
 @SuppressWarnings("FieldCanBeLocal")
-public class JarDownloadedCallback implements Callback {
+public class JarDownloadedCallback {
 
     private final ColoredLogger coloredLogger = ColoredLogger.getInstance();
     private final SafeChatDownloader safeChatDownloader;
@@ -26,14 +26,12 @@ public class JarDownloadedCallback implements Callback {
         this.downloader = Objects.requireNonNull(downloader);
     }
 
-    @Override
-    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+    public void onFailure(@NotNull IOException e) {
         coloredLogger.warn("Something has wrong when contacting GitHub releases API:");
         e.printStackTrace();
     }
 
-    @Override
-    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+    public void onResponse(@NotNull Response response) throws IOException {
         final String jsonBody = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
         final JsonParser parser = downloader.getJsonParser();
         final JsonElement body = parser.parse(jsonBody);
@@ -65,24 +63,23 @@ public class JarDownloadedCallback implements Callback {
                     final JsonObject assetObject = asset.getAsJsonObject();
 
                     final JsonElement nameElement = assetObject.get("name");
-                    if (!nameElement.isJsonObject()) {
-                        throw new IllegalStateException("name element should have been a object type.");
+                    if (!nameElement.isJsonPrimitive()) {
+                        throw new IllegalStateException("name element should have been a primitive type.");
                     }
 
-                    final JsonObject namePrimitive = nameElement.getAsJsonObject();
-                    final String assetName = namePrimitive.getAsString();
+                    final String assetName = nameElement.getAsString();
 
                     if (!SafeChatFilenameFilter.SAFECHAT_PLUGIN_PATTERN.matcher(assetName).matches()) {
                         continue;
                     }
 
                     final JsonElement urlElement = assetObject.get("browser_download_url");
-                    if (!urlElement.isJsonObject()) {
-                        throw new IllegalStateException("name element should've been json object type.");
+
+                    if (!urlElement.isJsonPrimitive()) {
+                        throw new IllegalStateException("name element should've been a primitive json type.");
                     }
 
-                    final JsonObject primitiveUrl = urlElement.getAsJsonObject();
-                    final String url = primitiveUrl.getAsString();
+                    final String url = urlElement.getAsString();
                     final SafeChatRelease chosenRelease = new SafeChatRelease(url, assetName);
 
                     coloredLogger.info("&7The JSON parsing operation has finished!");

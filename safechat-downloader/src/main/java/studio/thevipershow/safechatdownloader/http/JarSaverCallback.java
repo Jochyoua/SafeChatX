@@ -5,19 +5,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginLoader;
-import org.bukkit.util.FileUtil;
 import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.safechatdownloader.ColoredLogger;
 import studio.thevipershow.safechatdownloader.SafeChatDownloader;
 
-public class JarSaverCallback implements Callback {
+public class JarSaverCallback {
 
     private final SafeChatDownloader safeChatDownloader;
     private final Downloader downloader;
@@ -31,8 +28,7 @@ public class JarSaverCallback implements Callback {
         this.safeChatRelease = Objects.requireNonNull(safeChatRelease);
     }
 
-    @Override
-    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+    public void onFailure(@NotNull IOException e) {
         coloredLogger.warn("Something has went wrong when downloading JAR from GitHub releases:");
         e.printStackTrace();
     }
@@ -42,6 +38,7 @@ public class JarSaverCallback implements Callback {
         coloredLogger.info("&7SafeChat has been downloaded, we are trying to load it.");
         try {
             Plugin plugin = pluginLoader.loadPlugin(pluginFile);
+            pluginLoader.enablePlugin(plugin);
             coloredLogger.info("&7SafeChat has been loaded correctly!");
         } catch (InvalidPluginException e) {
             coloredLogger.warn("We could not load SafeChat JAR...");
@@ -50,16 +47,13 @@ public class JarSaverCallback implements Callback {
     }
 
     @SuppressWarnings("ConstantConditions")
-    @Override
-    public void onResponse(@NotNull Call call, @NotNull Response response) {
+    public void onResponse(@NotNull Response response) {
         final ResponseBody responseBody = response.body();
         final File jarFile = new File(safeChatDownloader.getPluginFolder(), this.safeChatRelease.getName());
 
         coloredLogger.info("&7Checking and verifying JAR file data...");
 
-        if (!jarFile.isFile()) {
-            throw new IllegalStateException("The downloaded should have been a file type.");
-        } else if (!jarFile.getName().endsWith(".jar")) {
+        if (!safeChatRelease.getName().endsWith(".jar")) {
             throw new IllegalStateException("The downloaded file should've been a JAR archive.");
         } else if (jarFile.exists()) {
             return;
@@ -85,10 +79,11 @@ public class JarSaverCallback implements Callback {
         }
 
         final float timeTaken = (System.currentTimeMillis() - startMillis) / 1e3f;
-        coloredLogger.info(String.format("&7The JAR has been successfully been copied in &a%.2f &7seconds", timeTaken));
+        coloredLogger.info(String.format("&7The JAR has been successfully been copied in &a%.3f &7seconds", timeTaken));
+        attemptLoadPlugin();
     }
 
-    public void setPluginFile(@NotNull File pluginFile) {
+    private void setPluginFile(@NotNull File pluginFile) {
         this.pluginFile = pluginFile;
     }
 }
