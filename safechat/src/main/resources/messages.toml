@@ -1,3 +1,8 @@
+# Messages for all of the default checks
+# available placeholder:
+# {PREFIX} -> The prefix of this plugin (SafeChat)
+# {PLAYER} -> The name of the player who failed the check.
+# {TIME} -> missing time to write again (ONLY WORKS FOR CHAT FLOOD!)
 [messages]
 address-warning = [
   "{PREFIX} &7You have sent a forbidden address in chat.",

@@ -1,28 +1,32 @@
 [blacklist]
-enable-check = true
-enable-warning = true
-allow-similarity = false
+enable-check = true # whether the check should be enabled
+enable-warning = true # whether the check should produce a warning
+allow-similarity = false # try to match words similar to the ones currently blacklisted
+# similarity factor indicates how close should a word be similar
+# to a blacklisted word to be catched by the plugin.
+# 1.00 indicates identical, while 0.00 indicates any word.
+# A recommended value would be between 0.75 and 0.90
 maximum-similarity = 0.75
-punish-after = 5
-punish-command = 'kick {PLAYER}'
+punish-after = 5 # how often does a player get punished for failing this check.
+punish-command = 'kick {PLAYER}' # the command executed when player needs to be punished,
 
 [address]
-enable-check = true
-enable-warning = true
-punish-after = 5
-punish-command = 'kick {PLAYER}'
+enable-check = true # whether the check should be enabled
+enable-warning = true # whether the check should produce a warning
+punish-after = 5 # how often does a player get punished for failing this check.
+punish-command = 'kick {PLAYER}' # the command executed when player needs to be punished,
 
 [flood]
-enable-check = true
-enable-warning = true
-required-delay = 1.50 # in seconds
-punish-after = 5
-punish-command = 'kick {PLAYER}'
+enable-check = true # whether the check should be enabled
+enable-warning = true # whether the check should produce a warning
+required-delay = 1.50 # the minimum delay in seconds required to write a new message.
+punish-after = 5 # how often does a player get punished for failing this check.
+punish-command = 'kick {PLAYER}' # the command executed when player needs to be punished,
 
 [repetition]
-enable-check = true
-enable-warning = true
+enable-check = true # whether the check should be enabled
+enable-warning = true # whether the check should produce a warning
 allow-similarity = false
 maximum-similarity = 0.70
-punish-after = 5
-punish-command = 'kick {PLAYER}'
+punish-after = 5 # how often does a player get punished for failing this check.
+punish-command = 'kick {PLAYER}' # the command executed when player needs to be punished,

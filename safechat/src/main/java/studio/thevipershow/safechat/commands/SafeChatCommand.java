@@ -28,13 +28,12 @@ public class SafeChatCommand extends BaseCommand {
 
     @Subcommand("reload")
     @CommandPermission("safechat.commands.reload")
-    public void reloadCommand(@NotNull CommandSender sender) {
+    public final void reloadCommand(@NotNull CommandSender sender) {
         long operationStartTime = System.nanoTime();
         sender.sendMessage(SafeChatUtils.color(SafeChat.PREFIX + "&7The plugin is going to be reloaded..."));
 
         PluginConfigurationsData<SafeChat> data = safeChat.getConfigData();
-        // data.loadAllConfigs(Configurations.class);
-        data.exportAndLoadAllLoadedConfigs(false);
+        data.exportAndLoadAllLoadedConfigs(false); // storing new values.
 
         float timeTaken = (System.nanoTime() - operationStartTime) / 1E6F;
         sender.sendMessage(SafeChatUtils.color(String.format("    &7The configurations have been reloaded in &6%.1f&7ms", timeTaken)));

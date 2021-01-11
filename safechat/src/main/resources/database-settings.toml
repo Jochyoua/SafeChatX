@@ -1,9 +1,10 @@
+# Settings for your database.
 [database]
-sql-flavor = 'mysql'
-username = 'root'
-password = 'password'
-db-name = 'my-database'
-port = 3306
-address = '127.0.0.1'
-timeout = 1500
-filepath = '~/safechat'
+sql-flavor = 'h2' # The type of your sql
+username = 'root' # your database user name
+password = 'password' # your database user password
+db-name = 'my-database' # your database name
+port = 3306 # the port used by your database
+address = '127.0.0.1' # the address used by your database
+timeout = 1500 # timeout in milliseconds for unresponsiveness
+filepath = '~/safechat' # (only for h2 and hsql) don't modify if you don't know what it does.
