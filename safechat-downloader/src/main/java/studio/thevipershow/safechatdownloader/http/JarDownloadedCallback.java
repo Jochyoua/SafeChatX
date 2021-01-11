@@ -70,9 +70,9 @@ public class JarDownloadedCallback implements Callback {
                     }
 
                     final JsonObject namePrimitive = nameElement.getAsJsonObject();
-                    final String name = namePrimitive.getAsString();
+                    final String assetName = namePrimitive.getAsString();
 
-                    if (!SafeChatFilenameFilter.SAFECHAT_PLUGIN_PATTERN.matcher(name).matches()) {
+                    if (!SafeChatFilenameFilter.SAFECHAT_PLUGIN_PATTERN.matcher(assetName).matches()) {
                         continue;
                     }
 
@@ -83,7 +83,7 @@ public class JarDownloadedCallback implements Callback {
 
                     final JsonObject primitiveUrl = urlElement.getAsJsonObject();
                     final String url = primitiveUrl.getAsString();
-                    final SafeChatRelease chosenRelease = new SafeChatRelease(url, name);
+                    final SafeChatRelease chosenRelease = new SafeChatRelease(url, assetName);
 
                     coloredLogger.info("&7The JSON parsing operation has finished!");
                     coloredLogger.info("&7Found this release:");

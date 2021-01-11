@@ -12,6 +12,7 @@ import okhttp3.ResponseBody;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginLoader;
+import org.bukkit.util.FileUtil;
 import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.safechatdownloader.ColoredLogger;
 import studio.thevipershow.safechatdownloader.SafeChatDownloader;
@@ -52,8 +53,7 @@ public class JarSaverCallback implements Callback {
     @Override
     public void onResponse(@NotNull Call call, @NotNull Response response) {
         final ResponseBody responseBody = response.body();
-
-        final File jarFile = new File(safeChatDownloader.getPluginFolder(), safeChatRelease.getName());
+        final File jarFile = new File(safeChatDownloader.getPluginFolder(), this.safeChatRelease.getName());
 
         coloredLogger.info("&7Checking and verifying JAR file data...");
 

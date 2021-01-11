@@ -15,9 +15,11 @@ public final class SafeChatDownloader extends JavaPlugin {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private void setupFolder() {
-        pluginFolder = getDataFolder();
+        pluginFolder = new File(getServer().getWorldContainer(),"plugins");
         if (!pluginFolder.exists()) {
             pluginFolder.mkdir();
+        } else if (!pluginFolder.isDirectory()) {
+            throw new IllegalStateException("Plugins folder should've been a directory!");
         }
     }
 
