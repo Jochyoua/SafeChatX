@@ -11,6 +11,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import studio.thevipershow.safechatdownloader.ColoredLogger;
 import studio.thevipershow.safechatdownloader.SafeChatDownloader;
 
@@ -31,7 +32,8 @@ public class JarDownloadedCallback {
         e.printStackTrace();
     }
 
-    public void onResponse(@NotNull Response response) throws IOException {
+    @Nullable
+    public SafeChatRelease onResponse(@NotNull Response response) throws IOException {
         final String jsonBody = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
         final JsonParser parser = downloader.getJsonParser();
         final JsonElement body = parser.parse(jsonBody);
@@ -87,10 +89,11 @@ public class JarDownloadedCallback {
                     coloredLogger.info("  - &7JAR URL: &e" + chosenRelease.getUrl());
                     coloredLogger.info("  - &7Version: &e" + chosenRelease.getName());
 
-                    downloader.downloadJARFromUrl(chosenRelease);
-                    return;
+                   // downloader.downloadJARFromUrl(chosenRelease);
+                    return chosenRelease;
                 }
             }
         }
+        return null;
     }
 }

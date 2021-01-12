@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.safechat.SafeChat;
 import studio.thevipershow.safechat.api.events.ChatPunishmentEvent;
 import studio.thevipershow.safechat.api.events.PlayerFailCheckEvent;
-import studio.thevipershow.safechat.chat.SafeChatUtils;
+import studio.thevipershow.safechat.SafeChatUtils;
 import studio.thevipershow.safechat.api.checks.ChatData;
 import studio.thevipershow.safechat.api.checks.Check;
 import studio.thevipershow.safechat.api.checks.ChecksContainer;

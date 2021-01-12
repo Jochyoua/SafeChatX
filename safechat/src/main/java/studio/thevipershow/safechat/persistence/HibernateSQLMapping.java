@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import org.hibernate.cfg.Environment;
+import org.hibernate.dialect.DB2400Dialect;
+import org.hibernate.dialect.DB2400V7R3Dialect;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.dialect.HSQLDialect;
@@ -13,6 +15,7 @@ import org.hibernate.dialect.PostgreSQL95Dialect;
 import org.hibernate.dialect.SQLServer2012Dialect;
 import org.hibernate.hikaricp.internal.HikariCPConnectionProvider;
 import org.jetbrains.annotations.NotNull;
+import org.sqlite.hibernate.dialect.SQLiteDialect;
 import studio.thevipershow.safechat.config.database.DatabaseConfig;
 import studio.thevipershow.safechat.config.database.DatabaseSection;
 
@@ -44,7 +47,15 @@ public enum HibernateSQLMapping {
     /**
      * Microsoft's SQLServer type.
      */
-    SQLSERVER("sqlserver", "studio.thevipershow.safechat.libs.microsoft.sqlserver.jdbc.SQLServerDriver", generateUrl("sqlserver"), SQLServer2012Dialect.class, false);
+    SQLSERVER("sqlserver", "studio.thevipershow.safechat.libs.microsoft.sqlserver.jdbc.SQLServerDriver", generateUrl("sqlserver"), SQLServer2012Dialect.class, false),
+    /**
+     * IBM DB2 Server type.
+     */
+    DB2("db2", "studio.thevipershow.safechat.libs.com.ibm.db2.jcc.DB2Driver", generateFileUrl("db2"), DB2400V7R3Dialect.class, false),
+    /**
+     * SQLite (TESTING)
+     */
+    SQLITE("sqlite", "org.sqlite.JDBC", generateFileUrl("sqlite"), SQLiteDialect.class, true);
 
     private final String sqlFlavour;
     private final String driverClassName;

@@ -1,10 +1,11 @@
 package studio.thevipershow.safechat;
 
-import co.aikar.commands.PaperCommandManager;
 import java.util.Objects;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Server;
+import org.bukkit.command.CommandMap;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -31,19 +32,26 @@ import studio.thevipershow.vtc.PluginsConfigurationsManager;
  */
 public final class SafeChat extends JavaPlugin {
 
+    // Data
     private static final String VAULT_NAME = "Vault";
     public static final short PLUGIN_ID = 9876;
     public static final String PREFIX = "&8[&6SafeChat&8] ";
+
+    // Configs
     private PluginsConfigurationsManager configManager;
     private PluginConfigurationsData<SafeChat> configData;
+
+    // Internals
     private ChecksContainer checksContainer;
     private Economy economy;
     private ChatListener chatListener;
     private Metrics metrics;
-    private PaperCommandManager paperCommandManager;
     private SafeChatHibernate safeChatHibernate;
     private Debugger debugger;
-    private SafeChatCommand safeChatCommand;
+
+    // Commands
+    private SafeChatCommand safechatCommand;
+    private PluginCommand safechatBukkitCommand;
 
     private void setupMetrics() {
         metrics = new Metrics(this, PLUGIN_ID);
@@ -98,11 +106,13 @@ public final class SafeChat extends JavaPlugin {
     }
 
     private void setupCommands() {
-        paperCommandManager = new PaperCommandManager(this);
-        paperCommandManager.enableUnstableAPI("help");
-        safeChatCommand = new SafeChatCommand(this);
-        paperCommandManager.registerCommand(safeChatCommand);
-        // paperCommandManager.registerCommand(...);
+        safechatCommand = new SafeChatCommand(this);
+        try {
+            CommandMap commandMap = SafeChatUtils.getCommandMap();
+            commandMap.register("safechat", safechatCommand);
+        } catch (Exception e) {
+            getLogger().warning("Could not register the \"/safechat\" command.");
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -120,10 +130,10 @@ public final class SafeChat extends JavaPlugin {
     @Override
     public void onEnable() {
         setupMetrics();
+        setupDebugger();
         if (setupEconomy()) {
             getLogger().warning("Vault not present, cannot use economy functionalities.");
         }
-
         setupConfigs();
         setupHibernate();
         setupChecksContainer();
@@ -131,9 +141,21 @@ public final class SafeChat extends JavaPlugin {
         setupListeners();
     }
 
+    private void unregisterCommands() {
+        try {
+            final CommandMap map = SafeChatUtils.getCommandMap();
+            if (!safechatCommand.unregister(map)) {
+                getLogger().warning("Could not unregister \"/safechat\" command");
+            }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            getLogger().warning("Could not get command map!");
+        }
+    }
+
     @Override
     public void onDisable() {
         safeChatHibernate.shutdown();
+        unregisterCommands();
     }
 
     @NotNull
@@ -167,12 +189,11 @@ public final class SafeChat extends JavaPlugin {
     }
 
     @NotNull
-    public PaperCommandManager getPaperCommandManager() {
-        return paperCommandManager;
-    }
-
-    @NotNull
     public SafeChatHibernate getSafeChatHibernate() {
         return safeChatHibernate;
+    }
+
+    public Debugger getDebugger() {
+        return debugger;
     }
 }

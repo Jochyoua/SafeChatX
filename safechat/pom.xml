@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>studio.thevipershow</groupId>
   <artifactId>safechat</artifactId>
-  <version>2.0.1-SNAPSHOT</version>
+  <version>2.0.7-SNAPSHOT</version>
 
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -37,13 +37,6 @@
       <groupId>org.bstats</groupId>
       <artifactId>bstats-bukkit</artifactId>
       <version>1.8</version>
-      <scope>compile</scope>
-    </dependency>
-    <!-- ACF (Minecraft commands framework) -->
-    <dependency>
-      <groupId>co.aikar</groupId>
-      <artifactId>acf-paper</artifactId>
-      <version>0.5.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <!-- Vault (Minecraft server abstractions) -->
@@ -148,6 +141,19 @@
       <artifactId>slf4j-simple</artifactId>
       <version>1.7.30</version>
     </dependency>
+    <dependency>
+      <groupId>com.github.gwenn</groupId>
+      <artifactId>sqlite-dialect</artifactId>
+      <version>-c3cee1f223-1</version>
+      <scope>compile</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/com.ibm.db2/jcc -->
+    <dependency>
+      <groupId>com.ibm.db2</groupId>
+      <artifactId>jcc</artifactId>
+      <version>11.5.5.0</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -219,14 +225,6 @@
                 <relocation>
                   <pattern>studio.thevipershow.vtc</pattern>
                   <shadedPattern>studio.thevipershow.safechat.libs.vtc</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>co.aikar.locales</pattern>
-                  <shadedPattern>studio.thevipershow.safechat.libs.locales</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>co.aikar.commands</pattern>
-                  <shadedPattern>studio.thevipershow.safechat.libs.commands</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>org.antlr</pattern>
@@ -311,6 +309,14 @@
                 <relocation>
                   <pattern>org.jboss</pattern>
                   <shadedPattern>studio.thevipershow.safechat.libs.org.jboss</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>javax.persistence</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.javax.persistence</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.ibm</pattern>
+                  <shadedPattern>studio.thevipershow.safechat.libs.com.ibm</shadedPattern>
                 </relocation>
               </relocations>
               <createDependencyReducedPom>false</createDependencyReducedPom>

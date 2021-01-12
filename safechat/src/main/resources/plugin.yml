@@ -1,8 +1,7 @@
 name: "SafeChat"
 version: ${project.version}
 main: studio.thevipershow.safechat.SafeChat
-api-version: "1.13"
-load: STARTUP
+load: POSTWORLD
 authors: [TheViperShow]
 softdepend: [Vault]
 description: "Keep your chat safe!"

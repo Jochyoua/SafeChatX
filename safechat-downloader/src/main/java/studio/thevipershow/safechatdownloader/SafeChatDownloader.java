@@ -3,6 +3,7 @@ package studio.thevipershow.safechatdownloader;
 import java.io.File;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import studio.thevipershow.safechatdownloader.config.DefaultDownloaderConfig;
 import studio.thevipershow.safechatdownloader.http.Downloader;
 
 public final class SafeChatDownloader extends JavaPlugin {
@@ -12,6 +13,7 @@ public final class SafeChatDownloader extends JavaPlugin {
     private File pluginFolder;
     private Downloader downloader;
     private ColoredLogger coloredLogger;
+    private DefaultDownloaderConfig defaultConfig;
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private void setupFolder() {
@@ -41,10 +43,17 @@ public final class SafeChatDownloader extends JavaPlugin {
         }
     }
 
+    private void setupConfigs() {
+        saveDefaultConfig();
+        defaultConfig = new DefaultDownloaderConfig(this);
+        defaultConfig.storeData();
+    }
+
     @Override
     public void onEnable() {
         coloredLogger = ColoredLogger.getInstance();
         setupFolder();
+        setupConfigs();
         setupDownloader();
         beginDownloading();
     }
@@ -52,5 +61,10 @@ public final class SafeChatDownloader extends JavaPlugin {
     @NotNull
     public File getPluginFolder() {
         return pluginFolder;
+    }
+
+    @NotNull
+    public DefaultDownloaderConfig getDefaultConfig() {
+        return defaultConfig;
     }
 }

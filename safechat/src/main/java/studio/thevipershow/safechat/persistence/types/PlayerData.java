@@ -2,6 +2,7 @@ package studio.thevipershow.safechat.persistence.types;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -9,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,7 +38,7 @@ public class PlayerData implements Cloneable {
     }
 
     public void setFlagsMap(@NotNull Map<String, Integer> flagsMap) {
-        this.flagsMap = flagsMap;
+        this.flagsMap = Objects.requireNonNull(flagsMap);
     }
 
     @NotNull
@@ -47,7 +47,7 @@ public class PlayerData implements Cloneable {
     }
 
     public void setUuid(@NotNull String uuid) {
-        this.uuid = uuid;
+        this.uuid = Objects.requireNonNull(uuid);
     }
 
     @NotNull
@@ -56,7 +56,7 @@ public class PlayerData implements Cloneable {
     }
 
     public void setName(@NotNull String name) {
-        this.name = name;
+        this.name = Objects.requireNonNull(name);
     }
 
     @Override

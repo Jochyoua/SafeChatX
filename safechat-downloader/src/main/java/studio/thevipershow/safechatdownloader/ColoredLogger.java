@@ -1,6 +1,5 @@
 package studio.thevipershow.safechatdownloader;
 
-import jdk.jfr.internal.LogLevel;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
@@ -19,19 +18,23 @@ public final class ColoredLogger {
         return ChatColor.translateAlternateColorCodes('&', msg);
     }
 
-    private void logLevel(@NotNull LogLevel logLevel, @NotNull String msg) {
-        if (logLevel == LogLevel.INFO) {
+    enum IHateJava14 {
+        WARN, INFO
+    }
+
+    private void logLevel(@NotNull IHateJava14 iHateJava14, @NotNull String msg) {
+        if (iHateJava14 == IHateJava14.WARN) {
             commandSender.sendMessage(colorStr(SafeChatDownloader.PREFIX + "&c" + msg));
-        } else if (logLevel == LogLevel.WARN) {
+        } else if (iHateJava14 == IHateJava14.INFO) {
             commandSender.sendMessage(colorStr(SafeChatDownloader.PREFIX + msg));
         }
     }
 
     public void info(@NotNull String msg) {
-        logLevel(LogLevel.INFO, msg);
+        logLevel(IHateJava14.INFO, msg);
     }
 
     public void warn(@NotNull String msg) {
-        logLevel(LogLevel.WARN, msg);
+        logLevel(IHateJava14.WARN, msg);
     }
 }

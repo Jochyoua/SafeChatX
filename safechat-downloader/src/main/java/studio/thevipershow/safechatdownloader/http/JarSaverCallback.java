@@ -34,8 +34,8 @@ public class JarSaverCallback {
     }
 
     private void attemptLoadPlugin() {
-        PluginLoader pluginLoader = safeChatDownloader.getPluginLoader();
-        coloredLogger.info("&7SafeChat has been downloaded, we are trying to load it.");
+        final PluginLoader pluginLoader = safeChatDownloader.getPluginLoader();
+        coloredLogger.info("&7SafeChat has been downloaded, trying to load it.");
         try {
             Plugin plugin = pluginLoader.loadPlugin(pluginFile);
             pluginLoader.enablePlugin(plugin);

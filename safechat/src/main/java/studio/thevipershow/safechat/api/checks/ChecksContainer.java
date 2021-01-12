@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.safechat.SafeChat;
 import studio.thevipershow.safechat.api.events.CheckRegisterEvent;
 import studio.thevipershow.safechat.api.events.CheckUnregisterEvent;
-import studio.thevipershow.safechat.chat.SafeChatUtils;
+import studio.thevipershow.safechat.SafeChatUtils;
 
 public final class ChecksContainer {
 

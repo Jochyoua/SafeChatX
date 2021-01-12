@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.tomlj.TomlArray;
 import studio.thevipershow.safechat.SafeChat;
 import studio.thevipershow.safechat.api.checks.CheckPriority;
-import studio.thevipershow.safechat.chat.SafeChatUtils;
+import studio.thevipershow.safechat.SafeChatUtils;
 import studio.thevipershow.safechat.api.checks.ChatData;
 import studio.thevipershow.safechat.api.checks.CheckName;
 import studio.thevipershow.safechat.api.checks.ChatCheck;

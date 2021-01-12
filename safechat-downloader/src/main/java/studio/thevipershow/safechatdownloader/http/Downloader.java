@@ -4,14 +4,19 @@ import com.google.gson.JsonParser;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.time.Duration;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import studio.thevipershow.safechatdownloader.ColoredLogger;
+import studio.thevipershow.safechatdownloader.DownloaderUtils;
 import studio.thevipershow.safechatdownloader.SafeChatDownloader;
 
 @SuppressWarnings("FieldCanBeLocal")
@@ -73,28 +78,80 @@ public final class Downloader {
         }
     }
 
-    private boolean isSafeChatPresentRuntime() {
-        return safeChatDownloader.getServer().getPluginManager().getPlugin("SafeChat") != null;
+    private Plugin getSafeChatRuntime() {
+        return safeChatDownloader.getServer().getPluginManager().getPlugin("SafeChat");
     }
 
+    private boolean isSafeChatPresentRuntime(@Nullable Plugin safechat) {
+        return safechat != null;
+    }
 
+    private static final Pattern GET_VERSION = Pattern.compile("[0-9]\\.[0-9]+\\.[0-9]+");
+
+    @NotNull
+    private static String getVersionFromName(@NotNull String string) throws IllegalStateException {
+        Matcher matcher = GET_VERSION.matcher(string);
+        if (matcher.find()) {
+            return matcher.group();
+        } else {
+            throw new IllegalStateException("Plugin release name did not have a version? " + string);
+        }
+    }
+
+    private static final Pattern SPLIT_VERSION = Pattern.compile("\\.");
+
+    private static boolean isFirstVersionNewer(@NotNull String firstVersion, @NotNull String secondVersion) throws IllegalStateException {
+        final String[] firstStringSplit = SPLIT_VERSION.split(firstVersion);
+        final String[] secondStringSplit = SPLIT_VERSION.split(secondVersion);
+        if (firstStringSplit.length != 3 || secondStringSplit.length != 3) {
+            throw new IllegalStateException("Malformed SafeChat release version.");
+        } else {
+            final int[] firstVersionInt = new int[3];
+            final int[] secondVersionInt = new int[3];
+            for (int i = 0; i < 3; i++) {
+                firstVersionInt[i] = Integer.parseInt(firstStringSplit[i]);
+                secondVersionInt[i] = Integer.parseInt(secondStringSplit[i]);
+            }
+
+            final int f1 = firstVersionInt[0], f2 = firstVersionInt[1], f3 = firstVersionInt[2];
+            final int s1 = secondVersionInt[0], s2 = secondVersionInt[1], s3 = secondVersionInt[2];
+            if (f1 >= s1) {
+                if (f2 >= s2) {
+                    return f3 > s3;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public void deleteSafeChatWithVersion(@NotNull String version) {
+        coloredLogger.info("Trying to delete outdated JARs...");
+        File pluginsFolder = safeChatDownloader.getPluginFolder();
+        File[] files = pluginsFolder.listFiles(SAFECHAT_FILENAME_FILTER);
+        for (final File file : files) {
+            final String name = file.getName();
+            final String versionStr = getVersionFromName(name);
+            if (true) { // TODO: proper checking
+                try {
+                    if (Files.deleteIfExists(file.toPath())) {
+                        coloredLogger.info("Deleted SafeChat JAR " + name);
+                    } else {
+                        coloredLogger.warn("Could not delete SafeChat JAR " + name);
+                    }
+                } catch (IOException e) {
+                    coloredLogger.warn("Could not delete SafeChat JAR " + name);
+                    e.printStackTrace();
+                }
+            } else {
+                coloredLogger.warn(String.format("Skipped SafeChat %s, you have multiple jars??", name));
+            }
+        }
+    }
 
     public void startDownload() {
-        if (isSafeChatAlreadyDownloaded()) {
-            coloredLogger.info("A valid SafeChat JAR was found into the plugin, checking if it's loaded.");
-            if (isSafeChatPresentRuntime()) {
-                coloredLogger.info("SafeChat is already loaded, shutting down ...");
-                safeChatDownloader.getServer().getPluginManager().disablePlugin(safeChatDownloader);
-                return;
-            }
-            return;
-        } else {
-            coloredLogger.info("No SafeChat plugins were downloaded, we will start a download for latest version.");
-        }
-
-        //httpClient.newCall(Objects.requireNonNull(safechatReleasesGetRequest, "There was an error with the request"))
-        //        .enqueue(new JarDownloadedCallback(safeChatDownloader, this));
-
         JarDownloadedCallback jarDownloadedCallback = null;
         try {
             jarDownloadedCallback = new JarDownloadedCallback(safeChatDownloader, this);
@@ -102,13 +159,50 @@ public final class Downloader {
             final Response response = httpClient.newCall(Objects.requireNonNull(safechatReleasesGetRequest, "There was an error with the request!"))
                     .execute();
 
-            jarDownloadedCallback.onResponse(response);
+            SafeChatRelease latestRelease = jarDownloadedCallback.onResponse(response);
+            if (latestRelease != null) {
+
+                if (isSafeChatAlreadyDownloaded()) {
+                    final boolean shouldUpdate = safeChatDownloader.getDefaultConfig().isAutoUpdate();
+                    coloredLogger.info("&7Another SafeChat JAR has been found, " +
+                            (shouldUpdate ? "we are going to try and update it" : "auto-update is disabled: exiting process."));
+                    if (shouldUpdate) {
+                        coloredLogger.info("A valid SafeChat JAR was found into the plugin, checking if it's loaded.");
+                        Plugin safechatInstance = getSafeChatRuntime();
+                        if (isSafeChatPresentRuntime(safechatInstance)) {
+                            coloredLogger.info("SafeChat is already loaded, checking version...");
+
+                            final String currentVersion = getVersionFromName(safechatInstance.getDescription().getVersion());
+                            final String latestVersion = getVersionFromName(latestRelease.getName());
+
+                            if (isFirstVersionNewer(latestVersion, currentVersion)) {
+                                coloredLogger.info("We have found a newer version &e" + latestVersion);
+
+                                DownloaderUtils.unload(safechatInstance);
+
+                                deleteSafeChatWithVersion(currentVersion);
+
+                                downloadJARFromUrl(latestRelease);
+                            } else {
+                                coloredLogger.info("You have the latest version available &e" + latestVersion);
+                            }
+                        }
+                    }
+                } else {
+                    coloredLogger.info("No SafeChat plugins were downloaded, we will start a download for latest version.");
+                    downloadJARFromUrl(latestRelease);
+                }
+            } else {
+                coloredLogger.warn("Something has went wrong with the download.");
+            }
         } catch (IOException e) {
             if (jarDownloadedCallback != null) {
                 jarDownloadedCallback.onFailure(e);
             } else {
                 e.printStackTrace();
             }
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
         }
     }
 
