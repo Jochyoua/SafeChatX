@@ -44,40 +44,36 @@ public final class DownloaderUtils {
 
         boolean reloadlisteners = true;
 
-        if (pluginManager != null) {
+        pluginManager.disablePlugin(plugin);
 
-            pluginManager.disablePlugin(plugin);
+        try {
+
+            Field pluginsField = Bukkit.getPluginManager().getClass().getDeclaredField("plugins");
+            pluginsField.setAccessible(true);
+            plugins = (List<Plugin>) pluginsField.get(pluginManager);
+
+            Field lookupNamesField = Bukkit.getPluginManager().getClass().getDeclaredField("lookupNames");
+            lookupNamesField.setAccessible(true);
+            names = (Map<String, Plugin>) lookupNamesField.get(pluginManager);
 
             try {
-
-                Field pluginsField = Bukkit.getPluginManager().getClass().getDeclaredField("plugins");
-                pluginsField.setAccessible(true);
-                plugins = (List<Plugin>) pluginsField.get(pluginManager);
-
-                Field lookupNamesField = Bukkit.getPluginManager().getClass().getDeclaredField("lookupNames");
-                lookupNamesField.setAccessible(true);
-                names = (Map<String, Plugin>) lookupNamesField.get(pluginManager);
-
-                try {
-                    Field listenersField = Bukkit.getPluginManager().getClass().getDeclaredField("listeners");
-                    listenersField.setAccessible(true);
-                    listeners = (Map<Event, SortedSet<RegisteredListener>>) listenersField.get(pluginManager);
-                } catch (Exception e) {
-                    reloadlisteners = false;
-                }
-
-                Field commandMapField = Bukkit.getPluginManager().getClass().getDeclaredField("commandMap");
-                commandMapField.setAccessible(true);
-                commandMap = (SimpleCommandMap) commandMapField.get(pluginManager);
-
-                Field knownCommandsField = SimpleCommandMap.class.getDeclaredField("knownCommands");
-                knownCommandsField.setAccessible(true);
-                commands = (Map<String, Command>) knownCommandsField.get(commandMap);
-
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace();
+                Field listenersField = Bukkit.getPluginManager().getClass().getDeclaredField("listeners");
+                listenersField.setAccessible(true);
+                listeners = (Map<Event, SortedSet<RegisteredListener>>) listenersField.get(pluginManager);
+            } catch (Exception e) {
+                reloadlisteners = false;
             }
 
+            Field commandMapField = Bukkit.getPluginManager().getClass().getDeclaredField("commandMap");
+            commandMapField.setAccessible(true);
+            commandMap = (SimpleCommandMap) commandMapField.get(pluginManager);
+
+            Field knownCommandsField = SimpleCommandMap.class.getDeclaredField("knownCommands");
+            knownCommandsField.setAccessible(true);
+            commands = (Map<String, Command>) knownCommandsField.get(commandMap);
+
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
         }
 
         pluginManager.disablePlugin(plugin);
@@ -90,12 +86,7 @@ public final class DownloaderUtils {
 
         if (listeners != null && reloadlisteners) {
             for (SortedSet<RegisteredListener> set : listeners.values()) {
-                for (Iterator<RegisteredListener> it = set.iterator(); it.hasNext(); ) {
-                    RegisteredListener value = it.next();
-                    if (value.getPlugin() == plugin) {
-                        it.remove();
-                    }
-                }
+                set.removeIf(value -> value.getPlugin() == plugin);
             }
         }
 

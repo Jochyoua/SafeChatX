@@ -20,7 +20,7 @@ import studio.thevipershow.safechatdownloader.DownloaderUtils;
 import studio.thevipershow.safechatdownloader.SafeChatDownloader;
 
 @SuppressWarnings("FieldCanBeLocal")
-public final class Downloader {
+public class Downloader {
 
     private final ColoredLogger coloredLogger = ColoredLogger.getInstance();
     private static Downloader downloaderInstance;
@@ -67,7 +67,7 @@ public final class Downloader {
         JarSaverCallback saverCallback = null;
         try {
             Response response = httpClient.newCall(jarDownloadRequest).execute();
-            saverCallback = new JarSaverCallback(safeChatDownloader, this, release);
+            saverCallback = new JarSaverCallback(safeChatDownloader, release);
             saverCallback.onResponse(response);
         } catch (IOException e) {
             if (saverCallback != null) {
@@ -134,19 +134,16 @@ public final class Downloader {
         for (final File file : files) {
             final String name = file.getName();
             final String versionStr = getVersionFromName(name);
-            if (true) { // TODO: proper checking
-                try {
-                    if (Files.deleteIfExists(file.toPath())) {
-                        coloredLogger.info("Deleted SafeChat JAR " + name);
-                    } else {
-                        coloredLogger.warn("Could not delete SafeChat JAR " + name);
-                    }
-                } catch (IOException e) {
+            // TODO: proper checking
+            try {
+                if (Files.deleteIfExists(file.toPath())) {
+                    coloredLogger.info("Deleted SafeChat JAR " + name);
+                } else {
                     coloredLogger.warn("Could not delete SafeChat JAR " + name);
-                    e.printStackTrace();
                 }
-            } else {
-                coloredLogger.warn(String.format("Skipped SafeChat %s, you have multiple jars??", name));
+            } catch (IOException e) {
+                coloredLogger.warn("Could not delete SafeChat JAR " + name);
+                e.printStackTrace();
             }
         }
     }

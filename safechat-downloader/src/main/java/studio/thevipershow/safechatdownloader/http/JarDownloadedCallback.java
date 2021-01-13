@@ -7,8 +7,6 @@ import com.google.gson.JsonParser;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,11 +17,10 @@ import studio.thevipershow.safechatdownloader.SafeChatDownloader;
 public class JarDownloadedCallback {
 
     private final ColoredLogger coloredLogger = ColoredLogger.getInstance();
-    private final SafeChatDownloader safeChatDownloader;
     private final Downloader downloader;
 
     public JarDownloadedCallback(@NotNull SafeChatDownloader safeChatDownloader, @NotNull Downloader downloader) {
-        this.safeChatDownloader = Objects.requireNonNull(safeChatDownloader);
+        Objects.requireNonNull(safeChatDownloader);
         this.downloader = Objects.requireNonNull(downloader);
     }
 

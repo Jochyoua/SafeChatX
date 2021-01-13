@@ -17,14 +17,12 @@ import studio.thevipershow.safechatdownloader.SafeChatDownloader;
 public class JarSaverCallback {
 
     private final SafeChatDownloader safeChatDownloader;
-    private final Downloader downloader;
     private final SafeChatRelease safeChatRelease;
     private final ColoredLogger coloredLogger = ColoredLogger.getInstance();
     private File pluginFile;
 
-    public JarSaverCallback(@NotNull SafeChatDownloader safeChatDownloader, @NotNull Downloader downloader, @NotNull SafeChatRelease safeChatRelease) {
+    public JarSaverCallback(@NotNull SafeChatDownloader safeChatDownloader, @NotNull SafeChatRelease safeChatRelease) {
         this.safeChatDownloader = Objects.requireNonNull(safeChatDownloader);
-        this.downloader = Objects.requireNonNull(downloader);
         this.safeChatRelease = Objects.requireNonNull(safeChatRelease);
     }
 
