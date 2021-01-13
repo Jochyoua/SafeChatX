@@ -131,7 +131,7 @@ public final class SafeChat extends JavaPlugin {
     public void onEnable() {
         setupMetrics();
         setupDebugger();
-        if (setupEconomy()) {
+        if (!setupEconomy()) {
             getLogger().warning("Vault not present, cannot use economy functionalities.");
         }
         setupConfigs();

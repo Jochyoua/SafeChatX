@@ -81,8 +81,10 @@ public enum HibernateSQLMapping {
         Map<String, String> properties = new HashMap<>();
         properties.put("hibernate.connection.dataSourceClassname", HikariCPConnectionProvider.class.getName());
         properties.put("hibernate.hikari.jdbcUrl", generateAppropriateUrl(this, dbConfig));
-        properties.put("hibernate.hikari.username", dbConfig.getConfigValue(DatabaseSection.USERNAME));
-        properties.put("hibernate.hikari.password", dbConfig.getConfigValue(DatabaseSection.PASSWORD));
+        if (!isFileBased()) { // do not use accounts in file-based databases
+            properties.put("hibernate.hikari.username", dbConfig.getConfigValue(DatabaseSection.USERNAME));
+            properties.put("hibernate.hikari.password", dbConfig.getConfigValue(DatabaseSection.PASSWORD));
+        }
         properties.put("hibernate.dataSourceClassName", HikariDataSource.class.getName());
         properties.put(Environment.DRIVER, driverClassName);
         // Optimizations:

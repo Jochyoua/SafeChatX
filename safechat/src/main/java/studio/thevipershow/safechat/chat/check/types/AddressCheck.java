@@ -64,7 +64,6 @@ public final class AddressCheck extends ChatCheck {
                         final String gg = match.group();
                         for (int i = 0; i < Objects.requireNonNull(allowedDomains).size(); i++) {
                             final boolean matched = gg.toLowerCase(Locale.ROOT).equals(allowedDomains.getString(i));
-                            // System.out.printf("%s == %s -> %b", gg, allowedDomains.getString(i), matched);
                             if (matched) {
                                 continue whileLabel;
                             }

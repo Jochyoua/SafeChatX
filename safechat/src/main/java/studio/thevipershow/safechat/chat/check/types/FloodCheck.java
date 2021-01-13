@@ -42,7 +42,7 @@ public final class FloodCheck extends ChatCheck {
         }
 
         UUID uuid = data.getPlayer().getUniqueId();
-        double delaySeconds = Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.FLOOD_REQUIRED_DELAY));
+        double delaySeconds = ((Number) Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.FLOOD_REQUIRED_DELAY))).doubleValue();
 
         if (lastWriteMap.containsKey(uuid)) {
 

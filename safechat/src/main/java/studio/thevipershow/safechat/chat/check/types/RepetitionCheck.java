@@ -1,5 +1,6 @@
 package studio.thevipershow.safechat.chat.check.types;
 
+import com.zaxxer.hikari.HikariDataSource;
 import info.debatty.java.stringsimilarity.RatcliffObershelp;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +48,7 @@ public final class RepetitionCheck extends ChatCheck {
             boolean allowSimilarity = Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.REPETITION_ALLOW_SIMILARITY));
             if (!allowSimilarity) {
                 double compare = ratcliffObershelp.similarity(lastMessage, message);
-                double factor = Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.REPETITION_MAXIMUM_SIMILARITY));
+                double factor = ((Number) Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.REPETITION_MAXIMUM_SIMILARITY))).doubleValue();
                 if (compare >= factor) {
                     return true;
                 } else {

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 import org.tomlj.TomlArray;
+import org.tomlj.TomlParseResult;
 import studio.thevipershow.safechat.SafeChat;
 import studio.thevipershow.safechat.api.checks.CheckPriority;
 import studio.thevipershow.safechat.SafeChatUtils;
@@ -46,6 +47,7 @@ public final class WordsBlacklistCheck extends ChatCheck {
 
         boolean checkSimilar = !((Boolean) checkConfig.getConfigValue(CheckSections.BLACKLIST_ALLOW_SIMILARITY));
         TomlArray words = blacklistConfig.getConfigValue(BlacklistSection.WORDS);
+
         int wordsSize = words.size();
 
         if (wordsSize == 0) {
@@ -62,9 +64,9 @@ public final class WordsBlacklistCheck extends ChatCheck {
 
         if (checkSimilar) {
 
-            double factor = Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.BLACKLIST_MAXIMUM_SIMILARITY));
+            double factor = ((Number) Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.BLACKLIST_MAXIMUM_SIMILARITY))).doubleValue();
             for (int k = 0; k < wordsSize; k++) {
-                String str = words.getString(k);
+                final String str = words.getString(k);
                 for (final String value : ss) {
                     if (ratcliffObershelp.similarity(value, str) >= factor) {
                         return true;
@@ -74,10 +76,14 @@ public final class WordsBlacklistCheck extends ChatCheck {
         } else {
 
             for (int k = 0; k < wordsSize; k++) {
-                String str = words.getString(k);
-                for (final String value : ss) {
-                    if (value.equalsIgnoreCase(str)) {
-                        return true;
+                final String str = words.getString(k);
+                if (str.equalsIgnoreCase(s)) {
+                    return true;
+                } else {
+                    for (final String value : ss) {
+                        if (value.equalsIgnoreCase(str)) {
+                            return true;
+                        }
                     }
                 }
             }
@@ -100,7 +106,7 @@ public final class WordsBlacklistCheck extends ChatCheck {
     @Override
     public @NotNull String replacePlaceholders(@NotNull String message, @NotNull ChatData data) {
         return message.replace(PLAYER_PLACEHOLDER, data.getPlayer().getName())
-            .replace(PREFIX_PLACEHOLDER, SafeChat.PREFIX);
+                .replace(PREFIX_PLACEHOLDER, SafeChat.PREFIX);
     }
 
     /**
