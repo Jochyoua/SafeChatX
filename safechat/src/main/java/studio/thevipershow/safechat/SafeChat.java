@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.safechat.api.checks.ChecksContainer;
 import studio.thevipershow.safechat.chat.check.types.AddressCheck;
+import studio.thevipershow.safechat.chat.check.types.CapsCheck;
 import studio.thevipershow.safechat.chat.check.types.FloodCheck;
 import studio.thevipershow.safechat.chat.check.types.RepetitionCheck;
 import studio.thevipershow.safechat.chat.check.types.WordsBlacklistCheck;
@@ -92,11 +93,13 @@ public final class SafeChat extends JavaPlugin {
         FloodCheck floodCheck = new FloodCheck(checkConfig, messagesConfig);
         RepetitionCheck repetitionCheck = new RepetitionCheck(checkConfig, messagesConfig);
         WordsBlacklistCheck wordsBlacklistCheck = new WordsBlacklistCheck(blacklistConfig, checkConfig, messagesConfig);
+        CapsCheck capsCheck = new CapsCheck(checkConfig, messagesConfig);
 
         checksContainer.register(addressCheck);
         checksContainer.register(floodCheck);
         checksContainer.register(repetitionCheck);
         checksContainer.register(wordsBlacklistCheck);
+        checksContainer.register(capsCheck);
     }
 
     private void setupListeners() {

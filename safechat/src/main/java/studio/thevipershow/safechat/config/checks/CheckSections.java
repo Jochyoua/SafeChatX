@@ -27,7 +27,13 @@ public enum CheckSections implements SectionType {
     REPETITION_ALLOW_SIMILARITY("repetition.allow-similarity", Boolean.class),
     REPETITION_MAXIMUM_SIMILARITY("repetition.maximum-similarity", Double.class),
     REPETITION_PUNISH_AFTER("repetition.punish-after", Long.class),
-    REPETITION_PUNISH_COMMAND("repetition.punish-command", String.class);
+    REPETITION_PUNISH_COMMAND("repetition.punish-command", String.class),
+
+    ENABLE_CAPS_CHECK("caps.enable-check", Boolean.class),
+    ENABLE_CAPS_WARNING("caps.enable-warning", Boolean.class),
+    CAPS_UPPERCASE_CHARACTERS_LIMIT("caps.uppercase-characters-limit", Long.class),
+    CAPS_PUNISH_AFTER("caps.punish-after", Long.class),
+    CAPS_PUNISH_COMMAND("caps.punish-command", String.class);
 
     private final String stringData;
     private final Class<?> classData;

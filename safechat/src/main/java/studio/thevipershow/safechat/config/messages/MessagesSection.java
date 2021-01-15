@@ -23,7 +23,11 @@ public enum MessagesSection implements SectionType {
     /**
      * The messages sent when someone writes too fast.
      */
-    FLOOD_WARNING("messages.chat-flood-warning", TomlArray.class);
+    FLOOD_WARNING("messages.chat-flood-warning", TomlArray.class),
+    /**
+     * The messages sent when too many uppercase characters are used.
+     */
+    CAPS_WARNING("messages.caps-warning", TomlArray.class);
 
     private final String stringData;
     private final Class<?> classData;

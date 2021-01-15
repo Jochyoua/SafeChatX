@@ -23,3 +23,8 @@ chat-flood-warning = [
   "{PREFIX} &7You have been sending messages too fast.",
   "&7Please &e{PLAYER}&7, wait &f{TIME} &7to write again!"
 ]
+
+caps-warning = [
+  "{PREFIX} &7You have been using too many uppercase characters.",
+  "&7Please &e{PLAYER}&7, remove your caps lock!"
+]

@@ -32,8 +32,8 @@ public final class FloodCheck extends ChatCheck {
     private final MessagesConfig messagesConfig;
 
     public FloodCheck(@NotNull CheckConfig checkConfig, @NotNull MessagesConfig messagesConfig) {
-        this.checkConfig = checkConfig;
-        this.messagesConfig = messagesConfig;
+        this.checkConfig = Objects.requireNonNull(checkConfig);
+        this.messagesConfig = Objects.requireNonNull(messagesConfig);
     }
 
     @Override

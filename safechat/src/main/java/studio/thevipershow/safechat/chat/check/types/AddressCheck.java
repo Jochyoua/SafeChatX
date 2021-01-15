@@ -33,9 +33,9 @@ public final class AddressCheck extends ChatCheck {
     private final MessagesConfig messagesConfig;
 
     public AddressCheck(@NotNull AddressConfig addressConfig, @NotNull CheckConfig checkConfig, @NotNull MessagesConfig messagesConfig) {
-        this.checkConfig = checkConfig;
-        this.messagesConfig = messagesConfig;
-        this.addressConfig = addressConfig;
+        this.checkConfig = Objects.requireNonNull(checkConfig);
+        this.messagesConfig = Objects.requireNonNull(messagesConfig);
+        this.addressConfig = Objects.requireNonNull(addressConfig);
     }
 
     @Override

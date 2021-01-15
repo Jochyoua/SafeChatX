@@ -34,9 +34,9 @@ public final class WordsBlacklistCheck extends ChatCheck {
     private final MessagesConfig messagesConfig;
 
     public WordsBlacklistCheck(@NotNull BlacklistConfig blacklistConfig, @NotNull CheckConfig checkConfig, @NotNull MessagesConfig messagesConfig) {
-        this.checkConfig = checkConfig;
-        this.messagesConfig = messagesConfig;
-        this.blacklistConfig = blacklistConfig;
+        this.checkConfig = Objects.requireNonNull(checkConfig);
+        this.messagesConfig = Objects.requireNonNull(messagesConfig);
+        this.blacklistConfig = Objects.requireNonNull(blacklistConfig);
     }
 
     @SuppressWarnings("ConstantConditions")
