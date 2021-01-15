@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.tomlj.TomlArray;
 import studio.thevipershow.safechat.SafeChat;
+import studio.thevipershow.safechat.api.checks.CheckPermission;
 import studio.thevipershow.safechat.api.checks.CheckPriority;
 import studio.thevipershow.safechat.SafeChatUtils;
 import studio.thevipershow.safechat.api.checks.ChatCheck;
@@ -20,6 +21,7 @@ import studio.thevipershow.safechat.config.messages.MessagesConfig;
 import studio.thevipershow.safechat.config.messages.MessagesSection;
 
 @CheckName(name = "Flood")
+@CheckPermission(permission = "safechat.bypass.flood")
 @CheckPriority(priority = CheckPriority.Priority.HIGH)
 public final class FloodCheck extends ChatCheck {
 

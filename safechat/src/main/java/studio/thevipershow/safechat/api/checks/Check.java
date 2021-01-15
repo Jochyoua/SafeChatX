@@ -9,6 +9,16 @@ import org.jetbrains.annotations.NotNull;
 public interface Check {
 
     /**
+     * The permission that will make this check be skipped.
+     * A player with this permission will never be checked.
+     * This can be used {@link CheckPermission}
+     *
+     * @return The permission.
+     */
+    @NotNull
+    String getBypassPermission();
+
+    /**
      * Get the priority of the check.
      * The priority of a check will influence
      * the order of call of your check. Higher
@@ -19,6 +29,7 @@ public interface Check {
      *
      * @return The priority of the check.
      */
+    @NotNull
     CheckPriority.Priority getCheckPriority();
 
     /**

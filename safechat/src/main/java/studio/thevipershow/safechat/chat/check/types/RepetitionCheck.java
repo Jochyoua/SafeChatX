@@ -1,6 +1,5 @@
 package studio.thevipershow.safechat.chat.check.types;
 
-import com.zaxxer.hikari.HikariDataSource;
 import info.debatty.java.stringsimilarity.RatcliffObershelp;
 import java.util.HashMap;
 import java.util.List;
@@ -10,17 +9,19 @@ import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
 import org.tomlj.TomlArray;
 import studio.thevipershow.safechat.SafeChat;
-import studio.thevipershow.safechat.api.checks.CheckPriority;
 import studio.thevipershow.safechat.SafeChatUtils;
+import studio.thevipershow.safechat.api.checks.ChatCheck;
 import studio.thevipershow.safechat.api.checks.ChatData;
 import studio.thevipershow.safechat.api.checks.CheckName;
-import studio.thevipershow.safechat.api.checks.ChatCheck;
+import studio.thevipershow.safechat.api.checks.CheckPermission;
+import studio.thevipershow.safechat.api.checks.CheckPriority;
 import studio.thevipershow.safechat.config.checks.CheckConfig;
 import studio.thevipershow.safechat.config.checks.CheckSections;
 import studio.thevipershow.safechat.config.messages.MessagesConfig;
 import studio.thevipershow.safechat.config.messages.MessagesSection;
 
 @CheckName(name = "RepetitionCheck")
+@CheckPermission(permission = "safechat.bypass.repetition")
 @CheckPriority(priority = CheckPriority.Priority.HIGH)
 public final class RepetitionCheck extends ChatCheck {
 

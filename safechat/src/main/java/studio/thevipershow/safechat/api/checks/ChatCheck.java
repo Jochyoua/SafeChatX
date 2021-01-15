@@ -13,6 +13,7 @@ public abstract class ChatCheck implements Check {
     public static final String PREFIX_PLACEHOLDER = "{PREFIX}";
 
     private final String checkName;
+    private final String permission;
     private final CheckPriority.Priority priority;
 
     public ChatCheck() {
@@ -27,14 +28,27 @@ public abstract class ChatCheck implements Check {
         } else {
             priority =  CheckPriority.Priority.NORMAL;
         }
+        if (namedCheckClass.isAnnotationPresent(CheckPermission.class)) {
+            permission = namedCheckClass.getAnnotation(CheckPermission.class).permission();
+        } else {
+            permission = "safechat.bypass." + checkName;
+        }
     }
 
     @Override
-    public final @NotNull String getName() {
+    @NotNull
+    public final String getName() {
         return checkName;
     }
 
     @Override
+    @NotNull
+    public final String getBypassPermission() {
+        return permission;
+    }
+
+    @Override
+    @NotNull
     public final CheckPriority.Priority getCheckPriority() {
         return priority;
     }

@@ -10,6 +10,7 @@ import studio.thevipershow.safechat.SafeChat;
 import studio.thevipershow.safechat.api.checks.ChatCheck;
 import studio.thevipershow.safechat.api.checks.ChatData;
 import studio.thevipershow.safechat.api.checks.CheckName;
+import studio.thevipershow.safechat.api.checks.CheckPermission;
 import studio.thevipershow.safechat.api.checks.CheckPriority;
 import studio.thevipershow.safechat.SafeChatUtils;
 import studio.thevipershow.safechat.config.address.AddressConfig;
@@ -20,6 +21,7 @@ import studio.thevipershow.safechat.config.messages.MessagesConfig;
 import studio.thevipershow.safechat.config.messages.MessagesSection;
 
 @CheckName(name = "Address")
+@CheckPermission(permission = "safechat.bypass.address")
 @CheckPriority(priority = CheckPriority.Priority.LOW)
 public final class AddressCheck extends ChatCheck {
 

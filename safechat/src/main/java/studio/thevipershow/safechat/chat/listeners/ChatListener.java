@@ -2,7 +2,6 @@ package studio.thevipershow.safechat.chat.listeners;
 
 import java.util.Collection;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -13,16 +12,17 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.safechat.SafeChat;
-import studio.thevipershow.safechat.api.events.ChatPunishmentEvent;
-import studio.thevipershow.safechat.api.events.PlayerFailCheckEvent;
 import studio.thevipershow.safechat.SafeChatUtils;
 import studio.thevipershow.safechat.api.checks.ChatData;
 import studio.thevipershow.safechat.api.checks.Check;
 import studio.thevipershow.safechat.api.checks.ChecksContainer;
+import studio.thevipershow.safechat.api.events.ChatPunishmentEvent;
+import studio.thevipershow.safechat.api.events.PlayerFailCheckEvent;
 import studio.thevipershow.safechat.persistence.SafeChatHibernate;
 import studio.thevipershow.safechat.persistence.mappers.PlayerDataManager;
 import studio.thevipershow.safechat.persistence.types.PlayerData;
 
+@SuppressWarnings("unused")
 public final class ChatListener implements Listener {
 
     private final SafeChat safeChat;
@@ -103,11 +103,14 @@ public final class ChatListener implements Listener {
     private void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
         ChatData data = new ChatData(event.getPlayer(), event.getMessage(), System.currentTimeMillis());
 
-        Collection<Check> sortedPriorityChecks = checksContainer.getActiveChecks().stream()
-                .sorted(ChecksContainer.CHECK_PRIORITY_COMPARATOR)
-                .collect(Collectors.toList());
+        Collection<Check> sortedPriorityChecks = checksContainer.getActiveChecks();
 
         for (Check check : sortedPriorityChecks) {
+
+            if (event.getPlayer().hasPermission(check.getBypassPermission())) {
+                continue;
+            }
+
             if (check.check(data)) {
                 PlayerFailCheckEvent playerFailCheckEvent = new PlayerFailCheckEvent(check, data);
                 safeChat.getServer().getPluginManager().callEvent(playerFailCheckEvent);

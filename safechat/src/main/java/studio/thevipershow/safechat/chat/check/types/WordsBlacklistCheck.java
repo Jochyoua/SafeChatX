@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.tomlj.TomlArray;
 import org.tomlj.TomlParseResult;
 import studio.thevipershow.safechat.SafeChat;
+import studio.thevipershow.safechat.api.checks.CheckPermission;
 import studio.thevipershow.safechat.api.checks.CheckPriority;
 import studio.thevipershow.safechat.SafeChatUtils;
 import studio.thevipershow.safechat.api.checks.ChatData;
@@ -23,6 +24,7 @@ import studio.thevipershow.safechat.config.messages.MessagesSection;
  * Checks if a string is banned using a blacklist.
  */
 @CheckName(name = "Blacklist")
+@CheckPermission(permission = "safechat.bypass.blacklist")
 @CheckPriority(priority = CheckPriority.Priority.LOW)
 public final class WordsBlacklistCheck extends ChatCheck {
 
