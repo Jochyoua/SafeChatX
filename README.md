@@ -12,7 +12,7 @@ A plugin to keep your chat safe.
 SafeChat provides some commands in-game that will allow to interact with the configurations or the checks. The commands
 that are currently available are listed here:
 
-[Reload command]<br>
+[Reload Command]<br>
 **Syntax**: `/safechat reload`<br>
 **Permission**: `safechat.commands.reload` <br>
 **Description**: <br>
@@ -23,6 +23,13 @@ after you have modified any of the configs from SafeChat.
 **Syntax**: `/safechat help`<br>
 **Permission**: none?<br>
 **Description**: Show all available commands.
+
+[Flags Command]<br>
+**Syntax**: `/safechat (flag-name) <player-name>`<br>
+**Permission**: `safechat.commands.flags`<br>
+**Description**: This command is used to either view all the flags of a player, or to view a specific flag of a player.
+The first mode, where only the player name is specified, will show you all the flags that a player currently has. 
+The second mode will first specify the flag name and then the player name, this will display the amount of that flag.
 
 ### SafeChat configurations
 
@@ -66,7 +73,7 @@ SafeChat currently supports the following databases:
 5) **HyperSQL**
 6) **CockroachDB**
 7) **H2**
-8) **IBM DB2** (soon)
+8) **IBM DB2**
 
 To work properly the "database-settings.toml" config must contain correct access data.
 
@@ -152,6 +159,14 @@ This is the punishment that will be executed when the player fails enough time a
 to placeholders and they are defined through the replacePlaceholders method. An example could be the
 following: `/kick {PLAYER}`
 
+#### (CheckPriority.Priority) Check#getCheckPriority()
+
+This is the priority of this check. When a check has higher priority level it will be checked before, and vice versa.
+
+#### (String) Check#getBypassPermission()
+
+This is the permission required to bypass a check. Players that do have this permission will skip this check entirely.
+
 ### Annotations API
 
 SafeChat uses some annotations in order for you to easily pass information into your checks without having to override
@@ -167,6 +182,10 @@ This annotations allows you to specify the name of that check. Note that this sa
 
 SafeChat implements a priority system, this means that check with a higher priority will be executed first, and check
 with a low priority will be the last to be checked.
+
+#### @CheckPermission(name = String)
+
+Used to specify a check's bypass permission.
 
 ### Check registration
 
@@ -229,6 +248,7 @@ that'd check message size:
 
 @CheckName(name = "MessageTooLong")
 @CheckPriority(priority = CheckPriority.Priority.LOW)
+@CheckPermission(permission = "safechat.bypass.long-messages")
 public final class MessageTooLongCheck extends ChatCheck {
 
     public short maximumAllowedMessageLength = 32;
