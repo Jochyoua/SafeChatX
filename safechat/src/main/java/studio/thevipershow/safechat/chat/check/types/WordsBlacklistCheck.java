@@ -2,6 +2,7 @@ package studio.thevipershow.safechat.chat.check.types;
 
 import info.debatty.java.stringsimilarity.RatcliffObershelp;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 import org.tomlj.TomlArray;
@@ -71,6 +72,8 @@ public final class WordsBlacklistCheck extends ChatCheck {
                 final String str = words.getString(k);
                 for (final String value : ss) {
                     if (ratcliffObershelp.similarity(value, str) >= factor) {
+                        return true;
+                    } else if (ratcliffObershelp.similarity(value.toLowerCase(Locale.ROOT), str) >= factor) {
                         return true;
                     }
                 }

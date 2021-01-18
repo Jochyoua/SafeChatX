@@ -62,10 +62,10 @@ public final class AddressCheck extends ChatCheck {
                     Matcher match = DOMAIN_REGEX.matcher(sk);
                     whileLabel:
                     while (match.find()) {
-
-                        final String gg = match.group();
+                        final String gg = match.group().toLowerCase(Locale.ROOT);
                         for (int i = 0; i < Objects.requireNonNull(allowedDomains).size(); i++) {
-                            final boolean matched = gg.toLowerCase(Locale.ROOT).equals(allowedDomains.getString(i));
+                            final boolean matched = allowedDomains.getString(i).contains(gg);
+                            // final boolean matched = gg.toLowerCase(Locale.ROOT).equals(allowedDomains.getString(i));
                             if (matched) {
                                 continue whileLabel;
                             }
