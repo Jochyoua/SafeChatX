@@ -90,7 +90,7 @@ own chat control structure. In this API you will find most of the necessary clas
 
 You can add the SafeChat repository this way if you're using Maven:
 
-Step 1: Add the JitPack repository to your maven project repositories
+Step 1: Add the **JitPack** repository to your maven project repositories
 
 ```xml
 <repository>
@@ -99,13 +99,13 @@ Step 1: Add the JitPack repository to your maven project repositories
 </repository>
 ```
 
-Step 2: add safechat as provided dependency
+Step 2: add **SafeChatX** as provided dependency
 
 ```xml
 <dependency>
     <groupId>com.github.TheViperShow</groupId>
     <artifactId>SafeChatX</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>2.1.0-SNAPSHOT</version>
     <scope>provided</scope> <!-- IMPORTANT SETTING -->
 </dependency>
 ```
