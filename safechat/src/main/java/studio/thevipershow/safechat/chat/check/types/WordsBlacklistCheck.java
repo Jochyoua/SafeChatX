@@ -1,6 +1,5 @@
 package studio.thevipershow.safechat.chat.check.types;
 
-import info.debatty.java.stringsimilarity.Levenshtein;
 import info.debatty.java.stringsimilarity.RatcliffObershelp;
 import java.util.List;
 import java.util.Locale;
@@ -29,7 +28,7 @@ import studio.thevipershow.safechat.config.messages.MessagesSection;
 @CheckPriority(priority = CheckPriority.Priority.LOW)
 public final class WordsBlacklistCheck extends ChatCheck {
 
-    private final Levenshtein levenshteinDistance = new Levenshtein();
+    private final info.debatty.java.stringsimilarity.RatcliffObershelp algo = new RatcliffObershelp();
     private final BlacklistConfig blacklistConfig;
     private final CheckConfig checkConfig;
     private final MessagesConfig messagesConfig;
@@ -71,9 +70,9 @@ public final class WordsBlacklistCheck extends ChatCheck {
             for (int k = 0; k < wordsSize; k++) {
                 final String str = words.getString(k);
                 for (final String value : ss) {
-                    if (levenshteinDistance.distance(value, str) >= factor) {
+                    if (algo.similarity(value, str) >= factor) {
                         return true;
-                    } else if (levenshteinDistance.distance(value.toLowerCase(Locale.ROOT), str) >= factor) {
+                    } else if (algo.similarity(value.toLowerCase(Locale.ROOT), str) >= factor) {
                         return true;
                     }
                 }
