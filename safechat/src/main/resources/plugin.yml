@@ -1,5 +1,5 @@
 name: "SafeChat"
-version: ${project.version}
+version: @version@
 main: studio.thevipershow.safechat.SafeChat
 load: POSTWORLD
 authors: [ TheViperShow, Jochyoua ]
