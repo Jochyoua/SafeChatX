@@ -107,27 +107,29 @@ public final class WordsBlacklistCheck extends ChatCheck {
                             return true;
                         }
                     }
-                    String word = words.getString(k);
-                    StringBuilder stringBuilder = new StringBuilder();
-                    String quote = Pattern.quote("!@#$%^&*()_+-".replace("\"", "\\\""));
-                    int length = word.length();
-                    for (String piece :
-                            word.split("")) {
-                        if (length <= 0) {
-                            stringBuilder.append("(").append(piece).append("+|([").append(quote).append("]|((§|&)[0-9A-FK-OR]|(§|&)))+\\s*+").append(piece).append(")");
-                        } else if (length == str.length() - 1) {
-                            stringBuilder.append("(?i)(").append(piece).append("+\\s*+|").append(piece).append("+\\s*+([").append(quote).append("]+\\s*+|((§|&)[0-9A-FK-OR]|(§|&)))+\\s*+)");
-                        } else {
-                            stringBuilder.append("(").append(piece).append("+\\s*+|([").append(quote).append("]+\\s*+|((§|&)[0-9A-FK-OR]|(§|&)))+\\s*+").append(piece).append("+\\s*+)");
+                    if (checkConfig.getConfigValue(CheckSections.ENABLE_BLACKLIST_FALLBACK, Boolean.class)) {
+                        String word = words.getString(k);
+                        StringBuilder stringBuilder = new StringBuilder();
+                        String quote = Pattern.quote("!@#$%^&*()_+-".replace("\"", "\\\""));
+                        int length = word.length();
+                        for (String piece :
+                                word.split("")) {
+                            if (length <= 0) {
+                                stringBuilder.append("(").append(piece).append("+|([").append(quote).append("]|((§|&)[0-9A-FK-OR]|(§|&)))+\\s*+").append(piece).append(")");
+                            } else if (length == str.length() - 1) {
+                                stringBuilder.append("(?i)(").append(piece).append("+\\s*+|").append(piece).append("+\\s*+([").append(quote).append("]+\\s*+|((§|&)[0-9A-FK-OR]|(§|&)))+\\s*+)");
+                            } else {
+                                stringBuilder.append("(").append(piece).append("+\\s*+|([").append(quote).append("]+\\s*+|((§|&)[0-9A-FK-OR]|(§|&)))+\\s*+").append(piece).append("+\\s*+)");
+                            }
                         }
-                    }
-                    Pattern p = Pattern.compile(stringBuilder.toString());
-                    Matcher m = p.matcher(data.getMessage());
-                    if (m.matches()) {
-                        if (getLoggingEnabled()) {
-                            SafeChatUtils.logMessage(this, data.getPlayer(), data.getMessage());
+                        Pattern p = Pattern.compile(stringBuilder.toString());
+                        Matcher m = p.matcher(data.getMessage());
+                        if (m.matches()) {
+                            if (getLoggingEnabled()) {
+                                SafeChatUtils.logMessage(this, data.getPlayer(), data.getMessage());
+                            }
+                            return true;
                         }
-                        return true;
                     }
                 }
             }

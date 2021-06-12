@@ -2,11 +2,13 @@
 enable-check = true # whether the check should be enabled
 enable-warning = true # whether the check should produce a warning
 enable-logging = true # logs each violation into /plugins/SafeChat/logs/checkLogs.log
+fallback = true # whether to fallback upon regex if all other filtering fails
 allow-similarity = false # try to match words similar to the ones currently blacklisted
 # similarity factor indicates how close should a word be similar
 # to a blacklisted word to be catched by the plugin.
 # 1.00 indicates identical, while 0.00 indicates any word.
 # A recommended value would be between 0.75 and 0.90
+# This disabled regex fallback as well
 maximum-similarity = 0.850
 punish-after = 5 # how often does a player get punished for failing this check.
 punish-command = 'kick {PLAYER}' # the command executed when player needs to be punished,
