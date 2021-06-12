@@ -100,11 +100,4 @@ public interface Check {
      */
     @NotNull
     String getPunishmentCommand();
-
-    /**
-     * Gets the logging status for this check
-     *
-     * @return True if logging is enabled for this check
-     */
-    boolean getLoggingEnabled();
 }

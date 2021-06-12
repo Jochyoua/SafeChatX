@@ -5,26 +5,26 @@
 # {TIME} -> missing time to write again (ONLY WORKS FOR CHAT FLOOD!)
 [messages]
 address-warning = [
-    "{PREFIX} &7You have sent a forbidden address in chat.",
-    "&7Please &e{PLAYER}&7, don't do that again!"
+  "{PREFIX} &7You have sent a forbidden address in chat.",
+  "&7Please &e{PLAYER}&7, don't do that again!"
 ]
 
 blacklisted-word-warning = [
-    "{PREFIX} &7You have used a forbidden word in your message.",
-    "&7Please &e{PLAYER}&7, don't use that word again!"
+  "{PREFIX} &7You have used a forbidden word in your message.",
+  "&7Please &e{PLAYER}&7, don't use that word again!"
 ]
 
 text-repetition-warning = [
-    "{PREFIX} &7You have written similiar messages twice.",
-    "&7Please &e{PLAYER}&7, write something different!"
+  "{PREFIX} &7You have written similiar messages twice.",
+  "&7Please &e{PLAYER}&7, write something different!"
 ]
 
 chat-flood-warning = [
-    "{PREFIX} &7You have been sending messages too fast.",
-    "&7Please &e{PLAYER}&7, wait &f{TIME} &7to write again!"
+  "{PREFIX} &7You have been sending messages too fast.",
+  "&7Please &e{PLAYER}&7, wait &f{TIME} &7to write again!"
 ]
 
 caps-warning = [
-    "{PREFIX} &7You have been using too many uppercase characters.",
-    "&7Please &e{PLAYER}&7, disable your caps lock!"
+  "{PREFIX} &7You have been using too many uppercase characters.",
+  "&7Please &e{PLAYER}&7, remove your caps lock!"
 ]
