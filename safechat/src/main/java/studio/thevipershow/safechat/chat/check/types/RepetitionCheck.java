@@ -36,15 +36,6 @@ public final class RepetitionCheck extends ChatCheck {
         this.messagesConfig = Objects.requireNonNull(messagesConfig);
     }
 
-    /**
-     * Perform a check on ChatData.
-     * The check can consist in anything, but it must follow these criteria:
-     * The check must return true if the player failed the check.
-     * The check must return false if the player passed the check.
-     *
-     * @param data The chat data.
-     * @return True if failed, false otherwise.
-     */
     @Override
     public boolean check(@NotNull ChatData data) {
         boolean enabled = Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.ENABLE_REPETITION_CHECK));
@@ -61,20 +52,12 @@ public final class RepetitionCheck extends ChatCheck {
                 double compare = ratcliffObershelp.similarity(lastMessage, message);
                 double factor = ((Number) Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.REPETITION_MAXIMUM_SIMILARITY))).doubleValue();
                 if (compare >= factor) {
-
-                    if (getLoggingEnabled()) {
-                        SafeChatUtils.logMessage(this, data.getPlayer(), data.getMessage());
-                    }
                     return true;
                 } else {
                     lastMessageMap.put(uuid, message);
                 }
             } else {
                 if (message.equalsIgnoreCase(lastMessage)) {
-
-                    if (getLoggingEnabled()) {
-                        SafeChatUtils.logMessage(this, data.getPlayer(), data.getMessage());
-                    }
                     return true;
                 } else {
                     lastMessageMap.put(uuid, message);
@@ -87,37 +70,17 @@ public final class RepetitionCheck extends ChatCheck {
         return false;
     }
 
-    /**
-     * Get the warning messages status.
-     *
-     * @return True if a warning message should be sent
-     * upon the player failing a check.
-     */
     @Override
     public boolean hasWarningEnabled() {
         return Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.ENABLE_REPETITION_WARNING));
     }
 
-    /**
-     * Get the warning messages that will be displayed when
-     * the player fails a check.
-     *
-     * @return The warning messages.
-     */
     @Override
     public @NotNull List<String> getWarningMessages() {
         TomlArray array = Objects.requireNonNull(messagesConfig.getConfigValue(MessagesSection.REPETITION_WARNING));
         return SafeChatUtils.getStrings(array);
     }
 
-    /**
-     * Provide placeholders for your own check.
-     * Replace any placeholder with your data.
-     *
-     * @param message The message that may contain placeholders.
-     * @param data    The data (used for placeholders).
-     * @return The message, modified if it had placeholders support.
-     */
     @Override
     public @NotNull String replacePlaceholders(@NotNull String message, @NotNull ChatData data) {
         return message
@@ -146,16 +109,5 @@ public final class RepetitionCheck extends ChatCheck {
     @Override
     public @NotNull String getPunishmentCommand() {
         return Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.REPETITION_PUNISH_COMMAND));
-    }
-
-    /**
-     * Gets the status of logging for this check from
-     * the config
-     *
-     * @return if logging is enabled for this check
-     */
-    @Override
-    public boolean getLoggingEnabled() {
-        return checkConfig.getConfigValue(CheckSections.ENABLE_REPETITION_LOGGING, Boolean.class);
     }
 }

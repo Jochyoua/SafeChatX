@@ -8,7 +8,6 @@ public class ChatData {
     private final Player player;
     private final String message;
     private final long sentAt;
-
     public ChatData(@NotNull Player player, @NotNull String message, long sentAt) {
         this.player = player;
         this.message = message;

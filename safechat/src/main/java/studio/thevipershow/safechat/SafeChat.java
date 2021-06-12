@@ -1,5 +1,6 @@
 package studio.thevipershow.safechat;
 
+import java.util.Objects;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Server;
@@ -27,17 +28,16 @@ import studio.thevipershow.safechat.persistence.SafeChatHibernate;
 import studio.thevipershow.vtc.PluginConfigurationsData;
 import studio.thevipershow.vtc.PluginsConfigurationsManager;
 
-import java.util.Objects;
-
 /**
  * Main class of this plugin.
  */
 public final class SafeChat extends JavaPlugin {
 
-    public static final short PLUGIN_ID = 9876;
-    public static final String PREFIX = "&8[&6SafeChat&8] ";
     // Data
     private static final String VAULT_NAME = "Vault";
+    public static final short PLUGIN_ID = 9876;
+    public static final String PREFIX = "&8[&6SafeChat&8] ";
+
     // Configs
     private PluginsConfigurationsManager configManager;
     private PluginConfigurationsData<SafeChat> configData;
