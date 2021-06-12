@@ -1,5 +1,3 @@
-![Discord](https://img.shields.io/discord/601548177753243656?style=social)
-
 ![GitHub](https://img.shields.io/github/license/Jochyoua/SafeChatX?style=plastic)
 ![Lines of code](https://img.shields.io/tokei/lines/github/Jochyoua/SafeChatX?style=plastic)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Jochyoua/SafeChatX?style=plastic)
