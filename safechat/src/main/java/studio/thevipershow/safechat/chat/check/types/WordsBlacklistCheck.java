@@ -126,6 +126,7 @@ public final class WordsBlacklistCheck extends ChatCheck {
                         }
                         Bukkit.getConsoleSender().sendMessage(stringBuilder.toString());
                     } else {
+                        Bukkit.getConsoleSender().sendMessage("Found regex");
                         try {
                             Pattern.compile(word.replace("regex:", ""));
                             stringBuilder.append(word.replace("regex:", ""));
@@ -137,6 +138,7 @@ public final class WordsBlacklistCheck extends ChatCheck {
                         if (getLoggingEnabled()) {
                             SafeChatUtils.logMessage(this, data.getPlayer(), data.getMessage());
                         }
+                        Bukkit.getConsoleSender().sendMessage("Found regex and punished");
                         return true;
                     }
                 }
