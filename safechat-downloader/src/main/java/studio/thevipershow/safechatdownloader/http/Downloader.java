@@ -1,14 +1,6 @@
 package studio.thevipershow.safechatdownloader.http;
 
 import com.google.gson.JsonParser;
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.time.Duration;
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -19,14 +11,28 @@ import studio.thevipershow.safechatdownloader.ColoredLogger;
 import studio.thevipershow.safechatdownloader.DownloaderUtils;
 import studio.thevipershow.safechatdownloader.SafeChatDownloader;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.time.Duration;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @SuppressWarnings("FieldCanBeLocal")
 public class Downloader {
 
-    private final ColoredLogger coloredLogger = ColoredLogger.getInstance();
+    public static final String SAFECHAT_GITHUB_RELEASES_API_URL = "https://api.github.com/repos/Jochyoua/SafeChatX/releases";
+    public static final FilenameFilter SAFECHAT_FILENAME_FILTER = new SafeChatFilenameFilter();
+    private static final Pattern GET_VERSION = Pattern.compile("[0-9]\\.[0-9]+\\.[0-9]+");
+    private static final Pattern SPLIT_VERSION = Pattern.compile("\\.");
     private static Downloader downloaderInstance;
+    private final ColoredLogger coloredLogger = ColoredLogger.getInstance();
     private final SafeChatDownloader safeChatDownloader;
     private final JsonParser jsonParser = new JsonParser();
     private final OkHttpClient httpClient = new OkHttpClient.Builder().connectTimeout(Duration.ofMillis(1500L)).build();
+    private final Request safechatReleasesGetRequest;
 
     private Downloader(@NotNull SafeChatDownloader safeChatDownloader) {
         this.safeChatDownloader = Objects.requireNonNull(safeChatDownloader);
@@ -45,10 +51,42 @@ public class Downloader {
         return downloaderInstance;
     }
 
-    public static final String SAFECHAT_GITHUB_RELEASES_API_URL = "https://api.github.com/repos/TheViperShow/SafeChatX/releases";
-    public static final FilenameFilter SAFECHAT_FILENAME_FILTER = new SafeChatFilenameFilter();
+    @NotNull
+    private static String getVersionFromName(@NotNull String string) throws IllegalStateException {
+        Matcher matcher = GET_VERSION.matcher(string);
+        if (matcher.find()) {
+            return matcher.group();
+        } else {
+            throw new IllegalStateException("Plugin release name did not have a version? " + string);
+        }
+    }
 
-    private final Request safechatReleasesGetRequest;
+    private static boolean isFirstVersionNewer(@NotNull String firstVersion, @NotNull String secondVersion) throws IllegalStateException {
+        final String[] firstStringSplit = SPLIT_VERSION.split(firstVersion);
+        final String[] secondStringSplit = SPLIT_VERSION.split(secondVersion);
+        if (firstStringSplit.length != 3 || secondStringSplit.length != 3) {
+            throw new IllegalStateException("Malformed SafeChat release version.");
+        } else {
+            final int[] firstVersionInt = new int[3];
+            final int[] secondVersionInt = new int[3];
+            for (int i = 0; i < 3; i++) {
+                firstVersionInt[i] = Integer.parseInt(firstStringSplit[i]);
+                secondVersionInt[i] = Integer.parseInt(secondStringSplit[i]);
+            }
+
+            final int f1 = firstVersionInt[0], f2 = firstVersionInt[1], f3 = firstVersionInt[2];
+            final int s1 = secondVersionInt[0], s2 = secondVersionInt[1], s3 = secondVersionInt[2];
+            if (f1 >= s1) {
+                if (f2 >= s2) {
+                    return f3 > s3;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+    }
 
     public boolean isSafeChatAlreadyDownloaded() {
         coloredLogger.info("Checking for SafeChat JARs...");
@@ -84,47 +122,6 @@ public class Downloader {
 
     private boolean isSafeChatPresentRuntime(@Nullable Plugin safechat) {
         return safechat != null;
-    }
-
-    private static final Pattern GET_VERSION = Pattern.compile("[0-9]\\.[0-9]+\\.[0-9]+");
-
-    @NotNull
-    private static String getVersionFromName(@NotNull String string) throws IllegalStateException {
-        Matcher matcher = GET_VERSION.matcher(string);
-        if (matcher.find()) {
-            return matcher.group();
-        } else {
-            throw new IllegalStateException("Plugin release name did not have a version? " + string);
-        }
-    }
-
-    private static final Pattern SPLIT_VERSION = Pattern.compile("\\.");
-
-    private static boolean isFirstVersionNewer(@NotNull String firstVersion, @NotNull String secondVersion) throws IllegalStateException {
-        final String[] firstStringSplit = SPLIT_VERSION.split(firstVersion);
-        final String[] secondStringSplit = SPLIT_VERSION.split(secondVersion);
-        if (firstStringSplit.length != 3 || secondStringSplit.length != 3) {
-            throw new IllegalStateException("Malformed SafeChat release version.");
-        } else {
-            final int[] firstVersionInt = new int[3];
-            final int[] secondVersionInt = new int[3];
-            for (int i = 0; i < 3; i++) {
-                firstVersionInt[i] = Integer.parseInt(firstStringSplit[i]);
-                secondVersionInt[i] = Integer.parseInt(secondStringSplit[i]);
-            }
-
-            final int f1 = firstVersionInt[0], f2 = firstVersionInt[1], f3 = firstVersionInt[2];
-            final int s1 = secondVersionInt[0], s2 = secondVersionInt[1], s3 = secondVersionInt[2];
-            if (f1 >= s1) {
-                if (f2 >= s2) {
-                    return f3 > s3;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        }
     }
 
     public void deleteSafeChatWithVersion(@NotNull String version) {

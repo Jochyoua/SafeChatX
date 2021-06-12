@@ -18,10 +18,6 @@ public final class ColoredLogger {
         return ChatColor.translateAlternateColorCodes('&', msg);
     }
 
-    enum IHateJava14 {
-        WARN, INFO
-    }
-
     private void logLevel(@NotNull IHateJava14 iHateJava14, @NotNull String msg) {
         if (iHateJava14 == IHateJava14.WARN) {
             commandSender.sendMessage(colorStr(SafeChatDownloader.PREFIX + "&c" + msg));
@@ -36,5 +32,9 @@ public final class ColoredLogger {
 
     public void warn(@NotNull String msg) {
         logLevel(IHateJava14.WARN, msg);
+    }
+
+    enum IHateJava14 {
+        WARN, INFO
     }
 }

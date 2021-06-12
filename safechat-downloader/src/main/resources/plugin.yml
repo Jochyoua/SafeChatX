@@ -2,6 +2,6 @@ name: 'SafeChat-Downloader'
 main: 'studio.thevipershow.safechatdownloader.SafeChatDownloader'
 version: ${project.version}
 description: 'Official plugin to download and run SafeChat'
-author: 'TheViperShow'
+author: 'TheViperShow, Jochyoua'
 api-version: '1.13'
 load: STARTUP

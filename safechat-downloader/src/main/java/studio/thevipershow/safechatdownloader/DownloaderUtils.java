@@ -1,12 +1,5 @@
 package studio.thevipershow.safechatdownloader;
 
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.net.URLClassLoader;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
@@ -15,6 +8,14 @@ import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredListener;
+
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.net.URLClassLoader;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
 
 public final class DownloaderUtils {
 
@@ -26,7 +27,6 @@ public final class DownloaderUtils {
      * Unload a plugin.
      *
      * @param plugin the plugin to unload
-     * @return the message to send to the user.
      */
     public static void unload(Plugin plugin) {
 
@@ -78,10 +78,10 @@ public final class DownloaderUtils {
 
         pluginManager.disablePlugin(plugin);
 
-        if (plugins != null && plugins.contains(plugin))
+        if (plugins != null)
             plugins.remove(plugin);
 
-        if (names != null && names.containsKey(name))
+        if (names != null)
             names.remove(name);
 
         if (listeners != null && reloadlisteners) {

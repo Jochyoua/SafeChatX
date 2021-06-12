@@ -1,10 +1,5 @@
 package studio.thevipershow.safechatdownloader.http;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Objects;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.bukkit.plugin.InvalidPluginException;
@@ -13,6 +8,12 @@ import org.bukkit.plugin.PluginLoader;
 import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.safechatdownloader.ColoredLogger;
 import studio.thevipershow.safechatdownloader.SafeChatDownloader;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Objects;
 
 public class JarSaverCallback {
 

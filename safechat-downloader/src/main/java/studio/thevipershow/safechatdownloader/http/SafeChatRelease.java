@@ -1,7 +1,8 @@
 package studio.thevipershow.safechatdownloader.http;
 
-import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class SafeChatRelease {
 

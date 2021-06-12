@@ -1,10 +1,11 @@
 package studio.thevipershow.safechatdownloader;
 
-import java.io.File;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.safechatdownloader.config.DefaultDownloaderConfig;
 import studio.thevipershow.safechatdownloader.http.Downloader;
+
+import java.io.File;
 
 public final class SafeChatDownloader extends JavaPlugin {
 
@@ -17,7 +18,7 @@ public final class SafeChatDownloader extends JavaPlugin {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private void setupFolder() {
-        pluginFolder = new File(getServer().getWorldContainer(),"plugins");
+        pluginFolder = new File(getServer().getWorldContainer(), "plugins");
         if (!pluginFolder.exists()) {
             pluginFolder.mkdir();
         } else if (!pluginFolder.isDirectory()) {

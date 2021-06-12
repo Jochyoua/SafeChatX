@@ -4,14 +4,15 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import studio.thevipershow.safechatdownloader.ColoredLogger;
 import studio.thevipershow.safechatdownloader.SafeChatDownloader;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class JarDownloadedCallback {
@@ -86,7 +87,7 @@ public class JarDownloadedCallback {
                     coloredLogger.info("  - &7JAR URL: &e" + chosenRelease.getUrl());
                     coloredLogger.info("  - &7Version: &e" + chosenRelease.getName());
 
-                   // downloader.downloadJARFromUrl(chosenRelease);
+                    // downloader.downloadJARFromUrl(chosenRelease);
                     return chosenRelease;
                 }
             }
