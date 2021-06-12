@@ -1,8 +1,8 @@
 ![Discord](https://img.shields.io/discord/601548177753243656?style=social)
 
-![GitHub](https://img.shields.io/github/license/TheViperShow/SafeChatX?style=plastic)
-![Lines of code](https://img.shields.io/tokei/lines/github/TheViperShow/SafeChatX?style=plastic)
-![GitHub last commit](https://img.shields.io/github/last-commit/TheViperShow/SafeChatX?style=plastic)
+![GitHub](https://img.shields.io/github/license/Jochyoua/SafeChatX?style=plastic)
+![Lines of code](https://img.shields.io/tokei/lines/github/Jochyoua/SafeChatX?style=plastic)
+![GitHub last commit](https://img.shields.io/github/last-commit/Jochyoua/SafeChatX?style=plastic)
 ![swag](https://img.shields.io/badge/swag-yes-red)
 # SafeChatX
 A plugin to keep your chat safe.
@@ -51,7 +51,8 @@ having troubles connecting to one of your databases.
 #### check-settings.toml
 
 A configuration for check-specific settings. From this configuration you will be able to enable checks, customize
-punishments levels, and other.
+punishments levels, and other. This is where you can disable our check logger which logs Check violations into
+/plugins/SafeChat/logs/checkLogs.log.
 
 #### words-blacklist.toml
 
@@ -123,6 +124,10 @@ and (not always) punishments and warnings.
 
 This specifies if your check, when failed, should provide a warning message to the user. The warning message is defined
 through another method in the check interface.
+
+#### (boolean) Check#getLoggingEnabled
+
+This specifices if your check will log data to /plugins/SafeChat/checkLogs.log
 
 #### (List<String>) Check#getWarningMessages()
 
@@ -248,17 +253,15 @@ that'd check message size:
 
 @CheckName(name = "MessageTooLong")
 @CheckPriority(priority = CheckPriority.Priority.LOW)
-@CheckPermission(permission = "safechat.bypass.long-messages")
 public final class MessageTooLongCheck extends ChatCheck {
-
-    public short maximumAllowedMessageLength = 32;
-    public long myPunishmentAmount = 5;
-    public boolean hasWarning = true;
-    public String punishment = "kick {PLAYER} Your message was {MSG_SIZE} but maximum allowed is {MAX_SIZE}!";
 
     private final List<String> myWarnings = Arrays.asList(
             "&8[&cWARNING&8]&7: &e{PLAYER}&7 your message was too long!",
             "&7The maximum allowed size is {MAX_SIZE}");
+    private short maximumAllowedMessageLength = 32;
+    private long myPunishmentAmount = 5;
+    private boolean hasWarning = true;
+    private String punishment = "kick {PLAYER} Your message was {MSG_SIZE} but maximum allowed is {MAX_SIZE}!";
 
     @Override
     public boolean check(@NotNull ChatData data) {
@@ -271,14 +274,12 @@ public final class MessageTooLongCheck extends ChatCheck {
     }
 
     @Override
-    public @NotNull
-    List<String> getWarningMessages() {
+    public @NotNull List<String> getWarningMessages() {
         return myWarnings;
     }
 
     @Override
-    public @NotNull
-    String replacePlaceholders(@NotNull String message, @NotNull ChatData data) {
+    public @NotNull String replacePlaceholders(@NotNull String message, @NotNull ChatData data) {
         return message
                 .replace("{PLAYER}", data.getPlayer().getName())
                 .replace("{MSG_SIZE}", Integer.toString(message.length()))
@@ -291,9 +292,13 @@ public final class MessageTooLongCheck extends ChatCheck {
     }
 
     @Override
-    public @NotNull
-    String getPunishmentCommand() {
+    public @NotNull String getPunishmentCommand() {
         return punishment;
+    }
+
+    @Override
+    public boolean getLoggingEnabled() {
+        return false;
     }
 }
 ```
