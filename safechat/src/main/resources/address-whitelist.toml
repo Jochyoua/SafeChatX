@@ -2,13 +2,13 @@
 # (no, wikipedia and hypixel did not sponsor me).
 [domains]
 allowed = [
-  "wikipedia.org",
-  "hypixel.net"
+    "wikipedia.org",
+    "hypixel.net"
 ]
 
 # A list of allowed addresses
 [address]
 allowed = [
-  "127.0.0.1",
-  "0.0.0.0"
+    "127.0.0.1",
+    "0.0.0.0"
 ]

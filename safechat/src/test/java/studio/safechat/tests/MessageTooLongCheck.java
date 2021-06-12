@@ -16,10 +16,10 @@ public final class MessageTooLongCheck extends ChatCheck {
     private final List<String> myWarnings = Arrays.asList(
             "&8[&cWARNING&8]&7: &e{PLAYER}&7 your message was too long!",
             "&7The maximum allowed size is {MAX_SIZE}");
-    private short maximumAllowedMessageLength = 32;
-    private long myPunishmentAmount = 5;
-    private boolean hasWarning = true;
-    private String punishment = "kick {PLAYER} Your message was {MSG_SIZE} but maximum allowed is {MAX_SIZE}!";
+    private final short maximumAllowedMessageLength = 32;
+    private final long myPunishmentAmount = 5;
+    private final boolean hasWarning = true;
+    private final String punishment = "kick {PLAYER} Your message was {MSG_SIZE} but maximum allowed is {MAX_SIZE}!";
 
     @Override
     public boolean check(@NotNull ChatData data) {
@@ -52,5 +52,10 @@ public final class MessageTooLongCheck extends ChatCheck {
     @Override
     public @NotNull String getPunishmentCommand() {
         return punishment;
+    }
+
+    @Override
+    public boolean getLoggingEnabled() {
+        return false;
     }
 }
