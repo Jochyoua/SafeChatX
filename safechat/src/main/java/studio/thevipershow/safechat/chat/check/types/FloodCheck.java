@@ -1,24 +1,25 @@
 package studio.thevipershow.safechat.chat.check.types;
 
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.tomlj.TomlArray;
+import studio.thevipershow.safechat.SafeChat;
+import studio.thevipershow.safechat.SafeChatUtils;
+import studio.thevipershow.safechat.api.checks.ChatCheck;
+import studio.thevipershow.safechat.api.checks.ChatData;
+import studio.thevipershow.safechat.api.checks.CheckName;
+import studio.thevipershow.safechat.api.checks.CheckPermission;
+import studio.thevipershow.safechat.api.checks.CheckPriority;
+import studio.thevipershow.safechat.config.checks.CheckConfig;
+import studio.thevipershow.safechat.config.checks.CheckSections;
+import studio.thevipershow.safechat.config.messages.MessagesConfig;
+import studio.thevipershow.safechat.config.messages.MessagesSection;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.tomlj.TomlArray;
-import studio.thevipershow.safechat.SafeChat;
-import studio.thevipershow.safechat.api.checks.CheckPermission;
-import studio.thevipershow.safechat.api.checks.CheckPriority;
-import studio.thevipershow.safechat.SafeChatUtils;
-import studio.thevipershow.safechat.api.checks.ChatCheck;
-import studio.thevipershow.safechat.api.checks.ChatData;
-import studio.thevipershow.safechat.api.checks.CheckName;
-import studio.thevipershow.safechat.config.checks.CheckConfig;
-import studio.thevipershow.safechat.config.checks.CheckSections;
-import studio.thevipershow.safechat.config.messages.MessagesConfig;
-import studio.thevipershow.safechat.config.messages.MessagesSection;
 
 @CheckName(name = "Flood")
 @CheckPermission(permission = "safechat.bypass.flood")
@@ -78,8 +79,8 @@ public final class FloodCheck extends ChatCheck {
         double delay = Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.FLOOD_REQUIRED_DELAY));
         double missingTime = delay - ((System.currentTimeMillis() - lastWriteMap.getOrDefault(player.getUniqueId(), System.currentTimeMillis())) / 1000f);
         return message.replace(PLAYER_PLACEHOLDER, player.getName())
-            .replace(PREFIX_PLACEHOLDER, SafeChat.PREFIX)
-            .replace(TIME_PLACEHOLDER, String.format("%.1fs", missingTime));
+                .replace(PREFIX_PLACEHOLDER, SafeChat.PREFIX)
+                .replace(TIME_PLACEHOLDER, String.format("%.1fs", missingTime));
     }
 
     /**

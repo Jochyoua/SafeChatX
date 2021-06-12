@@ -1,7 +1,5 @@
 package studio.thevipershow.safechat.chat.check.types;
 
-import java.util.List;
-import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.safechat.SafeChat;
 import studio.thevipershow.safechat.SafeChatUtils;
@@ -14,6 +12,9 @@ import studio.thevipershow.safechat.config.checks.CheckConfig;
 import studio.thevipershow.safechat.config.checks.CheckSections;
 import studio.thevipershow.safechat.config.messages.MessagesConfig;
 import studio.thevipershow.safechat.config.messages.MessagesSection;
+
+import java.util.List;
+import java.util.Objects;
 
 @CheckName(name = "Caps")
 @CheckPermission(permission = "safechat.bypass.caps")

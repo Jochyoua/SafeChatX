@@ -1,24 +1,26 @@
 package studio.thevipershow.safechat.api.checks;
 
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.plugin.PluginManager;
+import org.jetbrains.annotations.NotNull;
+import studio.thevipershow.safechat.SafeChat;
+import studio.thevipershow.safechat.SafeChatUtils;
+import studio.thevipershow.safechat.api.events.CheckRegisterEvent;
+import studio.thevipershow.safechat.api.events.CheckUnregisterEvent;
+
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.Map;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.plugin.PluginManager;
-import org.jetbrains.annotations.NotNull;
-import studio.thevipershow.safechat.SafeChat;
-import studio.thevipershow.safechat.api.events.CheckRegisterEvent;
-import studio.thevipershow.safechat.api.events.CheckUnregisterEvent;
-import studio.thevipershow.safechat.SafeChatUtils;
 
 public final class ChecksContainer {
 
-    private static ChecksContainer instance = null;
     public static final Comparator<Check> CHECK_PRIORITY_COMPARATOR = Comparator.comparing(a -> a.getCheckPriority().v);
+    private static ChecksContainer instance = null;
     private final SafeChat safeChat;
+    private final Map<CheckPriority.Priority, LinkedList<Check>> registeredChecks;
 
     public ChecksContainer(@NotNull SafeChat safeChat) {
         this.safeChat = safeChat;
@@ -27,8 +29,6 @@ public final class ChecksContainer {
             this.registeredChecks.put(value, new LinkedList<>());
         }
     }
-
-    private final Map<CheckPriority.Priority, LinkedList<Check>> registeredChecks;
 
     public static ChecksContainer getInstance(SafeChat safeChat) {
         if (instance == null) {

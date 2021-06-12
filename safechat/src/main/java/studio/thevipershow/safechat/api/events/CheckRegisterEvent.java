@@ -21,13 +21,13 @@ public class CheckRegisterEvent extends ChatCheckEvent {
         super(check, false);
     }
 
-    @Override
-    public final HandlerList getHandlers() {
+    @NotNull
+    public static HandlerList getHandlerList() {
         return handlerList;
     }
 
-    @NotNull
-    public static HandlerList getHandlerList() {
+    @Override
+    public final HandlerList getHandlers() {
         return handlerList;
     }
 }

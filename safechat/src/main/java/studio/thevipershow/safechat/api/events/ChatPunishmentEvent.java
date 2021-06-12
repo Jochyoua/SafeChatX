@@ -26,13 +26,13 @@ public class ChatPunishmentEvent extends ChatCheckEvent implements Cancellable {
         super(check, false);
     }
 
-    @Override
-    public HandlerList getHandlers() {
+    @NotNull
+    public static HandlerList getHandlerList() {
         return handlerList;
     }
 
-    @NotNull
-    public static HandlerList getHandlerList() {
+    @Override
+    public HandlerList getHandlers() {
         return handlerList;
     }
 

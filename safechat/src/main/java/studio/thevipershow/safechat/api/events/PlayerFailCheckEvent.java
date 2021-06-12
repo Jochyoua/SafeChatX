@@ -24,6 +24,11 @@ public class PlayerFailCheckEvent extends ChatCheckEvent implements Cancellable 
         this.chatData = chatData;
     }
 
+    @NotNull
+    public static HandlerList getHandlerList() {
+        return handlerList;
+    }
+
     /**
      * Gets the cancellation state of this event. A cancelled event will not
      * be executed in the server, but will still pass to other plugins
@@ -48,6 +53,7 @@ public class PlayerFailCheckEvent extends ChatCheckEvent implements Cancellable 
 
     /**
      * Get the data of this event.
+     *
      * @return The data of the event.
      */
     @NotNull
@@ -57,11 +63,6 @@ public class PlayerFailCheckEvent extends ChatCheckEvent implements Cancellable 
 
     @Override
     public final HandlerList getHandlers() {
-        return handlerList;
-    }
-
-    @NotNull
-    public static HandlerList getHandlerList() {
         return handlerList;
     }
 }

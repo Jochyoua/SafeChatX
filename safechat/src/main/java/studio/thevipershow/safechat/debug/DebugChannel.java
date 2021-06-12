@@ -9,11 +9,11 @@ public enum DebugChannel {
     CONFIG("safechat:config"),
     DEBUGGER("safechat:debugger");
 
+    private final String channelName;
+
     DebugChannel(String channelName) {
         this.channelName = channelName;
     }
-
-    private final String channelName;
 
     @NotNull
     public final String getChannelName() {

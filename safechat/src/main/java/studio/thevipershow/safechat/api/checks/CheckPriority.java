@@ -8,15 +8,15 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CheckPriority {
+    Priority priority() default Priority.NORMAL;
+
     enum Priority {
         LOW((byte) 0x00), NORMAL((byte) 0x01), HIGH((byte) 0x02);
+
+        public final byte v;
 
         Priority(byte v) {
             this.v = v;
         }
-
-        public final byte v;
     }
-
-    Priority priority() default Priority.NORMAL;
 }

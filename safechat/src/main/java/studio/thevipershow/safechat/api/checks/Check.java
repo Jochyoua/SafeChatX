@@ -1,7 +1,8 @@
 package studio.thevipershow.safechat.api.checks;
 
-import java.util.List;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 /**
  * A check for chat events.

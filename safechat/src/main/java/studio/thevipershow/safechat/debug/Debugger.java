@@ -1,16 +1,16 @@
 package studio.thevipershow.safechat.debug;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.jetbrains.annotations.NotNull;
 
 public final class Debugger {
 
-    private boolean enabled = false;
-    private final Logger safechatLogger;
-
     private static Debugger instance = null;
+    private final Logger safechatLogger;
+    private boolean enabled = false;
 
     private Debugger(@NotNull Logger safechatLogger) {
         this.safechatLogger = Objects.requireNonNull(safechatLogger);

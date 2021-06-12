@@ -1,10 +1,5 @@
 package studio.thevipershow.safechat.persistence.mappers;
 
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
 import org.bukkit.entity.Player;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -15,6 +10,12 @@ import org.jetbrains.annotations.Nullable;
 import studio.thevipershow.safechat.SafeChat;
 import studio.thevipershow.safechat.persistence.types.PlayerData;
 
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+
 public final class PlayerDataManager {
 
     private final SessionFactory sessionFactory;
@@ -23,6 +24,15 @@ public final class PlayerDataManager {
     public PlayerDataManager(@NotNull SessionFactory sessionFactory, @NotNull SafeChat safeChat) {
         this.sessionFactory = sessionFactory;
         this.safeChat = safeChat;
+    }
+
+    public static void increasePlayerFlag(@NotNull PlayerData playerData, @NotNull String checkName) {
+        final Map<String, Integer> data = playerData.getFlagsMap();
+        if (data.containsKey(checkName)) {
+            data.compute(checkName, (k, v) -> v = Objects.requireNonNull(v) + 1);
+        } else {
+            data.put(checkName, 1);
+        }
     }
 
     public void addPlayerData(@NotNull UUID uuid, @NotNull String username) {
@@ -43,15 +53,6 @@ public final class PlayerDataManager {
 
     public void addPlayerData(@NotNull Player player) {
         addPlayerData(player.getUniqueId(), player.getName());
-    }
-
-    public static void increasePlayerFlag(@NotNull PlayerData playerData, @NotNull String checkName) {
-        final Map<String, Integer> data = playerData.getFlagsMap();
-        if (data.containsKey(checkName)) {
-            data.compute(checkName, (k, v) -> v = Objects.requireNonNull(v) + 1);
-        } else {
-            data.put(checkName, 1);
-        }
     }
 
     public void addOrUpdatePlayerData(@NotNull Player player, @NotNull String checkName) {

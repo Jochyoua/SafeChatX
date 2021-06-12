@@ -1,11 +1,5 @@
 package studio.thevipershow.safechat.commands;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -17,8 +11,16 @@ import studio.thevipershow.safechat.persistence.mappers.PlayerDataManager;
 import studio.thevipershow.safechat.persistence.types.PlayerData;
 import studio.thevipershow.vtc.PluginConfigurationsData;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 public class SafeChatCommand extends Command {
 
+    private final static List<String> BASE_ARGS = Arrays.asList("help", "reload", "flags");
     private final SafeChat safeChat;
 
     public SafeChatCommand(@NotNull SafeChat safeChat) {
@@ -47,6 +49,14 @@ public class SafeChatCommand extends Command {
         sender.sendMessage(SafeChatUtils.color("&7  │  &o&fUsed to lookup at someone flags data."));
     }
 
+    public static void unknownCommand(@NotNull CommandSender sender) {
+        sender.sendMessage(SafeChatUtils.color(SafeChat.PREFIX + "&cYou have used an unknown argument."));
+    }
+
+    public static void unknownAmountOfArgs(@NotNull CommandSender sender) {
+        sender.sendMessage(SafeChatUtils.color(SafeChat.PREFIX + "&cYou have used too many arguments."));
+    }
+
     public final void reloadCommand(@NotNull CommandSender sender) {
         if (SafeChatUtils.permissionCheck("safechat.commands.reload", sender)) {
             long operationStartTime = System.nanoTime();
@@ -58,14 +68,6 @@ public class SafeChatCommand extends Command {
             float timeTaken = (System.nanoTime() - operationStartTime) / 1E6F;
             sender.sendMessage(SafeChatUtils.color(String.format("    &7The configurations have been reloaded in &6%.1f&7ms", timeTaken)));
         }
-    }
-
-    public static void unknownCommand(@NotNull CommandSender sender) {
-        sender.sendMessage(SafeChatUtils.color(SafeChat.PREFIX + "&cYou have used an unknown argument."));
-    }
-
-    public static void unknownAmountOfArgs(@NotNull CommandSender sender) {
-        sender.sendMessage(SafeChatUtils.color(SafeChat.PREFIX + "&cYou have used too many arguments."));
     }
 
     public void flagsTypeSearchCommand(@NotNull CommandSender commandSender, @NotNull String flagType, @NotNull String playerName) {
@@ -163,8 +165,6 @@ public class SafeChatCommand extends Command {
 
         return true;
     }
-
-    private final static List<String> BASE_ARGS = Arrays.asList("help", "reload", "flags");
 
     private List<String> getAvailableCheckNamesList() {
         ChecksContainer checksContainer = ChecksContainer.getInstance(safeChat);

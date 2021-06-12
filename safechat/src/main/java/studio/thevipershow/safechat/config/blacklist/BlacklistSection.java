@@ -23,6 +23,7 @@ public enum BlacklistSection implements SectionType {
 
     /**
      * Get the class.
+     *
      * @return the class.
      */
     @Override

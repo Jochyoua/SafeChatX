@@ -1,24 +1,25 @@
 package studio.thevipershow.safechat.chat.check.types;
 
 import info.debatty.java.stringsimilarity.RatcliffObershelp;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 import org.tomlj.TomlArray;
 import studio.thevipershow.safechat.SafeChat;
-import studio.thevipershow.safechat.api.checks.CheckPermission;
-import studio.thevipershow.safechat.api.checks.CheckPriority;
 import studio.thevipershow.safechat.SafeChatUtils;
+import studio.thevipershow.safechat.api.checks.ChatCheck;
 import studio.thevipershow.safechat.api.checks.ChatData;
 import studio.thevipershow.safechat.api.checks.CheckName;
-import studio.thevipershow.safechat.api.checks.ChatCheck;
+import studio.thevipershow.safechat.api.checks.CheckPermission;
+import studio.thevipershow.safechat.api.checks.CheckPriority;
 import studio.thevipershow.safechat.config.blacklist.BlacklistConfig;
 import studio.thevipershow.safechat.config.blacklist.BlacklistSection;
 import studio.thevipershow.safechat.config.checks.CheckConfig;
 import studio.thevipershow.safechat.config.checks.CheckSections;
 import studio.thevipershow.safechat.config.messages.MessagesConfig;
 import studio.thevipershow.safechat.config.messages.MessagesSection;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Checks if a string is banned using a blacklist.

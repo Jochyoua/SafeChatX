@@ -1,10 +1,11 @@
 package studio.thevipershow.safechat.api.events;
 
-import java.util.Objects;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.safechat.api.checks.ChatCheck;
 import studio.thevipershow.safechat.api.checks.Check;
+
+import java.util.Objects;
 
 /**
  * An abstract event for chat checks.
@@ -17,7 +18,6 @@ public abstract class ChatCheckEvent extends Event {
     /**
      * This constructor is used to explicitly declare an event as synchronous
      * or asynchronous.
-     *
      */
     public ChatCheckEvent(@NotNull Check check, boolean async) {
         super(async);
@@ -26,6 +26,7 @@ public abstract class ChatCheckEvent extends Event {
 
     /**
      * Return the {@link ChatCheck} used in the event.
+     *
      * @return The chat check.
      */
     @NotNull

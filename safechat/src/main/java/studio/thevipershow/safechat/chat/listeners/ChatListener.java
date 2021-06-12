@@ -1,7 +1,5 @@
 package studio.thevipershow.safechat.chat.listeners;
 
-import java.util.Collection;
-import java.util.Objects;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -22,11 +20,16 @@ import studio.thevipershow.safechat.persistence.SafeChatHibernate;
 import studio.thevipershow.safechat.persistence.mappers.PlayerDataManager;
 import studio.thevipershow.safechat.persistence.types.PlayerData;
 
+import java.util.Collection;
+import java.util.Objects;
+
 @SuppressWarnings("unused")
 public final class ChatListener implements Listener {
-
-    private final SafeChat safeChat;
     private final static String DATA_MANAGER_ABSENT = "SafeChat's Hibernate PlayerDataManager wasn't configured yet!";
+    private final SafeChat safeChat;
+    private final SafeChatHibernate safeChatHibernate;
+    private final PlayerDataManager playerDataManager;
+    private final ChecksContainer checksContainer;
 
     public ChatListener(SafeChatHibernate safeChatHibernate, ChecksContainer checksContainer) {
         this.safeChatHibernate = safeChatHibernate;
@@ -34,10 +37,6 @@ public final class ChatListener implements Listener {
         this.checksContainer = checksContainer;
         this.safeChat = safeChatHibernate.getSafeChat();
     }
-
-    private final SafeChatHibernate safeChatHibernate;
-    private final PlayerDataManager playerDataManager;
-    private final ChecksContainer checksContainer;
 
     private static void sendWarning(@NotNull Check check, @NotNull ChatData data) {
         if (!check.hasWarningEnabled()) {

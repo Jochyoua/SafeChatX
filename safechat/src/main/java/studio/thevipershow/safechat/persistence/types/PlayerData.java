@@ -1,8 +1,7 @@
 package studio.thevipershow.safechat.persistence.types;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
+
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -11,7 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.Table;
-import org.jetbrains.annotations.NotNull;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 @Entity
 @Table(name = "player_data")

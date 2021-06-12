@@ -1,11 +1,7 @@
 package studio.thevipershow.safechat.persistence;
 
 import com.zaxxer.hikari.HikariDataSource;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 import org.hibernate.cfg.Environment;
-import org.hibernate.dialect.DB2400Dialect;
 import org.hibernate.dialect.DB2400V7R3Dialect;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.H2Dialect;
@@ -18,6 +14,10 @@ import org.jetbrains.annotations.NotNull;
 import org.sqlite.hibernate.dialect.SQLiteDialect;
 import studio.thevipershow.safechat.config.database.DatabaseConfig;
 import studio.thevipershow.safechat.config.database.DatabaseSection;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public enum HibernateSQLMapping {
     /**
@@ -57,15 +57,22 @@ public enum HibernateSQLMapping {
      */
     SQLITE("sqlite", "org.sqlite.JDBC", generateFileUrl("sqlite"), SQLiteDialect.class, true);
 
+    public static final String DB_TYPE_PLACEHOLDER = "{TYPE}";
+    public static final String STD_JDBC_URL = "jdbc:" + DB_TYPE_PLACEHOLDER + "://%s:%d/%s";
+    public static final String STD_JDBC_FILE_URL = "jdbc:" + DB_TYPE_PLACEHOLDER + ":%s";
     private final String sqlFlavour;
     private final String driverClassName;
     private final String urlFormatter;
     private final Class<? extends Dialect> hibernateDialectClass;
     private final boolean fileBased;
 
-    public static final String DB_TYPE_PLACEHOLDER = "{TYPE}";
-    public static final String STD_JDBC_URL = "jdbc:" + DB_TYPE_PLACEHOLDER + "://%s:%d/%s";
-    public static final String STD_JDBC_FILE_URL = "jdbc:" + DB_TYPE_PLACEHOLDER + ":%s";
+    HibernateSQLMapping(@NotNull String sqlFlavour, @NotNull String driverClassName, @NotNull String urlFormatter, @NotNull Class<? extends Dialect> hibernateDialectClass, boolean fileBased) {
+        this.sqlFlavour = sqlFlavour;
+        this.driverClassName = driverClassName;
+        this.urlFormatter = urlFormatter;
+        this.hibernateDialectClass = hibernateDialectClass;
+        this.fileBased = fileBased;
+    }
 
     @NotNull
     private static String generateUrl(@NotNull String dbType) {
@@ -75,6 +82,20 @@ public enum HibernateSQLMapping {
     @NotNull
     private static String generateFileUrl(@NotNull String dbType) {
         return STD_JDBC_FILE_URL.replace(DB_TYPE_PLACEHOLDER, Objects.requireNonNull(dbType));
+    }
+
+    @NotNull
+    public static String generateAppropriateUrl(@NotNull HibernateSQLMapping hibernateSQLMapping, @NotNull DatabaseConfig dbConfig) {
+        final String urlFormatter = hibernateSQLMapping.getUrlFormatter();
+        if (hibernateSQLMapping.isFileBased()) {
+            return String.format(urlFormatter, (String) Objects.requireNonNull(dbConfig.getConfigValue(DatabaseSection.FILEPATH)));
+        } else {
+            String address = Objects.requireNonNull(dbConfig.getConfigValue(DatabaseSection.ADDRESS));
+            Long port = Objects.requireNonNull(dbConfig.getConfigValue(DatabaseSection.PORT));
+            String databaseName = Objects.requireNonNull(dbConfig.getConfigValue(DatabaseSection.DATABASE_NAME));
+
+            return String.format(urlFormatter, address, port, databaseName);
+        }
     }
 
     public Map<String, String> generateProperties(@NotNull DatabaseConfig dbConfig) {
@@ -98,28 +119,6 @@ public enum HibernateSQLMapping {
         properties.put(Environment.HBM2DDL_AUTO, "update");
         properties.put(Environment.SHOW_SQL, "false");
         return properties;
-    }
-
-    @NotNull
-    public static String generateAppropriateUrl(@NotNull HibernateSQLMapping hibernateSQLMapping, @NotNull DatabaseConfig dbConfig) {
-        final String urlFormatter = hibernateSQLMapping.getUrlFormatter();
-        if (hibernateSQLMapping.isFileBased()) {
-            return String.format(urlFormatter, (String) Objects.requireNonNull(dbConfig.getConfigValue(DatabaseSection.FILEPATH)));
-        } else {
-            String address = Objects.requireNonNull(dbConfig.getConfigValue(DatabaseSection.ADDRESS));
-            Long port = Objects.requireNonNull(dbConfig.getConfigValue(DatabaseSection.PORT));
-            String databaseName = Objects.requireNonNull(dbConfig.getConfigValue(DatabaseSection.DATABASE_NAME));
-
-            return String.format(urlFormatter, address, port, databaseName);
-        }
-    }
-
-    HibernateSQLMapping(@NotNull String sqlFlavour, @NotNull String driverClassName, @NotNull String urlFormatter, @NotNull Class<? extends Dialect> hibernateDialectClass, boolean fileBased) {
-        this.sqlFlavour = sqlFlavour;
-        this.driverClassName = driverClassName;
-        this.urlFormatter = urlFormatter;
-        this.hibernateDialectClass = hibernateDialectClass;
-        this.fileBased = fileBased;
     }
 
     @NotNull

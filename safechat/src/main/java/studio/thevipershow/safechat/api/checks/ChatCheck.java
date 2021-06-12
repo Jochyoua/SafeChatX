@@ -1,8 +1,9 @@
 package studio.thevipershow.safechat.api.checks;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 import java.util.regex.Pattern;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class ChatCheck implements Check {
 
@@ -26,7 +27,7 @@ public abstract class ChatCheck implements Check {
         if (namedCheckClass.isAnnotationPresent(CheckPriority.class)) {
             priority = namedCheckClass.getAnnotation(CheckPriority.class).priority();
         } else {
-            priority =  CheckPriority.Priority.NORMAL;
+            priority = CheckPriority.Priority.NORMAL;
         }
         if (namedCheckClass.isAnnotationPresent(CheckPermission.class)) {
             permission = namedCheckClass.getAnnotation(CheckPermission.class).permission();

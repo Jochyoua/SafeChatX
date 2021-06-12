@@ -1,11 +1,6 @@
 package studio.thevipershow.safechat.chat.check.types;
 
 import info.debatty.java.stringsimilarity.RatcliffObershelp;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
 import org.tomlj.TomlArray;
 import studio.thevipershow.safechat.SafeChat;
@@ -19,6 +14,12 @@ import studio.thevipershow.safechat.config.checks.CheckConfig;
 import studio.thevipershow.safechat.config.checks.CheckSections;
 import studio.thevipershow.safechat.config.messages.MessagesConfig;
 import studio.thevipershow.safechat.config.messages.MessagesSection;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 @CheckName(name = "RepetitionCheck")
 @CheckPermission(permission = "safechat.bypass.repetition")

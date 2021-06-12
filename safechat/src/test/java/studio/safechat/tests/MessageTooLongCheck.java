@@ -1,25 +1,25 @@
 package studio.safechat.tests;
 
-import java.util.Arrays;
-import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.safechat.api.checks.ChatCheck;
 import studio.thevipershow.safechat.api.checks.ChatData;
 import studio.thevipershow.safechat.api.checks.CheckName;
 import studio.thevipershow.safechat.api.checks.CheckPriority;
 
+import java.util.Arrays;
+import java.util.List;
+
 @CheckName(name = "MessageTooLong")
 @CheckPriority(priority = CheckPriority.Priority.LOW)
 public final class MessageTooLongCheck extends ChatCheck {
 
+    private final List<String> myWarnings = Arrays.asList(
+            "&8[&cWARNING&8]&7: &e{PLAYER}&7 your message was too long!",
+            "&7The maximum allowed size is {MAX_SIZE}");
     private short maximumAllowedMessageLength = 32;
     private long myPunishmentAmount = 5;
     private boolean hasWarning = true;
     private String punishment = "kick {PLAYER} Your message was {MSG_SIZE} but maximum allowed is {MAX_SIZE}!";
-
-    private final List<String> myWarnings = Arrays.asList(
-            "&8[&cWARNING&8]&7: &e{PLAYER}&7 your message was too long!",
-            "&7The maximum allowed size is {MAX_SIZE}");
 
     @Override
     public boolean check(@NotNull ChatData data) {
