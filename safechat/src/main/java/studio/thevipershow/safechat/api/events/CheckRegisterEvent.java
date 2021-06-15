@@ -27,7 +27,7 @@ public class CheckRegisterEvent extends ChatCheckEvent {
     }
 
     @Override
-    public final HandlerList getHandlers() {
+    public final @NotNull HandlerList getHandlers() {
         return handlerList;
     }
 }

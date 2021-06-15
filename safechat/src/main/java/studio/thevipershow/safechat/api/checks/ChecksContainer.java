@@ -15,6 +15,7 @@ import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+
 public final class ChecksContainer {
 
     public static final Comparator<Check> CHECK_PRIORITY_COMPARATOR = Comparator.comparing(a -> a.getCheckPriority().v);
@@ -41,7 +42,7 @@ public final class ChecksContainer {
      * Get the instance of the ChecksContainer.
      * This method should have rigid checks before being called,
      * The SafeChat plugin DEMANDS to be loaded in order for this method
-     * to return the instance succesfully.
+     * to return the instance successfully.
      *
      * @return The ChecksContainer if available.
      * @throws UnsupportedOperationException If SafeChat wasn't loaded yet.
@@ -56,24 +57,23 @@ public final class ChecksContainer {
 
     private void logCheckRegistration(@NotNull Check check) {
         ConsoleCommandSender console = safeChat.getServer().getConsoleSender();
-        console.sendMessage(SafeChatUtils.color(String.format("%s &7registered new check &e%s", SafeChat.PREFIX, check.getName())));
+        console.sendMessage(SafeChatUtils.color(String.format("%s &7registered new check &e%s", SafeChat.getLocale().getString("prefix"), check.getName())));
     }
 
     /**
      * Register a check if it wasn't.
      *
      * @param check The check.
-     * @return True if the check was registered, false otherwise.
      */
-    public final boolean register(@NotNull Check check) {
+    public final void register(@NotNull Check check) {
         if (check == null) {
-            return false;
+            return;
         }
 
         LinkedList<Check> checks = registeredChecks.get(check.getCheckPriority());
 
         if (checks.contains(check)) {
-            return false;
+            return;
         }
 
         boolean added = checks.add(check);
@@ -83,7 +83,6 @@ public final class ChecksContainer {
             manager.callEvent(new CheckRegisterEvent(check));
             logCheckRegistration(check);
         }
-        return added;
     }
 
     /**

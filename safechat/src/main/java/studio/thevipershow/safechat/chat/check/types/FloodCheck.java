@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+
 @CheckName(name = "Flood")
 @CheckPermission(permission = "safechat.bypass.flood")
 @CheckPriority(priority = CheckPriority.Priority.HIGH)
@@ -111,7 +112,7 @@ public final class FloodCheck extends ChatCheck {
         double delay = Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.FLOOD_REQUIRED_DELAY));
         double missingTime = delay - ((System.currentTimeMillis() - lastWriteMap.getOrDefault(player.getUniqueId(), System.currentTimeMillis())) / 1000f);
         return message.replace(PLAYER_PLACEHOLDER, player.getName())
-                .replace(PREFIX_PLACEHOLDER, SafeChat.PREFIX)
+                .replace(PREFIX_PLACEHOLDER, SafeChat.getLocale().getString("prefix"))
                 .replace(TIME_PLACEHOLDER, String.format("%.1fs", missingTime));
     }
 

@@ -22,7 +22,7 @@ public class CheckUnregisterEvent extends ChatCheckEvent {
     }
 
     @Override
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return handlerList;
     }
 

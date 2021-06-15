@@ -21,6 +21,8 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Matcher;
 
+
+@SuppressWarnings("unused")
 @CheckName(name = "Address")
 @CheckPermission(permission = "safechat.bypass.address")
 @CheckPriority(priority = CheckPriority.Priority.LOW)
@@ -156,7 +158,7 @@ public final class AddressCheck extends ChatCheck {
     @Override
     public @NotNull String replacePlaceholders(@NotNull String message, @NotNull ChatData data) {
         return message.replace(PLAYER_PLACEHOLDER, data.getPlayer().getName())
-                .replace(PREFIX_PLACEHOLDER, SafeChat.PREFIX);
+                .replace(PREFIX_PLACEHOLDER, SafeChat.getLocale().getString("prefix"));
     }
 
     /**

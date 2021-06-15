@@ -24,6 +24,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+
 public final class SafeChatUtils {
 
     public static final char DEFAULT_COLOR_CHAR = 0x26;
@@ -45,6 +46,10 @@ public final class SafeChatUtils {
         Logger logger = Logger.getLogger(aClass.getName() + " check");
         try {
             File file = new File(SafeChat.getPlugin(SafeChat.class).getDataFolder(), "logs/checkLogs.log");
+            File directory = new File(SafeChat.getPlugin(SafeChat.class).getDataFolder(), "logs/");
+            if (!directory.exists() & !file.mkdirs()) {
+                return;
+            }
             if (!file.exists() && !file.createNewFile()) {
                 return;
             }
@@ -70,7 +75,7 @@ public final class SafeChatUtils {
             logger.setUseParentHandlers(false);
             logger.setLevel(Level.INFO);
 
-            logger.log(Level.INFO, player.getName() + ": " + message + "\n");
+            logger.log(Level.INFO, player.getName() + ": " + message + "\\n");
             fileHandler.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -92,7 +97,8 @@ public final class SafeChatUtils {
         if (sender.hasPermission(permission)) {
             return true;
         } else {
-            sender.sendMessage(color(SafeChat.PREFIX + "&cYou are missing permission &7" + permission));
+            sender.sendMessage(color(SafeChat.getLocale().getString("missing_permission").replaceAll("(?i)\\{prefix}", SafeChat.getLocale().getString("prefix"))
+                    .replaceAll("(?i)\\{permission}", permission)));
             return false;
         }
     }

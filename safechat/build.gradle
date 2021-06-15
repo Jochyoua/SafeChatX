@@ -59,7 +59,7 @@ dependencies {
     implementation 'com.github.gwenn:sqlite-dialect:0.1.0'
     implementation 'com.ibm.db2:jcc:11.5.5.0'
     compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
-    compileOnly 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
+    implementation 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
     compileOnly 'org.jetbrains:annotations:20.1.0'
 }
 
@@ -67,10 +67,16 @@ group 'studio.thevipershow'
 version '2.1.5-SNAPSHOT'
 description 'safechat'
 java.sourceCompatibility = JavaVersion.VERSION_1_8
+compileJava.options.encoding = 'UTF-8'
 tasks.withType(JavaCompile) {
     options.encoding 'UTF-8'
 }
 shadowJar {
+
+    dependencies {
+        exclude(dependency('org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'))
+    }
+
     relocate 'org.bstats', 'studio.thevipershow.safechat.libs.bstats'
     relocate 'studio.thevipershow.vtc', 'studio.thevipershow.safechat.libs.vtc'
     relocate 'org.antlr', 'studio.thevipershow.safechat.libs.antlr'
@@ -95,7 +101,13 @@ shadowJar {
     relocate 'org.postgresql', 'studio.thevipershow.safechat.libs.org.postgresql'
     relocate 'org.jboss', 'studio.thevipershow.safechat.libs.org.jboss'
     relocate 'javax.persistence', 'studio.thevipershow.safechat.libs.javax.persistence'
-    relocate 'com.ibm', 'studio.thevipershow.safechat.libs.com.ibm'
+    relocate 'COM.ibm', 'studio.thevipershow.safechat.libs.com.ibm'
+    relocate 'com.hibernate', 'studio.thevipershow.safechat.libs.org.hibernate'
+    relocate 'org.sqlite', 'studio.thevipershow.safechat.libs.org.sqlite'
+    relocate 'com.zaxxer.hikari', 'studio.thevipershow.safechat.libs.com.zaxxer.hikari'
+    relocate 'com.javax', 'studio.thevipershow.safechat.libs.com.javax'
+    relocate 'net.jpountz', 'studio.thevipershow.safechat.libs.net.jpountz'
+    relocate 'sqlj.runtime', 'studio.thevipershow.safechat.libs.sqlj.runtime'
 }
 processResources.from(sourceSets.main.resources.srcDirs) {
     expand 'version': project.version

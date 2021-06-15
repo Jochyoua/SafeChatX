@@ -32,7 +32,7 @@ public class ChatPunishmentEvent extends ChatCheckEvent implements Cancellable {
     }
 
     @Override
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return handlerList;
     }
 

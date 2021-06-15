@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+
 @CheckName(name = "RepetitionCheck")
 @CheckPermission(permission = "safechat.bypass.repetition")
 @CheckPriority(priority = CheckPriority.Priority.HIGH)
@@ -122,7 +123,7 @@ public final class RepetitionCheck extends ChatCheck {
     public @NotNull String replacePlaceholders(@NotNull String message, @NotNull ChatData data) {
         return message
                 .replace(PLAYER_PLACEHOLDER, data.getPlayer().getName())
-                .replace(PREFIX_PLACEHOLDER, SafeChat.PREFIX);
+                .replace(PREFIX_PLACEHOLDER, SafeChat.getLocale().getString("prefix"));
     }
 
     /**

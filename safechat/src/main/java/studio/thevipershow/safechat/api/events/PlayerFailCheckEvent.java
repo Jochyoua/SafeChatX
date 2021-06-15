@@ -62,7 +62,7 @@ public class PlayerFailCheckEvent extends ChatCheckEvent implements Cancellable 
     }
 
     @Override
-    public final HandlerList getHandlers() {
+    public final @NotNull HandlerList getHandlers() {
         return handlerList;
     }
 }

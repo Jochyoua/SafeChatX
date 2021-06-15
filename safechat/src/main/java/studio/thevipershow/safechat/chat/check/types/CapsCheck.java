@@ -16,6 +16,7 @@ import studio.thevipershow.safechat.config.messages.MessagesSection;
 import java.util.List;
 import java.util.Objects;
 
+
 @CheckName(name = "Caps")
 @CheckPermission(permission = "safechat.bypass.caps")
 @CheckPriority(priority = CheckPriority.Priority.LOW)
@@ -52,7 +53,7 @@ public final class CapsCheck extends ChatCheck {
                 uppercaseCounter++;
             }
         }
-        if(uppercaseCounter >= capsLimit && getLoggingEnabled()){
+        if (uppercaseCounter >= capsLimit && getLoggingEnabled()) {
             SafeChatUtils.logMessage(this, data.getPlayer(), data.getMessage());
         }
 
@@ -94,7 +95,7 @@ public final class CapsCheck extends ChatCheck {
     public @NotNull String replacePlaceholders(@NotNull String message, @NotNull ChatData data) {
         return message
                 .replace(PLAYER_PLACEHOLDER, data.getPlayer().getName())
-                .replace(PREFIX_PLACEHOLDER, SafeChat.PREFIX);
+                .replace(PREFIX_PLACEHOLDER, SafeChat.getLocale().getString("prefix"));
     }
 
     /**

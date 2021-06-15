@@ -4,7 +4,6 @@ import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Server;
 import org.bukkit.command.CommandMap;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,6 +20,7 @@ import studio.thevipershow.safechat.config.Configurations;
 import studio.thevipershow.safechat.config.address.AddressConfig;
 import studio.thevipershow.safechat.config.blacklist.BlacklistConfig;
 import studio.thevipershow.safechat.config.checks.CheckConfig;
+import studio.thevipershow.safechat.config.localization.Localization;
 import studio.thevipershow.safechat.config.messages.MessagesConfig;
 import studio.thevipershow.safechat.debug.Debugger;
 import studio.thevipershow.safechat.persistence.SafeChatHibernate;
@@ -35,9 +35,9 @@ import java.util.Objects;
 public final class SafeChat extends JavaPlugin {
 
     public static final short PLUGIN_ID = 9876;
-    public static final String PREFIX = "&8[&6SafeChat&8] ";
     // Data
     private static final String VAULT_NAME = "Vault";
+    public static Localization localization;
     // Configs
     private PluginsConfigurationsManager configManager;
     private PluginConfigurationsData<SafeChat> configData;
@@ -52,7 +52,10 @@ public final class SafeChat extends JavaPlugin {
 
     // Commands
     private SafeChatCommand safechatCommand;
-    private PluginCommand safechatBukkitCommand;
+
+    public static Localization getLocale() {
+        return localization;
+    }
 
     private void setupMetrics() {
         metrics = new Metrics(this, PLUGIN_ID);
@@ -78,16 +81,17 @@ public final class SafeChat extends JavaPlugin {
         pluginData.setConsoleDebuggingInfo(true);
         pluginData.loadAllConfigs(Configurations.class);
         pluginData.exportAndLoadAllLoadedConfigs(false);
+        localization.loadTranslation(Objects.requireNonNull(pluginData.getConfig(Configurations.MESSAGES)));
     }
 
     @SuppressWarnings("unchecked")
     private void setupChecksContainer() {
         checksContainer = ChecksContainer.getInstance(this);
-        PluginConfigurationsData<SafeChat> configData = Objects.requireNonNull(getConfigData());
-        MessagesConfig messagesConfig = Objects.requireNonNull(configData.getConfig(Configurations.MESSAGES));
-        CheckConfig checkConfig = Objects.requireNonNull(configData.getConfig(Configurations.CHECKS_SETTINGS));
-        AddressConfig addressConfig = Objects.requireNonNull(configData.getConfig(Configurations.ADDRESS));
-        BlacklistConfig blacklistConfig = Objects.requireNonNull(configData.getConfig(Configurations.BLACKLIST));
+        PluginConfigurationsData<SafeChat> pluginConfigurationsData = Objects.requireNonNull(getConfigData());
+        MessagesConfig messagesConfig = Objects.requireNonNull(pluginConfigurationsData.getConfig(Configurations.MESSAGES));
+        CheckConfig checkConfig = Objects.requireNonNull(pluginConfigurationsData.getConfig(Configurations.CHECKS_SETTINGS));
+        AddressConfig addressConfig = Objects.requireNonNull(pluginConfigurationsData.getConfig(Configurations.ADDRESS));
+        BlacklistConfig blacklistConfig = Objects.requireNonNull(pluginConfigurationsData.getConfig(Configurations.BLACKLIST));
 
         AddressCheck addressCheck = new AddressCheck(addressConfig, checkConfig, messagesConfig);
         FloodCheck floodCheck = new FloodCheck(checkConfig, messagesConfig);
@@ -114,7 +118,7 @@ public final class SafeChat extends JavaPlugin {
             CommandMap commandMap = SafeChatUtils.getCommandMap();
             commandMap.register("safechat", safechatCommand);
         } catch (Exception e) {
-            getLogger().warning("Could not register the \"/safechat\" command.");
+            getLogger().warning("Could not register the \"safechat\" command.");
         }
     }
 
@@ -132,12 +136,13 @@ public final class SafeChat extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        localization = new Localization();
         setupMetrics();
         setupDebugger();
+        setupConfigs();
         if (!setupEconomy()) {
             getLogger().warning("Vault not present, cannot use economy functionalities.");
         }
-        setupConfigs();
         setupHibernate();
         setupChecksContainer();
         setupCommands();
@@ -148,7 +153,7 @@ public final class SafeChat extends JavaPlugin {
         try {
             final CommandMap map = SafeChatUtils.getCommandMap();
             if (!safechatCommand.unregister(map)) {
-                getLogger().warning("Could not unregister \"/safechat\" command");
+                getLogger().warning("Could not unregister \"safechat\" command");
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {
             getLogger().warning("Could not get command map!");

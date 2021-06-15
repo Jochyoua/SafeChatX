@@ -9,6 +9,10 @@ import studio.thevipershow.vtc.SectionType;
  */
 public enum MessagesSection implements SectionType {
     /**
+     * The language to be used
+     */
+    LOCALE("messages.locale", String.class),
+    /**
      * The messages sent when someone sends an address.
      */
     ADDRESS_WARNING("messages.address-warning", TomlArray.class),

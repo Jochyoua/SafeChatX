@@ -5,6 +5,14 @@
 # SafeChatX
 A plugin to keep your chat safe.
 
+
+### SafeChat locales
+SafeChat has locales for you to edit to your liking, every message a player sees from SafeChat may be modified.\
+We plan on adding more language locales in the future for you to choose from.\
+To edit a locale message, all you need to do is get the latest version of the locale from out github repo\
+(https://github.com/Jochyoua/SafeChatX/tree/master/safechat/src/main/resources/) and choose a file ending in .properties\
+After you choose your file, drop it into the SafeChat directory and modify the messages there.\
+Reload the plugin with `/safechat reload` and it will load right up!
 ### SafeChat Commands
 
 SafeChat provides some commands in-game that will allow to interact with the configurations or the checks. The commands

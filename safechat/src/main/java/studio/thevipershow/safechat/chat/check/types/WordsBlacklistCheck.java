@@ -23,6 +23,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 /**
  * Checks if a string is banned using a blacklist.
  */
@@ -172,7 +173,7 @@ public final class WordsBlacklistCheck extends ChatCheck {
     @Override
     public @NotNull String replacePlaceholders(@NotNull String message, @NotNull ChatData data) {
         return message.replace(PLAYER_PLACEHOLDER, data.getPlayer().getName())
-                .replace(PREFIX_PLACEHOLDER, SafeChat.PREFIX);
+                .replace(PREFIX_PLACEHOLDER, SafeChat.getLocale().getString("prefix"));
     }
 
     /**
@@ -206,6 +207,6 @@ public final class WordsBlacklistCheck extends ChatCheck {
      */
     @Override
     public boolean getLoggingEnabled() {
-        return checkConfig.getConfigValue(CheckSections.ENABLE_BLACKLIST_LOGGING, Boolean.class);
+        return Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.ENABLE_BLACKLIST_LOGGING, Boolean.class));
     }
 }

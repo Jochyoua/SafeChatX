@@ -4,6 +4,7 @@
 # {PLAYER} -> The name of the player who failed the check.
 # {TIME} -> missing time to write again (ONLY WORKS FOR CHAT FLOOD!)
 [messages]
+locale = "en"
 address-warning = [
     "{PREFIX} &7You have sent a forbidden address in chat.",
     "&7Please &e{PLAYER}&7, don't do that again!"

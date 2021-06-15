@@ -7,6 +7,8 @@ import studio.thevipershow.safechat.SafeChat;
 import studio.thevipershow.safechat.SafeChatUtils;
 import studio.thevipershow.safechat.api.checks.Check;
 import studio.thevipershow.safechat.api.checks.ChecksContainer;
+import studio.thevipershow.safechat.config.Configurations;
+import studio.thevipershow.safechat.config.localization.Localization;
 import studio.thevipershow.safechat.persistence.mappers.PlayerDataManager;
 import studio.thevipershow.safechat.persistence.types.PlayerData;
 import studio.thevipershow.vtc.PluginConfigurationsData;
@@ -16,7 +18,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+
+import static studio.thevipershow.safechat.SafeChat.getLocale;
+
 
 public class SafeChatCommand extends Command {
 
@@ -29,44 +36,32 @@ public class SafeChatCommand extends Command {
     }
 
     public static void onHelp(@NotNull CommandSender sender) {
-        sender.sendMessage(SafeChatUtils.color("&7&lSafeChat's Help Page&7:")); // │ ├
-        sender.sendMessage(SafeChatUtils.color("&7CHEATSHEET:"));
-        sender.sendMessage(SafeChatUtils.color(" - &7<&6arg&7> &f= &7required arg"));
-        sender.sendMessage(SafeChatUtils.color(" - &7(&6arg&7) &f= &7optional arg"));
-        sender.sendMessage(SafeChatUtils.color("&7  │"));
-        sender.sendMessage(SafeChatUtils.color("&7  ├─ &8[&esafechat help&8]"));
-        sender.sendMessage(SafeChatUtils.color("&7  │  &8[Permission&8]&7: &o&fnone"));
-        sender.sendMessage(SafeChatUtils.color("&7  │  &o&fUsed to open this help page."));
-        sender.sendMessage(SafeChatUtils.color("&7  │"));
-        sender.sendMessage(SafeChatUtils.color("&7  ├─ &8[&esafechat reload&8]"));
-        sender.sendMessage(SafeChatUtils.color("&7  │  &8[Permission&8]&7:"));
-        sender.sendMessage(SafeChatUtils.color("&7  │  &o&fsafechat.commands.reload"));
-        sender.sendMessage(SafeChatUtils.color("&7  │  &o&fUsed to reload configurations data."));
-        sender.sendMessage(SafeChatUtils.color("&7  │"));
-        sender.sendMessage(SafeChatUtils.color("&7  ├─ &8[&esafechat flags &8(&6flag-name&8) &8<&6player&8>&8]"));
-        sender.sendMessage(SafeChatUtils.color("&7  │  &8[Permission&8]&7:"));
-        sender.sendMessage(SafeChatUtils.color("&7  │  &o&fsafechat.commands.flags"));
-        sender.sendMessage(SafeChatUtils.color("&7  │  &o&fUsed to lookup at someone flags data."));
+        sender.sendMessage(SafeChatUtils.color(SafeChat.getLocale().getString("help_command")));
     }
 
     public static void unknownCommand(@NotNull CommandSender sender) {
-        sender.sendMessage(SafeChatUtils.color(SafeChat.PREFIX + "&cYou have used an unknown argument."));
+        sender.sendMessage(SafeChatUtils.color(SafeChat.getLocale().getString("unknown_command").replaceAll("(?i)\\{prefix}", getLocale().getString("prefix"))));
     }
 
     public static void unknownAmountOfArgs(@NotNull CommandSender sender) {
-        sender.sendMessage(SafeChatUtils.color(SafeChat.PREFIX + "&cYou have used too many arguments."));
+        sender.sendMessage(SafeChatUtils.color(SafeChat.getLocale().getString("too_many_arguments").replaceAll("(?i)\\{prefix}", getLocale().getString("prefix"))));
     }
 
     public final void reloadCommand(@NotNull CommandSender sender) {
         if (SafeChatUtils.permissionCheck("safechat.commands.reload", sender)) {
             long operationStartTime = System.nanoTime();
-            sender.sendMessage(SafeChatUtils.color(SafeChat.PREFIX + "&7The plugin is going to be reloaded..."));
+            sender.sendMessage(SafeChatUtils.color(SafeChat.getLocale().getString("reload_begin").replaceAll("(?i)\\{prefix}", getLocale().getString("prefix"))));
 
             PluginConfigurationsData<SafeChat> data = safeChat.getConfigData();
             data.exportAndLoadAllLoadedConfigs(false); // storing new values.
 
+            ResourceBundle.clearCache();
+            Localization localization = new Localization();
+            localization.loadTranslation(Objects.requireNonNull(safeChat.getConfigData().getConfig(Configurations.MESSAGES)));
+            SafeChat.localization = localization;
+
             float timeTaken = (System.nanoTime() - operationStartTime) / 1E6F;
-            sender.sendMessage(SafeChatUtils.color(String.format("    &7The configurations have been reloaded in &6%.1f&7ms", timeTaken)));
+            sender.sendMessage(SafeChatUtils.color(String.format(SafeChat.getLocale().getString("reload_finish").replaceAll("(?i)\\{prefix}", getLocale().getString("prefix")), timeTaken)));
         }
     }
 
@@ -83,12 +78,12 @@ public class SafeChatCommand extends Command {
                 int flagAmount;
                 Map<String, Integer> playerFlags = playerData.getFlagsMap();
                 flagAmount = playerFlags.getOrDefault(flagType, 0);
-                commandSender.sendMessage(SafeChatUtils.color(String.format("&7Player &e%s &7has &a%d &7flags of type &e%s", playerName, flagAmount, flagType)));
+                commandSender.sendMessage(SafeChatUtils.color(String.format(SafeChat.getLocale().getString("flag_information").replaceAll("(?i)\\{prefix}", getLocale().getString("prefix")), playerName, flagAmount, flagType)));
             } else {
-                commandSender.sendMessage(SafeChatUtils.color("&7That player was not present in the database."));
+                commandSender.sendMessage(SafeChatUtils.color(SafeChat.getLocale().getString("not_found_in_database").replaceAll("(?i)\\{prefix}", getLocale().getString("prefix"))));
             }
         } else {
-            commandSender.sendMessage(SafeChatUtils.color(String.format("&7The check &e%s &7does not exist!", flagType)));
+            commandSender.sendMessage(SafeChatUtils.color(String.format(SafeChat.getLocale().getString("check_does_not_exist").replaceAll("(?i)\\{prefix}", getLocale().getString("prefix")), flagType)));
         }
     }
 
@@ -110,11 +105,9 @@ public class SafeChatCommand extends Command {
         final PlayerData playerData = dataManager.getPlayerData(playerName);
         if (playerData != null) {
             Map<String, Integer> playerFlags = playerData.getFlagsMap();
-            playerFlags.forEach((k, v) -> {
-                commandSender.sendMessage(SafeChatUtils.color(String.format("&7Player &e%s &7has &a%d &7flags of type &e%s", playerName, v, k)));
-            });
+            playerFlags.forEach((k, v) -> commandSender.sendMessage(SafeChatUtils.color(String.format(SafeChat.getLocale().getString("flag_information").replaceAll("(?i)\\{prefix}", getLocale().getString("prefix")), playerName, v, k))));
         } else {
-            commandSender.sendMessage(SafeChatUtils.color("&7That player was not present in the database."));
+            commandSender.sendMessage(SafeChatUtils.color(SafeChat.getLocale().getString("not_found_in_database").replaceAll("(?i)\\{prefix}", getLocale().getString("prefix"))));
         }
     }
 
@@ -143,7 +136,7 @@ public class SafeChatCommand extends Command {
     }
 
     @Override
-    public boolean execute(final CommandSender sender, final String label, final String[] args) {
+    public boolean execute(final @NotNull CommandSender sender, final @NotNull String label, final String[] args) {
         final int arguments = args.length;
         switch (arguments) {
             case 0:
@@ -172,7 +165,7 @@ public class SafeChatCommand extends Command {
     }
 
     @Override
-    public List<String> tabComplete(final CommandSender sender, final String alias, final String[] args) throws IllegalArgumentException {
+    public @NotNull List<String> tabComplete(final @NotNull CommandSender sender, final @NotNull String alias, final String[] args) throws IllegalArgumentException {
         final int length = args.length;
         switch (length) {
             case 1:

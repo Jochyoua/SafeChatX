@@ -1,6 +1,6 @@
 package studio.safechat.tests;
 
-import org.jetbrains.annotations.NotNull;
+import com.sun.istack.NotNull;
 import studio.thevipershow.safechat.api.checks.ChatCheck;
 import studio.thevipershow.safechat.api.checks.ChatData;
 import studio.thevipershow.safechat.api.checks.CheckName;
@@ -32,12 +32,14 @@ public final class MessageTooLongCheck extends ChatCheck {
     }
 
     @Override
-    public @NotNull List<String> getWarningMessages() {
+    public @NotNull
+    List<String> getWarningMessages() {
         return myWarnings;
     }
 
     @Override
-    public @NotNull String replacePlaceholders(@NotNull String message, @NotNull ChatData data) {
+    public @NotNull
+    String replacePlaceholders(@NotNull String message, @NotNull ChatData data) {
         return message
                 .replace("{PLAYER}", data.getPlayer().getName())
                 .replace("{MSG_SIZE}", Integer.toString(message.length()))
@@ -50,7 +52,8 @@ public final class MessageTooLongCheck extends ChatCheck {
     }
 
     @Override
-    public @NotNull String getPunishmentCommand() {
+    public @NotNull
+    String getPunishmentCommand() {
         return punishment;
     }
 
