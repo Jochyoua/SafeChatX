@@ -47,7 +47,7 @@ public final class SafeChatUtils {
         try {
             File file = new File(SafeChat.getPlugin(SafeChat.class).getDataFolder(), "logs/checkLogs.log");
             File directory = new File(SafeChat.getPlugin(SafeChat.class).getDataFolder(), "logs/");
-            if (!directory.exists() & !file.mkdirs()) {
+            if (!directory.exists() & !directory.mkdirs()) {
                 return;
             }
             if (!file.exists() && !file.createNewFile()) {
