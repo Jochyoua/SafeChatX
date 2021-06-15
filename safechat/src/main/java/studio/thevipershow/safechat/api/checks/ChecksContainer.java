@@ -65,15 +65,15 @@ public final class ChecksContainer {
      *
      * @param check The check.
      */
-    public final void register(@NotNull Check check) {
+    public final boolean register(@NotNull Check check) {
         if (check == null) {
-            return;
+            return false;
         }
 
         LinkedList<Check> checks = registeredChecks.get(check.getCheckPriority());
 
         if (checks.contains(check)) {
-            return;
+            return false;
         }
 
         boolean added = checks.add(check);
@@ -83,6 +83,7 @@ public final class ChecksContainer {
             manager.callEvent(new CheckRegisterEvent(check));
             logCheckRegistration(check);
         }
+        return added;
     }
 
     /**
