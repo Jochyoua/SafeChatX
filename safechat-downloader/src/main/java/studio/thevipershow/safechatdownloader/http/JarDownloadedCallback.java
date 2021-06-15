@@ -87,7 +87,6 @@ public class JarDownloadedCallback {
                     coloredLogger.info("  - &7JAR URL: &e" + chosenRelease.getUrl());
                     coloredLogger.info("  - &7Version: &e" + chosenRelease.getName());
 
-                    // downloader.downloadJARFromUrl(chosenRelease);
                     return chosenRelease;
                 }
             }

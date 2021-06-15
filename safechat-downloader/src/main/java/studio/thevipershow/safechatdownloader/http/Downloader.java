@@ -131,15 +131,14 @@ public class Downloader {
         for (final File file : files) {
             final String name = file.getName();
             final String versionStr = getVersionFromName(name);
-            // TODO: proper checking
             try {
                 if (Files.deleteIfExists(file.toPath())) {
-                    coloredLogger.info("Deleted SafeChat JAR " + name);
+                    coloredLogger.info("Deleted SafeChat JAR " + name + " v" + versionStr);
                 } else {
-                    coloredLogger.warn("Could not delete SafeChat JAR " + name);
+                    coloredLogger.warn("Could not delete SafeChat JAR " + name + " v" + versionStr);
                 }
             } catch (IOException e) {
-                coloredLogger.warn("Could not delete SafeChat JAR " + name);
+                coloredLogger.warn("Could not delete SafeChat JAR " + name + " v" + versionStr);
                 e.printStackTrace();
             }
         }
