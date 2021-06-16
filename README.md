@@ -1,7 +1,8 @@
 ![GitHub](https://img.shields.io/github/license/Jochyoua/SafeChatX?style=plastic)
 ![Lines of code](https://img.shields.io/tokei/lines/github/Jochyoua/SafeChatX?style=plastic)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Jochyoua/SafeChatX?style=plastic)
-![swag](https://img.shields.io/badge/swag-yes-red)
+![swag](https://img.shields.io/badge/swag-yes-red)\
+[SpigotMC Resource](https://www.spigotmc.org/resources/safechat.79115/ "SpigotMC Resource")
 # SafeChatX
 A plugin to keep your chat safe.
 
