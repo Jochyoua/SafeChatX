@@ -113,12 +113,13 @@ public final class WordsBlacklistCheck extends ChatCheck {
                         StringBuilder stringBuilder = new StringBuilder();
                         String quote = Pattern.quote("!@#$%^&*()_+-".replace("\"", "\\\""));
                         int length = word.length();
+                        stringBuilder.append("(?i)");
                         for (String piece :
                                 word.split("")) {
                             if (length <= 0) {
                                 stringBuilder.append("(").append(piece).append("+|([").append(quote).append("]|((§|&)[0-9A-FK-OR]|(§|&)))+\\s*+").append(piece).append(")");
                             } else if (length == str.length() - 1) {
-                                stringBuilder.append("(?i)(").append(piece).append("+\\s*+|").append(piece).append("+\\s*+([").append(quote).append("]+\\s*+|((§|&)[0-9A-FK-OR]|(§|&)))+\\s*+)");
+                                stringBuilder.append("(").append(piece).append("+\\s*+|").append(piece).append("+\\s*+([").append(quote).append("]+\\s*+|((§|&)[0-9A-FK-OR]|(§|&)))+\\s*+)");
                             } else {
                                 stringBuilder.append("(").append(piece).append("+\\s*+|([").append(quote).append("]+\\s*+|((§|&)[0-9A-FK-OR]|(§|&)))+\\s*+").append(piece).append("+\\s*+)");
                             }
