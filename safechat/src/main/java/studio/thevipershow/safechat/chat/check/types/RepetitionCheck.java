@@ -62,20 +62,12 @@ public final class RepetitionCheck extends ChatCheck {
                 double compare = ratcliffObershelp.similarity(lastMessage, message);
                 double factor = ((Number) Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.REPETITION_MAXIMUM_SIMILARITY))).doubleValue();
                 if (compare >= factor) {
-
-                    if (getLoggingEnabled()) {
-                        SafeChatUtils.logMessage(this, data.getPlayer(), data.getMessage());
-                    }
                     return true;
                 } else {
                     lastMessageMap.put(uuid, message);
                 }
             } else {
                 if (message.equalsIgnoreCase(lastMessage)) {
-
-                    if (getLoggingEnabled()) {
-                        SafeChatUtils.logMessage(this, data.getPlayer(), data.getMessage());
-                    }
                     return true;
                 } else {
                     lastMessageMap.put(uuid, message);

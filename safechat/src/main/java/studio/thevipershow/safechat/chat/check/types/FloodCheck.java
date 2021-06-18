@@ -64,9 +64,6 @@ public final class FloodCheck extends ChatCheck {
                 lastWriteMap.put(uuid, System.currentTimeMillis());
                 return false;
             } else {
-                if (getLoggingEnabled()) {
-                    SafeChatUtils.logMessage(this, data.getPlayer(), data.getMessage());
-                }
                 return true;
             }
         } else {

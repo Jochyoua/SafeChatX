@@ -63,9 +63,6 @@ public final class AddressCheck extends ChatCheck {
             return false;
         }
 
-        if (getLoggingEnabled()) {
-            SafeChatUtils.logMessage(this, data.getPlayer(), data.getMessage());
-        }
 
         String[] ss;
 
@@ -85,10 +82,6 @@ public final class AddressCheck extends ChatCheck {
                             if (matched) {
                                 continue whileLabel;
                             }
-                        }
-
-                        if (getLoggingEnabled()) {
-                            SafeChatUtils.logMessage(this, data.getPlayer(), data.getMessage());
                         }
                         return true;
                     }
@@ -112,9 +105,7 @@ public final class AddressCheck extends ChatCheck {
                                 continue whileLabel;
                             }
                         }
-                        if (getLoggingEnabled()) {
-                            SafeChatUtils.logMessage(this, data.getPlayer(), data.getMessage());
-                        }
+
                         return true;
                     }
                 }

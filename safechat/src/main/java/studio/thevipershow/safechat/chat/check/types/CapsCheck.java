@@ -37,9 +37,6 @@ public final class CapsCheck extends ChatCheck {
             return false;
         }
 
-        if (getLoggingEnabled()) {
-            SafeChatUtils.logMessage(this, data.getPlayer(), data.getMessage());
-        }
 
         Long capsLimit = checkConfig.getConfigValue(CheckSections.CAPS_UPPERCASE_CHARACTERS_LIMIT);
 
@@ -52,9 +49,6 @@ public final class CapsCheck extends ChatCheck {
             if (Character.isUpperCase(c)) {
                 uppercaseCounter++;
             }
-        }
-        if (uppercaseCounter >= capsLimit && getLoggingEnabled()) {
-            SafeChatUtils.logMessage(this, data.getPlayer(), data.getMessage());
         }
 
 

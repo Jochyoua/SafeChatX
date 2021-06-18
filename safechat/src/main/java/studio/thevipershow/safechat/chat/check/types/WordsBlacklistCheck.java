@@ -60,7 +60,8 @@ public final class WordsBlacklistCheck extends ChatCheck {
             return false;
         }
 
-        boolean checkSimilar = checkConfig.getConfigValue(CheckSections.BLACKLIST_ALLOW_SIMILARITY);
+        boolean checkSimilar = checkConfig.getConfigValue(CheckSections.BLACKLIST_ALLOW_SIMILARITY, Boolean.class);
+        boolean regexFallback = checkConfig.getConfigValue(CheckSections.ENABLE_BLACKLIST_FALLBACK, Boolean.class);
         TomlArray words = blacklistConfig.getConfigValue(BlacklistSection.WORDS);
 
         int wordsSize = words.size();
@@ -76,42 +77,39 @@ public final class WordsBlacklistCheck extends ChatCheck {
         }
 
         String[] ss = SPLIT_SPACE.split(s);
+        double factor = ((Number) Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.BLACKLIST_MAXIMUM_SIMILARITY))).doubleValue();
 
-        if (checkSimilar) {
-            double factor = ((Number) Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.BLACKLIST_MAXIMUM_SIMILARITY))).doubleValue();
+        if (checkSimilar && !regexFallback) {
             for (int k = 0; k < wordsSize; k++) {
-                final String str = words.getString(k);
+                String str = words.getString(k);
                 for (final String value : ss) {
                     if (algo.similarity(value, str) >= factor || algo.similarity(value.toLowerCase(Locale.ROOT), str) >= factor) {
-                        if (getLoggingEnabled()) {
-                            SafeChatUtils.logMessage(this, data.getPlayer(), data.getMessage());
-                        }
                         return true;
                     }
                 }
             }
         } else {
-
             for (int k = 0; k < wordsSize; k++) {
-                final String str = words.getString(k);
-                if (str.equalsIgnoreCase(s)) {
-                    if (getLoggingEnabled()) {
-                        SafeChatUtils.logMessage(this, data.getPlayer(), data.getMessage());
+                String str = words.getString(k);
+                if (checkSimilar) {
+                    for (final String value : ss) {
+                        if (algo.similarity(value, str) >= factor || algo.similarity(value.toLowerCase(Locale.ROOT), str) >= factor) {
+                            return true;
+                        }
                     }
+                }
+                if (str.equalsIgnoreCase(s)) {
                     return true;
                 } else {
                     for (final String value : ss) {
                         if (value.equalsIgnoreCase(str)) {
-                            if (getLoggingEnabled()) {
-                                SafeChatUtils.logMessage(this, data.getPlayer(), data.getMessage());
-                            }
                             return true;
                         }
                     }
-                    if (checkConfig.getConfigValue(CheckSections.ENABLE_BLACKLIST_FALLBACK, Boolean.class)) {
+                    if (regexFallback) {
                         String word = words.getString(k);
                         StringBuilder stringBuilder = new StringBuilder();
-                        String quote = Pattern.quote("!@#$%^&*()_+-".replace("\"", "\\\""));
+                        String quote = Pattern.quote("!@#$%^&*()_+-.'][/?;:");
                         int length = word.length();
                         stringBuilder.append("(?i)");
                         for (String piece :
@@ -127,9 +125,6 @@ public final class WordsBlacklistCheck extends ChatCheck {
                         Pattern p = Pattern.compile(stringBuilder.toString());
                         Matcher m = p.matcher(data.getMessage());
                         if (m.matches()) {
-                            if (getLoggingEnabled()) {
-                                SafeChatUtils.logMessage(this, data.getPlayer(), data.getMessage());
-                            }
                             return true;
                         }
                     }

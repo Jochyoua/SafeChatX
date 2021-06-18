@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.tomlj.TomlArray;
 import studio.thevipershow.safechat.api.checks.ChatCheck;
+import studio.thevipershow.safechat.api.checks.Check;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,11 +40,11 @@ public final class SafeChatUtils {
         return ChatColor.translateAlternateColorCodes(DEFAULT_COLOR_CHAR, string);
     }
 
-    public static void logMessage(ChatCheck aClass, Player player, String message) {
-        if (!aClass.getLoggingEnabled()) {
+    public static void logMessage(Check check, Player player, String message) {
+        if (!check.getLoggingEnabled()) {
             return;
         }
-        Logger logger = Logger.getLogger(aClass.getName() + " check");
+        Logger logger = Logger.getLogger(check.getName() + " check");
         try {
             File file = new File(SafeChat.getPlugin(SafeChat.class).getDataFolder(), "logs/checkLogs.log");
             File directory = new File(SafeChat.getPlugin(SafeChat.class).getDataFolder(), "logs/");
@@ -75,12 +76,11 @@ public final class SafeChatUtils {
             logger.setUseParentHandlers(false);
             logger.setLevel(Level.INFO);
 
-            logger.log(Level.INFO, player.getName() + ": " + message + "\\n");
+            logger.log(Level.INFO, player.getName() + ": " + message + "\n");
             fileHandler.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @NotNull

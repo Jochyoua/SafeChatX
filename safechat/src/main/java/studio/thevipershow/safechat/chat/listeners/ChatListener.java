@@ -118,6 +118,10 @@ public final class ChatListener implements Listener {
                     continue;
                 }
 
+                if (check.getLoggingEnabled()) {
+                    SafeChatUtils.logMessage(check, data.getPlayer(), data.getMessage());
+                }
+
                 event.setCancelled(true);
                 sendWarning(check, data);
                 updateData(data.getPlayer(), check.getName());

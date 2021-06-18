@@ -1,5 +1,6 @@
 package studio.thevipershow.safechat.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -21,13 +22,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static studio.thevipershow.safechat.SafeChat.getLocale;
 
 
 public class SafeChatCommand extends Command {
 
-    private final static List<String> BASE_ARGS = Arrays.asList("help", "reload", "flags");
+    private final static List<String> BASE_ARGS = Arrays.asList("help", "reload", "flags", "version");
     private final SafeChat safeChat;
 
     public SafeChatCommand(@NotNull SafeChat safeChat) {
@@ -37,6 +39,12 @@ public class SafeChatCommand extends Command {
 
     public static void onHelp(@NotNull CommandSender sender) {
         sender.sendMessage(SafeChatUtils.color(SafeChat.getLocale().getString("help_command")));
+    }
+
+    public static void onVersion(@NotNull CommandSender sender) {
+        sender.sendMessage(SafeChatUtils.color(SafeChat.getLocale().getString("version_command"))
+                .replaceAll("(?i)\\{prefix}", getLocale().getString("prefix")).replaceAll("(?i)\\{version}", SafeChat.getPlugin(SafeChat.class).getDescription().getVersion())
+                .replaceAll("(?i)\\{server_version}", Bukkit.getServer().getVersion()));
     }
 
     public static void unknownCommand(@NotNull CommandSender sender) {
@@ -129,6 +137,9 @@ public class SafeChatCommand extends Command {
             case "help":
                 onHelp(sender);
                 break;
+            case "version":
+                onVersion(sender);
+                break;
             default:
                 unknownCommand(sender);
                 break;
@@ -173,6 +184,11 @@ public class SafeChatCommand extends Command {
             case 2: {
                 if (args[0].equalsIgnoreCase("flags")) {
                     return getAvailableCheckNamesList();
+                }
+            }
+            case 3:{
+                if(args[0].equalsIgnoreCase("flags")){
+                    return Stream.of(Bukkit.getOnlinePlayers(), Bukkit.getOfflinePlayers()).distinct().;
                 }
             }
             break;
