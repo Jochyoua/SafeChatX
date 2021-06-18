@@ -39,6 +39,9 @@ public class JarDownloadedCallback {
         coloredLogger.info("&7The JSON parsing operation will begin.");
 
         if (!body.isJsonArray()) {
+            coloredLogger.warn("&7API rate limit exceeded.");
+            coloredLogger.warn("&7To continue with your installation please");
+            coloredLogger.warn("&7download the latest jar from: https://github.com/Jochyoua/SafeChatX/releases/");
             throw new IllegalStateException("JSON request body was malformed.");
         }
 
