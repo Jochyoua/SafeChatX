@@ -1,0 +1,10 @@
+# Settings for your database
+[database]
+sql-flavor = 'h2' # The type of your sql
+username = 'root' # your database user name
+password = 'password' # your database user password
+db-name = 'my-database' # your database name
+port = 3306 # the port used by your database
+address = '127.0.0.1' # the address used by your database
+timeout = 1500 # timeout in milliseconds for unresponsiveness
+filepath = './plugins/SafeChat/safechat' # (only for file-based databases) don't modify if you don't know what it does.
