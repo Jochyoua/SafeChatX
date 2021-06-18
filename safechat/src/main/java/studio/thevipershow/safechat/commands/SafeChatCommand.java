@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static studio.thevipershow.safechat.SafeChat.getLocale;
 
@@ -184,11 +183,6 @@ public class SafeChatCommand extends Command {
             case 2: {
                 if (args[0].equalsIgnoreCase("flags")) {
                     return getAvailableCheckNamesList();
-                }
-            }
-            case 3:{
-                if(args[0].equalsIgnoreCase("flags")){
-                    return Stream.of(Bukkit.getOnlinePlayers(), Bukkit.getOfflinePlayers()).distinct().;
                 }
             }
             break;
