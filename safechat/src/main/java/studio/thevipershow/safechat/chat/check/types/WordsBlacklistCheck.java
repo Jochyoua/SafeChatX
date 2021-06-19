@@ -78,60 +78,47 @@ public final class WordsBlacklistCheck extends ChatCheck {
 
         String[] ss = SPLIT_SPACE.split(s);
         double factor = ((Number) Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.BLACKLIST_MAXIMUM_SIMILARITY))).doubleValue();
-
-        if (checkSimilar && !regexFallback) {
-            for (int k = 0; k < wordsSize; k++) {
-                String str = words.getString(k);
+        for (int k = 0; k < wordsSize; k++) {
+            String str = words.getString(k);
+            if (checkSimilar) {
                 for (final String value : ss) {
                     if (algo.similarity(value, str) >= factor || algo.similarity(value.toLowerCase(Locale.ROOT), str) >= factor) {
                         return true;
                     }
                 }
             }
-        } else {
-            for (int k = 0; k < wordsSize; k++) {
-                String str = words.getString(k);
-                if (checkSimilar) {
-                    for (final String value : ss) {
-                        if (algo.similarity(value, str) >= factor || algo.similarity(value.toLowerCase(Locale.ROOT), str) >= factor) {
-                            return true;
-                        }
-                    }
-                }
-                if (str.equalsIgnoreCase(s)) {
-                    return true;
-                } else {
-                    for (final String value : ss) {
-                        if (value.equalsIgnoreCase(str)) {
-                            return true;
-                        }
-                    }
-                    if (regexFallback) {
-                        String word = words.getString(k);
-                        StringBuilder stringBuilder = new StringBuilder();
-                        String quote = Pattern.quote("!@#$%^&*()_+-.'][/?;:");
-                        int length = word.length();
-                        stringBuilder.append("(?i)");
-                        for (String piece :
-                                word.split("")) {
-                            if (length <= 0) {
-                                stringBuilder.append("(").append(piece).append("+|([").append(quote).append("]|((§|&)[0-9A-FK-OR]|(§|&)))+\\s*+").append(piece).append(")");
-                            } else if (length == str.length() - 1) {
-                                stringBuilder.append("(").append(piece).append("+\\s*+|").append(piece).append("+\\s*+([").append(quote).append("]+\\s*+|((§|&)[0-9A-FK-OR]|(§|&)))+\\s*+)");
-                            } else {
-                                stringBuilder.append("(").append(piece).append("+\\s*+|([").append(quote).append("]+\\s*+|((§|&)[0-9A-FK-OR]|(§|&)))+\\s*+").append(piece).append("+\\s*+)");
-                            }
-                        }
-                        Pattern p = Pattern.compile(stringBuilder.toString());
-                        Matcher m = p.matcher(data.getMessage());
-                        if (m.matches()) {
-                            return true;
-                        }
+
+            if (str.equalsIgnoreCase(s)) {
+                return true;
+            } else {
+                for (final String value : ss) {
+                    if (value.equalsIgnoreCase(str)) {
+                        return true;
                     }
                 }
             }
+            if (regexFallback) {
+                StringBuilder stringBuilder = new StringBuilder();
+                String quote = Pattern.quote("!@#$%^&*()_+-.'?;:");
+                int length = str.length();
+                for (String piece :
+                        str.split("")) {
+                    --length;
+                    if (length <= 0) {
+                        stringBuilder.append("(").append(piece).append("+|([").append(quote).append("]|((§|&)[0-9A-FK-OR]|(§|&)))+\\s*+").append(piece).append(")");
+                    } else if (length == str.length() - 1) {
+                        stringBuilder.append("(").append(piece).append("+\\s*+|").append(piece).append("+\\s*+([").append(quote).append("]+\\s*+|((§|&)[0-9A-FK-OR]|(§|&)))+\\s*+)");
+                    } else {
+                        stringBuilder.append("(").append(piece).append("+\\s*+|([").append(quote).append("]+\\s*+|((§|&)[0-9A-FK-OR]|(§|&)))+\\s*+").append(piece).append("+\\s*+)");
+                    }
+                }
+                Pattern pattern = Pattern.compile(stringBuilder.toString(), Pattern.MULTILINE | Pattern.COMMENTS | Pattern.CASE_INSENSITIVE);
+                Matcher matcher = pattern.matcher(s);
+                if (matcher.find()) {
+                    return true;
+                }
+            }
         }
-
         return false;
     }
 

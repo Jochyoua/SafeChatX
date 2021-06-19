@@ -17,7 +17,23 @@ buildNumber.properties
 *.iml
 .idea/*
 !.idea/runConfigurations/
+#
+# Gradle
+#
+.gradle
+**/build/
+!src/**/build/
+*.bat
+/gradle
 
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Cache of project
+.gradletasknamecache
 #
 # Visual Studio Code
 #
