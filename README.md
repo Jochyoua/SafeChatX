@@ -47,33 +47,55 @@ that are currently available are listed here:
 ### SafeChat configurations
 
 SafeChat uses TOML to make the plugin configurable. TOML is an easy-to-use syntax which I recently adopted over YAML,
-you can read more about it here https://toml.io/en/. SafeChat currently has **5** configurations, I have decided to
+you can read more about it here https://toml.io/en/. \
+SafeChat currently has **5** configurations, I have decided to
 split the settings of SafeChat into multiple configurations to not create a huge single config and make editing more
 easy for the user!
-
+<table>
+<tr>
+<td>
+ 
 #### address-whitelist.toml
 
 A short configuration where you will be able to define the allowed addresses and domains into your plugin. All the other
 addresses and domains that are not whitelisted will automatically be considered as dangerous by SafeChat.
-
+<tr>
+<td>
+ 
 #### database-settings.toml
 
 This configuration makes you input values for the usage of the database. Make sure your data is correct if you are
 having troubles connecting to one of your databases.
-
+</td>
+</tr>
+<tr>
+<td>
+ 
 #### check-settings.toml
 
 A configuration for check-specific settings. From this configuration you will be able to enable checks, customize
 punishments levels, and other. This is where you can disable our check logger which logs Check violations into
 /plugins/SafeChat/logs/checkLogs.log.
-
+</td>
+</tr>
+<tr>
+<td>
+ 
 #### words-blacklist.toml
 
 A list of words that is considered forbidden on the server.
-
+</td>
+</tr>
+<tr>
+<td>
+ 
 #### messages.toml
 
 The messages that will be used by each specific check upon fail.
+</td>
+</tr>
+</table>
+ 
 ***
 
 ### SafeChat Database
@@ -128,28 +150,49 @@ Step 2: add **SafeChatX** as provided dependency
 
 To create a proper check, you must implement the check interface and define all the following methods respecting the
 scope:
-
+<table>
+<tr>
+<td>
+ 
 #### (boolean) Check#check(ChatData)
 
 This method will define the logic of your own check. When a check should fail, you should make it return true, otherwise
 it should return false. When a check returns true several other things will be done by SafeChat such as event cancelling
 and (not always) punishments and warnings.
-
+</tr>
+</td>
+<tr>
+<td>
+ 
 #### (boolean) Check#hasWarningEnabled()
 
 This specifies if your check, when failed, should provide a warning message to the user. The warning message is defined
 through another method in the check interface.
-
+</tr>
+</td>
+<tr>
+<td>
+ 
 #### (boolean) Check#getLoggingEnabled
 
 This specifices if your check will log data to /plugins/SafeChat/checkLogs.log
-
+</tr>
+</td>
+<tr>
+<td>
+ 
 #### (List<String>) Check#getWarningMessages()
 
 This is the list of messages that should get displayed to the user upon failing a check if the warning have been
-enabled. Each string in the list represents a newline and will be sent individually. If you want an empty message please
-DO NOT return null, return `Collections.emptyList()` or any other non-null empty list instead.
-
+enabled. \
+Each string in the list represents a newline and will be sent individually. If you want an empty message please
+DO NOT return null, \
+return `Collections.emptyList()` or any other non-null empty list instead.
+</tr>
+</td>
+<tr>
+<td>
+ 
 #### (String) Check#replacePlaceholders(String, ChatData)
 
 This method is used by SafeChat in several places, and it allows your check to define custom placeholders that can be
@@ -164,28 +207,51 @@ public String replacePlaceholders(String message,ChatData data){
         .replace("{PREFIX}",SafeChat.PREFIX);
         }
 ```
-
+</tr>
+</td>
+<tr>
+<td>
+ 
 #### (long) Check#getPunishmentRequiredValue()
 
 This is a long value and indicates how many times does the player needs to fail this specific check in order to trigger
-a punishment. If you do not want your check to cause a punishment you should simply return **-1**. An example of this
-would be the following: <br>suppose you create a check and its punishment required value is 5, then the player will
-require to fail this check 5 times in order for it to trigger a punishment. After the punishment has been executed, the
+a punishment. If you do not want your check to cause a punishment you should simply return **-1**. \
+An example of this would be the following: \
+suppose you create a check and its punishment required value is 5, then the player will
+require to fail this check 5 times \
+in order for it to trigger a punishment. \
+After the punishment has been executed, the
 counter will restart from the beginning.
-
+</tr>
+</td>
+<tr>
+<td>
+ 
 #### (String) Check#getPunishmentCommand()
 
 This is the punishment that will be executed when the player fails enough time a check. This messages are also subject
 to placeholders and they are defined through the replacePlaceholders method. An example could be the
 following: `/kick {PLAYER}`
-
+</tr>
+</td>
+<tr>
+<td>
+ 
 #### (CheckPriority.Priority) Check#getCheckPriority()
 
 This is the priority of this check. When a check has higher priority level it will be checked before, and vice versa.
-
+</tr>
+</td>
+<tr>
+<td>
+ 
 #### (String) Check#getBypassPermission()
 
 This is the permission required to bypass a check. Players that do have this permission will skip this check entirely.
+</tr>
+</td>
+</table>
+
 ***
  
 ### Annotations API
