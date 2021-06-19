@@ -64,7 +64,7 @@ dependencies {
 }
 
 group 'studio.thevipershow'
-version '2.1.5-SNAPSHOT'
+version '2.1.6-SNAPSHOT'
 description 'safechat'
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 compileJava.options.encoding = 'UTF-8'
