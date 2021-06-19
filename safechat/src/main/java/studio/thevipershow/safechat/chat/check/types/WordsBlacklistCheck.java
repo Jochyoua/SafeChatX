@@ -106,7 +106,7 @@ public final class WordsBlacklistCheck extends ChatCheck {
                 String quote = Pattern.quote("!@#$%^&*()_+-.'?;:");
                 int length = str.length();
                 if (stripAbnormal) {
-                    s = s.replaceAll("[^\\p{L}0-9]+", " ").trim();
+                    s = s.replaceAll("[^\\p{L}0-9§&]+", " ").trim();
                 }
                 for (String piece :
                         str.split("")) {
