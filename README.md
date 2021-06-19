@@ -173,7 +173,7 @@ through another method in the check interface.
 <tr>
 <td>
  
-#### (boolean) Check#getLoggingEnabled
+#### (boolean) Check#getLoggingEnabled()
 
 This specifices if your check will log data to /plugins/SafeChat/checkLogs.log
 </tr>
