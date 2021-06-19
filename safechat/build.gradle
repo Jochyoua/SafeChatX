@@ -62,9 +62,8 @@ dependencies {
     implementation 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
     compileOnly 'org.jetbrains:annotations:20.1.0'
 }
-
 group 'studio.thevipershow'
-version '2.1.6-SNAPSHOT'
+version '2.1.7-SNAPSHOT'
 description 'safechat'
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 compileJava.options.encoding = 'UTF-8'
