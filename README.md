@@ -47,33 +47,55 @@ that are currently available are listed here:
 ### SafeChat configurations
 
 SafeChat uses TOML to make the plugin configurable. TOML is an easy-to-use syntax which I recently adopted over YAML,
-you can read more about it here https://toml.io/en/. SafeChat currently has **5** configurations, I have decided to
+you can read more about it here https://toml.io/en/. \
+SafeChat currently has **5** configurations, I have decided to
 split the settings of SafeChat into multiple configurations to not create a huge single config and make editing more
 easy for the user!
-
+<table>
+<tr>
+<td>
+ 
 #### address-whitelist.toml
 
 A short configuration where you will be able to define the allowed addresses and domains into your plugin. All the other
 addresses and domains that are not whitelisted will automatically be considered as dangerous by SafeChat.
-
+<tr>
+<td>
+ 
 #### database-settings.toml
 
 This configuration makes you input values for the usage of the database. Make sure your data is correct if you are
 having troubles connecting to one of your databases.
-
+</td>
+</tr>
+<tr>
+<td>
+ 
 #### check-settings.toml
 
 A configuration for check-specific settings. From this configuration you will be able to enable checks, customize
 punishments levels, and other. This is where you can disable our check logger which logs Check violations into
 /plugins/SafeChat/logs/checkLogs.log.
-
+</td>
+</tr>
+<tr>
+<td>
+ 
 #### words-blacklist.toml
 
 A list of words that is considered forbidden on the server.
-
+</td>
+</tr>
+<tr>
+<td>
+ 
 #### messages.toml
 
 The messages that will be used by each specific check upon fail.
+</td>
+</tr>
+</table>
+ 
 ***
 
 ### SafeChat Database
