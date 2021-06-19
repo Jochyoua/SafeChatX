@@ -71,10 +71,42 @@ compileJava.options.encoding = 'UTF-8'
 tasks.withType(JavaCompile) {
     options.encoding 'UTF-8'
 }
+
 shadowJar {
     dependencies {
         exclude(dependency('org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'))
     }
+    relocate 'org.bstats', 'studio.thevipershow.safechat.libs.bstats'
+    relocate 'studio.thevipershow.vtc', 'studio.thevipershow.safechat.libs.vtc'
+    relocate 'org.antlr', 'studio.thevipershow.safechat.libs.antlr'
+    relocate 'org.checkerframework', 'studio.thevipershow.safechat.libs.checkerframework'
+    relocate 'org.dom4j', 'studio.thevipershow.safechat.libs.dom4j'
+    relocate 'org.hsqldb', 'studio.thevipershow.safechat.libs.hsqldb'
+    relocate 'org.jvnet', 'studio.thevipershow.safechat.libs.jvnet'
+    relocate 'org.mariadb', 'studio.thevipershow.safechat.libs.mariadb'
+    relocate 'org.slf4j', 'studio.thevipershow.safechat.libs.sl4fj'
+    relocate 'org.tomlj', 'studio.thevipershow.safechat.libs.tomlj'
+    relocate 'net.bytebuddy', 'studio.thevipershow.safechat.libs.bytebuddy'
+    relocate 'net.jcip', 'studio.thevipershow.safechat.libs.jcip'
+    relocate 'mssql', 'studio.thevipershow.safechat.libs.mssql'
+    relocate 'microsoft.sql', 'studio.thevipershow.safechat.libs.microsoft.sql'
+    relocate 'javassist', 'studio.thevipershow.safechat.libs.javassist'
+    relocate 'info.debatty.java.stringsimilarity', 'studio.thevipershow.safechat.libs.stringsimilarity'
+    relocate 'com.fasterxml.classmate', 'studio.thevipershow.safechat.libs.fasterxml'
+    relocate 'com.microsoft.sqlserver.jdbc', 'studio.thevipershow.safechat.libs.microsoft.sqlserver.jdbc'
+    relocate 'com.sun', 'studio.thevipershow.safechat.libs.com.sun'
+    relocate 'antlr', 'studio.thevipershow.safechat.libs.antlr'
+    relocate 'org.h2', 'studio.thevipershow.safechat.libs.org.h2'
+    relocate 'org.postgresql', 'studio.thevipershow.safechat.libs.org.postgresql'
+    relocate 'org.jboss', 'studio.thevipershow.safechat.libs.org.jboss'
+    relocate 'javax.persistence', 'studio.thevipershow.safechat.libs.javax.persistence'
+    relocate 'COM.ibm', 'studio.thevipershow.safechat.libs.com.ibm'
+    relocate 'com.hibernate', 'studio.thevipershow.safechat.libs.org.hibernate'
+    relocate 'org.sqlite', 'studio.thevipershow.safechat.libs.org.sqlite'
+    relocate 'com.zaxxer.hikari', 'studio.thevipershow.safechat.libs.com.zaxxer.hikari'
+    relocate 'com.javax', 'studio.thevipershow.safechat.libs.com.javax'
+    relocate 'net.jpountz', 'studio.thevipershow.safechat.libs.net.jpountz'
+    relocate 'sqlj.runtime', 'studio.thevipershow.safechat.libs.sqlj.runtime'
 }
 processResources.from(sourceSets.main.resources.srcDirs) {
     expand 'version': project.version
