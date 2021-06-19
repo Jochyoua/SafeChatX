@@ -1,12 +1,27 @@
-![GitHub](https://img.shields.io/github/license/Jochyoua/SafeChatX?style=plastic)
-![Lines of code](https://img.shields.io/tokei/lines/github/Jochyoua/SafeChatX?style=plastic)
-![GitHub last commit](https://img.shields.io/github/last-commit/Jochyoua/SafeChatX?style=plastic)
-![swag](https://img.shields.io/badge/swag-yes-red)\
+
+# SafeChatX ![GitHub](https://img.shields.io/github/license/Jochyoua/SafeChatX?style=plastic) ![GitHub last commit](https://img.shields.io/github/last-commit/Jochyoua/SafeChatX?style=plastic) ![swag](https://img.shields.io/badge/swag-yes-red)
+
+SafeChatX is a chat moderation plugin built to help keep your server's chat in check.\
+All contributions are very much appreciated!\
 [SpigotMC Resource](https://www.spigotmc.org/resources/safechat.79115/ "SpigotMC Resource")
-# SafeChatX
-A plugin to keep your chat safe.
 
+## Index table
 
+* [SafeChat locales](https://github.com/Jochyoua/SafeChatX/#safechat-locales)
+* [SafeChat commands](https://github.com/Jochyoua/SafeChatX/#safechat-commands)
+* [SafeChat configurations](https://github.com/Jochyoua/SafeChatX/#safechat-configurations)
+  * [address-whitelist-toml](https://github.com/Jochyoua/SafeChatX/#address-whitelisttoml)
+  * [database-settings.toml](https://github.com/Jochyoua/SafeChatX/#database-settingstoml)
+  * [check-settings.toml](https://github.com/Jochyoua/SafeChatX/#check-settingstoml)
+  * [words-blacklist.toml](https://github.com/Jochyoua/SafeChatX/#words-blacklisttoml)
+  * [messages.toml](https://github.com/Jochyoua/SafeChatX/#messagestoml)
+* [SafeChat database](https://github.com/Jochyoua/SafeChatX/#safechat-database)
+* [SafeChat API](https://github.com/Jochyoua/SafeChatX/#safechat-api)
+  * [SafeChat Events](https://github.com/Jochyoua/SafeChatX/#safechat-events)
+<table>
+<tr>
+<td>
+    
 ### SafeChat locales
 SafeChat has locales for you to edit to your liking, every message a player sees from SafeChat may be modified.\
 We plan on adding more language locales in the future for you to choose from.\
@@ -14,30 +29,33 @@ To edit a locale message, all you need to do is get the latest version of the lo
 (https://github.com/Jochyoua/SafeChatX/tree/master/safechat/src/main/resources/) and choose a file ending in .properties\
 After you choose your file, drop it into the SafeChat directory and modify the messages there.\
 Reload the plugin with `/safechat reload` and it will load right up!
+<img width="500" height="1px">
+</td>
+</tr>
+</table>
+<table>
+<tr>
+<td>
+
 ### SafeChat Commands
 
 SafeChat provides some commands in-game that will allow to interact with the configurations or the checks. The commands
 that are currently available are listed here:
 
-[Reload Command]<br>
-**Syntax**: `/safechat reload`<br>
-**Permission**: `safechat.commands.reload` <br>
-**Description**: <br>
-This command is used to reload data from configurations and plugin. You can use this command to start using new values
-after you have modified any of the configs from SafeChat.
-
-[Help Command]<br>
-**Syntax**: `/safechat help`<br>
-**Permission**: none?<br>
-**Description**: Show all available commands.
-
-[Flags Command]<br>
-**Syntax**: `/safechat (flag-name) <player-name>`<br>
-**Permission**: `safechat.commands.flags`<br>
-**Description**: This command is used to either view all the flags of a player, or to view a specific flag of a player.
-The first mode, where only the player name is specified, will show you all the flags that a player currently has. 
-The second mode will first specify the flag name and then the player name, this will display the amount of that flag.
-
+| Command | Description | Permission |
+| --- | --- | --- |
+| `safechat reload` | Reloads configuration files | `safechat.commands.reload` |
+| `safechat help` | Show all available commands and permissions |`safechat.commands.help` |
+| `safechat flags` | This command is used to calculate the flags a check has for a player | `safechat.commands.flags` |
+| `safechat version` | Returns the current version of the plugin and the server version | `safechat.commands.version` |
+<img width="500" height="1px">
+</td>
+</tr>    
+</table>
+<table>
+<tr>
+<td>    
+    
 ### SafeChat configurations
 
 SafeChat uses TOML to make the plugin configurable. TOML is an easy-to-use syntax which I recently adopted over YAML,
@@ -68,10 +86,17 @@ A list of words that is considered forbidden on the server.
 #### messages.toml
 
 The messages that will be used by each specific check upon fail.
-
+<img width="500" height="1px">
+</td>
+</tr>
+</table>
+<table>
+<tr>
+<td>  
+    
 ### SafeChat Database
 
-A database is required for SafeChat to work!<br>
+A database is required for SafeChat to work!\
 SafeChat currently supports the following databases:
 
 1) **MySQL**
@@ -84,7 +109,14 @@ SafeChat currently supports the following databases:
 8) **IBM DB2**
 
 To work properly the "database-settings.toml" config must contain correct access data.
-
+<img width="500" height="1px">
+</td>
+</tr>
+</table>
+<table>
+<tr>
+<td>
+    
 ### SafeChat API
 
 This plugin provides a simple API that allows users to program their own checks and make SafeChat register them at
@@ -309,7 +341,14 @@ public final class MessageTooLongCheck extends ChatCheck {
     }
 }
 ```
-
+<img width="500" height="1px">
+</td>
+</tr>
+</table>
+<table>
+<tr>
+<td>
+    
 ### SafeChat Events
 
 This plugin also provides different Bukkit events that allow you to easily listen and interact with safechat using the
@@ -334,6 +373,10 @@ This check event is called whenever a check is getting unregistered. This event 
 
 This check event is called whenever the player fails a check. This check can be cancelled and doing so will cause
 SafeChat to skip this check and ignore it for that one message. This event is non thread-safe!
-
+<img width="500" height="1px">
+</td>
+</tr>
+</table>
+    
 ---
 This guide finishes here, thank you for reading!
