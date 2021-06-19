@@ -53,6 +53,7 @@ public final class AddressCheck extends ChatCheck {
     @Override
     public boolean check(@NotNull ChatData data) {
         boolean enabled = Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.ENABLE_ADDRESS_CHECK));
+
         if (!enabled) {
             return false;
         }

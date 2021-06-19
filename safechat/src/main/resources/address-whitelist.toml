@@ -1,5 +1,4 @@
 # A list of allowed domains
-# (no, wikipedia and hypixel did not sponsor me).
 [domains]
 allowed = [
     "wikipedia.org",

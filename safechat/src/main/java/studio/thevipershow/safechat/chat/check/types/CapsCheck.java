@@ -33,6 +33,7 @@ public final class CapsCheck extends ChatCheck {
     @Override
     public boolean check(@NotNull ChatData data) {
         boolean enabled = Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.ENABLE_CAPS_CHECK));
+
         if (!enabled) {
             return false;
         }

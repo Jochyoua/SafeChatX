@@ -50,6 +50,7 @@ public final class FloodCheck extends ChatCheck {
     @Override
     public boolean check(@NotNull ChatData data) {
         boolean enabled = Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.ENABLE_FLOOD_CHECK));
+
         if (!enabled) {
             return false;
         }

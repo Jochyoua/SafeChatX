@@ -49,6 +49,7 @@ public final class RepetitionCheck extends ChatCheck {
     @Override
     public boolean check(@NotNull ChatData data) {
         boolean enabled = Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.ENABLE_REPETITION_CHECK));
+
         if (!enabled) {
             return false;
         }

@@ -16,7 +16,7 @@ blacklisted-word-warning = [
 ]
 
 text-repetition-warning = [
-    "{PREFIX} &7You have written similiar messages twice.",
+    "{PREFIX} &7You have written similar messages twice.",
     "&7Please &e{PLAYER}&7, write something different!"
 ]
 
