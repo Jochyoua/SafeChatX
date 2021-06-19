@@ -38,13 +38,17 @@ public class SafeChatCommand extends Command {
     }
 
     public static void onHelp(@NotNull CommandSender sender) {
-        sender.sendMessage(SafeChatUtils.color(SafeChat.getLocale().getString("help_command")));
+        if (SafeChatUtils.permissionCheck("safechat.commands.help", sender)) {
+            sender.sendMessage(SafeChatUtils.color(SafeChat.getLocale().getString("help_command")));
+        }
     }
 
     public static void onVersion(@NotNull CommandSender sender) {
-        sender.sendMessage(SafeChatUtils.color(SafeChat.getLocale().getString("version_command"))
-                .replaceAll("(?i)\\{prefix}", getLocale().getString("prefix")).replaceAll("(?i)\\{version}", SafeChat.getPlugin(SafeChat.class).getDescription().getVersion())
-                .replaceAll("(?i)\\{server_version}", Bukkit.getServer().getVersion()));
+        if (SafeChatUtils.permissionCheck("safechat.commands.version", sender)) {
+            sender.sendMessage(SafeChatUtils.color(SafeChat.getLocale().getString("version_command"))
+                    .replaceAll("(?i)\\{prefix}", getLocale().getString("prefix")).replaceAll("(?i)\\{version}", SafeChat.getPlugin(SafeChat.class).getDescription().getVersion())
+                    .replaceAll("(?i)\\{server_version}", Bukkit.getServer().getVersion()));
+        }
     }
 
     public static void unknownCommand(@NotNull CommandSender sender) {
@@ -180,7 +184,7 @@ public class SafeChatCommand extends Command {
         final int length = args.length;
         switch (length) {
             case 1:
-                return BASE_ARGS;
+                return BASE_ARGS.stream().filter(string -> sender.hasPermission("safechat.commands." + string)).collect(Collectors.toList());
             case 2: {
                 if (args[0].equalsIgnoreCase("flags") && SafeChatUtils.permissionCheck("safechat.commands.flags", sender)) {
                     return getAvailableCheckNamesList();

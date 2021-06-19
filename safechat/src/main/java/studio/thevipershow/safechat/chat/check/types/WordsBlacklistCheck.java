@@ -62,6 +62,7 @@ public final class WordsBlacklistCheck extends ChatCheck {
 
         boolean checkSimilar = checkConfig.getConfigValue(CheckSections.BLACKLIST_ALLOW_SIMILARITY, Boolean.class);
         boolean regexFallback = checkConfig.getConfigValue(CheckSections.ENABLE_BLACKLIST_FALLBACK, Boolean.class);
+        boolean stripAbnormal = checkConfig.getConfigValue(CheckSections.ENABLE_BLACKLIST_STRIPPING, Boolean.class);
         TomlArray words = blacklistConfig.getConfigValue(BlacklistSection.WORDS);
 
         int wordsSize = words.size();
@@ -102,9 +103,15 @@ public final class WordsBlacklistCheck extends ChatCheck {
                 StringBuilder stringBuilder = new StringBuilder();
                 String quote = Pattern.quote("!@#$%^&*()_+-.'?;:");
                 int length = str.length();
+                if(stripAbnormal){
+                    s = s.replaceAll("[^\\p{L}0-9]+", " ").trim();
+                }
                 for (String piece :
                         str.split("")) {
                     --length;
+                    if(piece.trim().isEmpty()){
+                        continue;
+                    }
                     if (length <= 0) {
                         stringBuilder.append("(").append(piece).append("+|([").append(quote).append("]|((§|&)[0-9A-FK-OR]|(§|&)))+\\s*+").append(piece).append(")");
                     } else if (length == str.length() - 1) {

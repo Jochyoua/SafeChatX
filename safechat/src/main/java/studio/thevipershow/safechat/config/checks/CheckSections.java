@@ -8,6 +8,7 @@ public enum CheckSections implements SectionType {
     ENABLE_BLACKLIST_WARNING("blacklist.enable-warning", Boolean.class),
     ENABLE_BLACKLIST_LOGGING("blacklist.enable-logging", Boolean.class),
     ENABLE_BLACKLIST_FALLBACK("blacklist.fallback", Boolean.class),
+    ENABLE_BLACKLIST_STRIPPING("blacklist.strip-abnormal-characters", Boolean.class),
     BLACKLIST_ALLOW_SIMILARITY("blacklist.allow-similarity", Boolean.class),
     BLACKLIST_MAXIMUM_SIMILARITY("blacklist.maximum-similarity", Double.class),
     BLACKLIST_PUNISH_AFTER("blacklist.punish-after", Long.class),

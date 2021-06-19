@@ -6,3 +6,8 @@ authors: [ TheViperShow, Jochyoua ]
 softdepend: [ Vault ]
 api-version: 1.13
 description: "Keep your chat safe!"
+permissions:
+  safechat.commands.help:
+    default: true
+  safechat.commands.version:
+    default: true
