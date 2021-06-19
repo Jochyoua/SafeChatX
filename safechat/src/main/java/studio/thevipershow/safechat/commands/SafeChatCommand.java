@@ -3,6 +3,7 @@ package studio.thevipershow.safechat.commands;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.safechat.SafeChat;
 import studio.thevipershow.safechat.SafeChatUtils;
@@ -181,8 +182,14 @@ public class SafeChatCommand extends Command {
             case 1:
                 return BASE_ARGS;
             case 2: {
-                if (args[0].equalsIgnoreCase("flags")) {
+                if (SafeChatUtils.permissionCheck("safechat.commands.flags", sender) && args[0].equalsIgnoreCase("flags")) {
                     return getAvailableCheckNamesList();
+                }
+            }
+            break;
+            case 3: {
+                if (SafeChatUtils.permissionCheck("safechat.commands.flags", sender) && args[0].equalsIgnoreCase("flags")) {
+                    return Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
                 }
             }
             break;

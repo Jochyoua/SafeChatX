@@ -77,10 +77,11 @@ public final class WordsBlacklistCheck extends ChatCheck {
         }
 
         String[] ss = SPLIT_SPACE.split(s);
-        double factor = ((Number) Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.BLACKLIST_MAXIMUM_SIMILARITY))).doubleValue();
+
         for (int k = 0; k < wordsSize; k++) {
             String str = words.getString(k);
             if (checkSimilar) {
+                double factor = ((Number) Objects.requireNonNull(checkConfig.getConfigValue(CheckSections.BLACKLIST_MAXIMUM_SIMILARITY))).doubleValue();
                 for (final String value : ss) {
                     if (algo.similarity(value, str) >= factor || algo.similarity(value.toLowerCase(Locale.ROOT), str) >= factor) {
                         return true;
