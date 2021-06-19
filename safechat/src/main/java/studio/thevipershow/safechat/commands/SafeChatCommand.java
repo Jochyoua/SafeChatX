@@ -182,13 +182,13 @@ public class SafeChatCommand extends Command {
             case 1:
                 return BASE_ARGS;
             case 2: {
-                if (SafeChatUtils.permissionCheck("safechat.commands.flags", sender) && args[0].equalsIgnoreCase("flags")) {
+                if (args[0].equalsIgnoreCase("flags") && SafeChatUtils.permissionCheck("safechat.commands.flags", sender)) {
                     return getAvailableCheckNamesList();
                 }
             }
             break;
             case 3: {
-                if (SafeChatUtils.permissionCheck("safechat.commands.flags", sender) && args[0].equalsIgnoreCase("flags")) {
+                if (args[0].equalsIgnoreCase("flags") && SafeChatUtils.permissionCheck("safechat.commands.flags", sender)) {
                     return Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
                 }
             }
