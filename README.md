@@ -18,24 +18,18 @@ All contributions are very much appreciated!\
 * [SafeChat database](https://github.com/Jochyoua/SafeChatX/#safechat-database)
 * [SafeChat API](https://github.com/Jochyoua/SafeChatX/#safechat-api)
   * [SafeChat Events](https://github.com/Jochyoua/SafeChatX/#safechat-events)
-<table>
-<tr>
-<td>
-    
+* [SafeChat Annotations API](https://github.com/Jochyoua/SafeChatX/#annotations-api)
+***
+
 ### SafeChat locales
+
 SafeChat has locales for you to edit to your liking, every message a player sees from SafeChat may be modified.\
 We plan on adding more language locales in the future for you to choose from.\
 To edit a locale message, all you need to do is get the latest version of the locale from out github repo\
 (https://github.com/Jochyoua/SafeChatX/tree/master/safechat/src/main/resources/) and choose a file ending in .properties\
 After you choose your file, drop it into the SafeChat directory and modify the messages there.\
 Reload the plugin with `/safechat reload` and it will load right up!
-<img width="500" height="1px">
-</td>
-</tr>
-</table>
-<table>
-<tr>
-<td>
+***
 
 ### SafeChat Commands
 
@@ -48,14 +42,8 @@ that are currently available are listed here:
 | `safechat help` | Show all available commands and permissions |`safechat.commands.help` |
 | `safechat flags` | This command is used to calculate the flags a check has for a player | `safechat.commands.flags` |
 | `safechat version` | Returns the current version of the plugin and the server version | `safechat.commands.version` |
-<img width="500" height="1px">
-</td>
-</tr>    
-</table>
-<table>
-<tr>
-<td>    
-    
+***
+
 ### SafeChat configurations
 
 SafeChat uses TOML to make the plugin configurable. TOML is an easy-to-use syntax which I recently adopted over YAML,
@@ -86,14 +74,8 @@ A list of words that is considered forbidden on the server.
 #### messages.toml
 
 The messages that will be used by each specific check upon fail.
-<img width="500" height="1px">
-</td>
-</tr>
-</table>
-<table>
-<tr>
-<td>  
-    
+***
+
 ### SafeChat Database
 
 A database is required for SafeChat to work!\
@@ -109,14 +91,8 @@ SafeChat currently supports the following databases:
 8) **IBM DB2**
 
 To work properly the "database-settings.toml" config must contain correct access data.
-<img width="500" height="1px">
-</td>
-</tr>
-</table>
-<table>
-<tr>
-<td>
-    
+***
+
 ### SafeChat API
 
 This plugin provides a simple API that allows users to program their own checks and make SafeChat register them at
@@ -210,7 +186,8 @@ This is the priority of this check. When a check has higher priority level it wi
 #### (String) Check#getBypassPermission()
 
 This is the permission required to bypass a check. Players that do have this permission will skip this check entirely.
-
+***
+ 
 ### Annotations API
 
 SafeChat uses some annotations in order for you to easily pass information into your checks without having to override
@@ -230,7 +207,8 @@ with a low priority will be the last to be checked.
 #### @CheckPermission(name = String)
 
 Used to specify a check's bypass permission.
-
+***
+ 
 ### Check registration
 
 Now that we've explained how to define your own check, we need to register them. To register checks you can find the **
@@ -341,14 +319,8 @@ public final class MessageTooLongCheck extends ChatCheck {
     }
 }
 ```
-<img width="500" height="1px">
-</td>
-</tr>
-</table>
-<table>
-<tr>
-<td>
-    
+***
+
 ### SafeChat Events
 
 This plugin also provides different Bukkit events that allow you to easily listen and interact with safechat using the
@@ -373,10 +345,6 @@ This check event is called whenever a check is getting unregistered. This event 
 
 This check event is called whenever the player fails a check. This check can be cancelled and doing so will cause
 SafeChat to skip this check and ignore it for that one message. This event is non thread-safe!
-<img width="500" height="1px">
-</td>
-</tr>
-</table>
-    
+
 ---
 This guide finishes here, thank you for reading!
