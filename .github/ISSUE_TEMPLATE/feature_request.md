@@ -22,6 +22,6 @@ assignees: Jochyoua
 ## Your Environment
 <!--- Include as many relevant details about the environment you experienced the bug in -->
 * Plugin version used:
-* Java version (e.g. Java 6 or Java 11/16):
+* Java version (e.g. Java 8 or Java 11/16):
 * Server type and version:
 * Operating System and version:
