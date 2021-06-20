@@ -72,6 +72,8 @@ tasks.withType(JavaCompile) {
 }
 
 shadowJar {
+    libsDirName = 'C:\\Users\\jochy\\OneDrive\\IJ\\server\\plugins\\'
+    archiveClassifier.set('')
     dependencies {
         exclude(dependency('org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'))
     }
