@@ -1,6 +1,6 @@
 ---
-name: Bug report
-about: Getting errors in console or other general unexpected activity
+name: "\U0001F41B Bug report"
+about: Inform us of any bugs or issues you may have found
 title: ''
 labels: bug
 assignees: Jochyoua
