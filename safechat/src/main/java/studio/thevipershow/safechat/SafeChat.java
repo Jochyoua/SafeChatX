@@ -35,14 +35,13 @@ import java.util.Objects;
 public final class SafeChat extends JavaPlugin {
 
     public static final short PLUGIN_ID = 9876;
-    // Data
+
     private static final String VAULT_NAME = "Vault";
     public static Localization localization;
-    // Configs
+
     private PluginsConfigurationsManager configManager;
     private PluginConfigurationsData<SafeChat> configData;
 
-    // Internals
     private ChecksContainer checksContainer;
     private Economy economy;
     private ChatListener chatListener;
@@ -50,7 +49,6 @@ public final class SafeChat extends JavaPlugin {
     private SafeChatHibernate safeChatHibernate;
     private Debugger debugger;
 
-    // Commands
     private SafeChatCommand safechatCommand;
 
     public static Localization getLocale() {

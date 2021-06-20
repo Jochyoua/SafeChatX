@@ -102,20 +102,18 @@ public enum HibernateSQLMapping {
         Map<String, String> properties = new HashMap<>();
         properties.put("hibernate.connection.dataSourceClassname", HikariCPConnectionProvider.class.getName());
         properties.put("hibernate.hikari.jdbcUrl", generateAppropriateUrl(this, dbConfig));
-        if (!isFileBased()) { // do not use accounts in file-based databases
+        if (!isFileBased()) {
             properties.put("hibernate.hikari.username", dbConfig.getConfigValue(DatabaseSection.USERNAME));
             properties.put("hibernate.hikari.password", dbConfig.getConfigValue(DatabaseSection.PASSWORD));
         }
         properties.put("hibernate.dataSourceClassName", HikariDataSource.class.getName());
         properties.put(Environment.DRIVER, driverClassName);
-        // Optimizations:
         properties.put("hibernate.hikari.dataSource.cachePrepStmts", "true");
         properties.put("hibernate.hikari.dataSource.prepStmtCacheSize", "256");
         properties.put("hibernate.hikari.dataSource.useServerPrepStmts", "true");
         properties.put("hibernate.hikari.dataSource.useLocalSessionState", "true");
         properties.put("hibernate.hikari.dataSource.cacheResultSetMetadata", "true");
         properties.put("hibernate.hikari.dataSource.cacheServerConfiguration", "true");
-        // End of Optimizations.
         properties.put(Environment.HBM2DDL_AUTO, "update");
         properties.put(Environment.SHOW_SQL, "false");
         return properties;
