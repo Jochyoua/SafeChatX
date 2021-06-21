@@ -20,10 +20,11 @@ buildNumber.properties
 #
 # Gradle
 #
+.gradle
 **/build/
 !src/**/build/
+*.bat
 /gradle
-.gradle
 
 # Ignore Gradle GUI config
 gradle-app.setting
