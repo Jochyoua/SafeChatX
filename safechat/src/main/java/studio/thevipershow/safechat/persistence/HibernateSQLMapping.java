@@ -9,12 +9,11 @@ import org.hibernate.dialect.HSQLDialect;
 import org.hibernate.dialect.MariaDB53Dialect;
 import org.hibernate.dialect.PostgreSQL95Dialect;
 import org.hibernate.dialect.SQLServer2012Dialect;
-import org.hibernate.dialect.SQLiteDialect;
 import org.hibernate.hikaricp.internal.HikariCPConnectionProvider;
 import org.jetbrains.annotations.NotNull;
+import org.sqlite.hibernate.dialect.SQLiteDialect;
 import studio.thevipershow.safechat.config.database.DatabaseConfig;
 import studio.thevipershow.safechat.config.database.DatabaseSection;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
