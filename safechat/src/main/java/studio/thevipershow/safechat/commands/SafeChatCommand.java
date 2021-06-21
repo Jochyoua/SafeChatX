@@ -59,6 +59,10 @@ public class SafeChatCommand extends Command {
         sender.sendMessage(SafeChatUtils.color(SafeChat.getLocale().getString("too_many_arguments").replaceAll("(?i)\\{prefix}", getLocale().getString("prefix"))));
     }
 
+    public static void tooLittleArgs(@NotNull CommandSender sender) {
+        sender.sendMessage(SafeChatUtils.color(SafeChat.getLocale().getString("too_little_arguments").replaceAll("(?i)\\{prefix}", getLocale().getString("prefix"))));
+    }
+
     public final void reloadCommand(@NotNull CommandSender sender) {
         if (SafeChatUtils.permissionCheck("safechat.commands.reload", sender)) {
             long operationStartTime = System.nanoTime();
@@ -143,6 +147,9 @@ public class SafeChatCommand extends Command {
                 break;
             case "version":
                 onVersion(sender);
+                break;
+            case "flags":
+                tooLittleArgs(sender);
                 break;
             default:
                 unknownCommand(sender);
