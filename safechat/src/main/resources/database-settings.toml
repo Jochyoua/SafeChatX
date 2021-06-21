@@ -1,4 +1,5 @@
 # Settings for your database
+# Need some help?: https://github.com/Jochyoua/SafeChatX/wiki/Storage-Configuration
 [database]
 sql-flavor = 'h2' # The type of your sql
 username = 'root' # your database user name

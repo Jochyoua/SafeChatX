@@ -3,6 +3,7 @@
 # {PREFIX} -> The prefix of this plugin (SafeChat)
 # {PLAYER} -> The name of the player who failed the check.
 # {TIME} -> missing time to write again (ONLY WORKS FOR CHAT FLOOD!)
+# Need some help?: https://github.com/Jochyoua/SafeChatX/wiki/Messages-Configuration
 [messages]
 locale = "en"
 address-warning = [
