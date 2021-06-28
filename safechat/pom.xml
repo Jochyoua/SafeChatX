@@ -36,84 +36,98 @@
     </repositories>
 
     <dependencies>
+        <!-- bStats (Plugin telemetry) -->
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
             <version>1.8</version>
             <scope>compile</scope>
         </dependency>
+        <!-- Vault (Minecraft server abstractions) -->
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
             <scope>provided</scope>
         </dependency>
+        <!-- SpigotAPI (API for Spigot servers) -->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>1.16.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <!-- String similarity algorithms -->
         <dependency>
             <groupId>info.debatty</groupId>
             <artifactId>java-string-similarity</artifactId>
             <version>2.0.0</version>
             <scope>compile</scope>
         </dependency>
+        <!-- Annotations for nullability -->
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>20.1.0</version>
             <scope>provided</scope>
         </dependency>
+        <!-- Library for easy Toml configurations -->
         <dependency>
             <groupId>com.github.TheViperShow</groupId>
             <artifactId>ViperTomlConfig</artifactId>
             <version>0.1.5-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+        <!-- Hibernate (ORM) -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>5.4.27.Final</version>
             <scope>compile</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-hikaricp -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-hikaricp</artifactId>
             <version>5.4.27.Final</version>
             <scope>compile</scope>
         </dependency>
+        <!-- PostgreSQL Driver -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.2.18</version>
             <scope>compile</scope>
         </dependency>
+        <!-- MariaDB Driver -->
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
             <version>2.7.1</version>
             <scope>compile</scope>
         </dependency>
+        <!-- H2 DB Engine -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>1.4.200</version>
             <scope>compile</scope>
         </dependency>
+        <!-- HyperSQL DB Engine -->
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <version>2.5.1</version>
             <scope>compile</scope>
         </dependency>
+        <!-- Microsoft SQLServer Driver -->
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
             <version>9.1.1.jre8-preview</version>
             <scope>compile</scope>
         </dependency>
+        <!-- HikariCP (Connection Pooling) -->
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
@@ -137,6 +151,7 @@
             <version>-c3cee1f223-1</version>
             <scope>compile</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.ibm.db2/jcc -->
         <dependency>
             <groupId>com.ibm.db2</groupId>
             <artifactId>jcc</artifactId>
@@ -147,6 +162,7 @@
 
     <build>
         <defaultGoal>clean package</defaultGoal>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -161,24 +177,14 @@
                         </goals>
                         <configuration>
                             <excludeScope>system</excludeScope>
-                            <excludes>META-INF/**</excludes>
+                            <excludes>META-INF/*.SF</excludes>
+                            <excludes>META-INF/*.DSA</excludes>
+                            <excludes>META-INF/*.RSA</excludes>
+                            <!-- <excludeGroupIds>junit,org.mockito,org.hamcrest</excludeGroupIds> -->
                             <outputDirectory>${project.build.directory}/classes</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <archive>
-                        <addMavenDescriptor>false</addMavenDescriptor>
-                        <manifest>
-                            <addClasspath>false</addClasspath>
-                        </manifest>
-                    </archive>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -208,7 +214,9 @@
                                     <artifact>*:*</artifact>
                                     <excludes>
                                         <exclude>module-info.class</exclude>
-                                        <excludes>META-INF/**</excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
@@ -284,8 +292,7 @@
                                 </relocation>
                                 <relocation>
                                     <pattern>com.microsoft.sqlserver.jdbc</pattern>
-                                    <shadedPattern>studio.thevipershow.safechat.libs.microsoft.sqlserver.jdbc
-                                    </shadedPattern>
+                                    <shadedPattern>studio.thevipershow.safechat.libs.microsoft.sqlserver.jdbc</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>com.sun</pattern>
