@@ -10,6 +10,7 @@ public abstract class ChatCheck implements Check {
 
     public static final Pattern DOMAIN_REGEX = Pattern.compile("([a-z0-9\\-]{3,}(\\.|\\[\\.])[a-z]{2,}|(\\.|_|-|\\[\\.])[a-z0-9\\-]{3,}\\3[a-z]{2,})", Pattern.CASE_INSENSITIVE);
     public static final Pattern IPV4_REGEX = Pattern.compile("[0-9]{1,3}[.,][0-9]{1,3}[.,][0-9]{1,3}[.,][0-9]{1,3}");
+    public static final Pattern ABNORMAL_CHARACTERS = Pattern.compile("[^\\p{L}0-9§&]+");
     public static final Pattern SPLIT_SPACE = Pattern.compile("\\s+");
     public static final String PLAYER_PLACEHOLDER = "{PLAYER}";
     public static final String PREFIX_PLACEHOLDER = "{PREFIX}";

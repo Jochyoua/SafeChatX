@@ -98,7 +98,7 @@ public final class ChatListener implements Listener {
         playerDataManager.addOrUpdatePlayerData(player, checkName);
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     private void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
         ChatData data = new ChatData(event.getPlayer(), event.getMessage(), System.currentTimeMillis());
 

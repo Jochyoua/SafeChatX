@@ -81,7 +81,7 @@ public final class WordsBlacklistCheck extends ChatCheck {
         }
 
         if (stripAbnormal) {
-            s = s.replaceAll("[^\\p{L}0-9§&]+", "").trim();
+            s = ABNORMAL_CHARACTERS.matcher(s).replaceAll("");
         }
 
         String[] ss = SPLIT_SPACE.split(s);
